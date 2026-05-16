@@ -195,6 +195,7 @@ def build():
 <meta name="apple-mobile-web-app-title" content="Norms Corp">
 <meta name="theme-color" content="#0C0C0C">
 <meta name="build-time" content="{ts}">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>Norms Corp</title>
 <link rel="manifest" href="manifest.json">
 <style>
