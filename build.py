@@ -101,10 +101,10 @@ def get_claude_stats():
 
 PROJECTS = [
     {"id":"npc-book","icon":"📚","title":"NPC Book","subtitle":"3 เล่ม · 58 บท","status":"done","progress":100,
-     "details":["Stage 1-4 ✅ ครบทุก stage","58 บทเขียนเสร็จแล้ว","3 HTML books พร้อม"],"next":"ส่งทีมตรวจ พุธ 20 พ.ค."},
+     "details":["Stage 1–4 ✅ ครบทุก stage","58 บทเขียนเสร็จแล้ว","3 HTML books พร้อม"],"next":"ส่งทีมตรวจ พุธ 20 พ.ค."},
     {"id":"content","icon":"📣","title":"Content Pipeline","subtitle":"58 drafts พร้อมโพสต์","status":"done","progress":100,
-     "details":["📘 อ่านตลาดได้ 22 บท","📙 หลิวคิดอะไรอยู่ 18 บท","📗 จิตใจนักเทรด 18 บท"],"next":"เติม API credit → รัน content_pipeline.py คุณภาพสูงขึ้น"},
-    {"id":"transcription","icon":"🎙️","title":"Transcription","subtitle":"แปล video → text (AA edition)","status":"running","progress":0,
+     "details":["📘 อ่านตลาดได้ 22 บท","📙 หลิวคิดอะไรอยู่ 18 บท","📗 จิตใจนักเทรด 18 บท"],"next":"เติม API credit → รัน content_pipeline.py"},
+    {"id":"transcription","icon":"🎙️","title":"Transcription","subtitle":"แปล video → text","status":"running","progress":0,
      "details":[],"next":"รันทิ้งข้ามคืน · orchestrator auto-restart"},
     {"id":"norms-corp","icon":"🏢","title":"Norms Corp","subtitle":"9 departments · AI agents","status":"phase1","progress":40,
      "details":["✅ Structure + CLAUDE.md + INDEX.md + WORKFLOW.md","✅ Agent Briefs ครบ 9 แผนก","✅ AI Empire dissolved → merged","⏳ Phase 2: API orchestration"],"next":"Phase 2: orchestrator.py + task queue"},
@@ -169,12 +169,12 @@ def build():
     claude_sessions = get_claude_stats()
     alive_count = sum(1 for s in claude_sessions if s["alive"])
 
-    # คำนวณ transcription progress
     total_done  = sum(v["done"]  for v in pipeline.values())
     total_vids  = sum(v["total"] for v in pipeline.values())
     trans_pct   = round(total_done / total_vids * 100) if total_vids else 0
+    done_count  = sum(1 for p in PROJECTS if p["status"] == "done")
+    draft_count = len(drafts) if drafts else 58
 
-    # อัพเดท project transcription progress
     for p in PROJECTS:
         if p["id"] == "transcription":
             p["progress"] = trans_pct
@@ -193,167 +193,321 @@ def build():
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Norms Corp">
-<meta name="theme-color" content="#0C0C0C">
+<meta name="theme-color" content="#080808">
 <meta name="build-time" content="{ts}">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>Norms Corp</title>
 <link rel="manifest" href="manifest.json">
 <style>
-:root{{--bg:#0C0C0C;--base:#131313;--surface:#1A1A1A;--raised:#222;--overlay:#2C2C2C;
---amber:#D47A2A;--a4:#E0944A;--at:rgba(212,122,42,.12);
---text:#F0EDE8;--t2:#A8A49E;--muted:#706C66;
---border:rgba(255,255,255,.08);--green:#10B981;--blue:#3B82F6;--yellow:#F59E0B;--red:#EF4444;
---r:12px;--st:env(safe-area-inset-top);--sb:env(safe-area-inset-bottom)}}
+:root{{
+  --bg:#080808;--base:#0F0F0F;--surface:#161616;--raised:#1C1C1C;--overlay:#252525;
+  --amber:#D47A2A;--a4:#E0944A;--at:rgba(212,122,42,.13);
+  --text:#F0EDE8;--t2:#A8A49E;--muted:#5A5652;
+  --border:rgba(255,255,255,.07);
+  --green:#10B981;--blue:#3B82F6;--yellow:#F59E0B;--red:#EF4444;--purple:#8B5CF6;
+  --r:14px;--st:env(safe-area-inset-top);--sb:env(safe-area-inset-bottom)
+}}
 *{{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}}
 html,body{{height:100%;overflow:hidden;background:var(--base);color:var(--text);
-font-family:-apple-system,Sarabun,sans-serif;font-size:16px}}
+  font-family:-apple-system,Sarabun,sans-serif;font-size:16px}}
 .app{{display:flex;flex-direction:column;height:100%;height:100dvh}}
 
 /* topbar */
 .topbar{{background:var(--bg);padding:calc(var(--st)+10px) 16px 10px;border-bottom:1px solid var(--border);flex-shrink:0}}
 .topbar-row{{display:flex;align-items:center;gap:8px}}
-.logo{{font-size:16px;font-weight:800;color:var(--amber)}}
-.update-ts{{font-size:10px;color:var(--muted);margin-left:6px}}
-.pulse{{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;margin-right:4px}}
-@keyframes pulse{{0%,100%{{opacity:1;transform:scale(1)}}50%{{opacity:.5;transform:scale(.8)}}}}
-.hstats{{margin-left:auto;display:flex;gap:14px}}
-.hs{{text-align:right}}.hs-n{{font-size:18px;font-weight:700;display:block;line-height:1}}.hs-l{{font-size:10px;color:var(--muted)}}
+.logo{{font-size:15px;font-weight:800;color:var(--amber);letter-spacing:.03em}}
+.update-ts{{font-size:10px;color:var(--muted);margin-left:4px}}
+.pulse{{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;margin-right:4px;vertical-align:middle}}
+@keyframes pulse{{0%,100%{{opacity:1;transform:scale(1)}}50%{{opacity:.35;transform:scale(.7)}}}}
+.hstats{{margin-left:auto;display:flex;gap:12px}}
+.hs{{text-align:right}}
+.hs-n{{font-size:18px;font-weight:800;display:block;line-height:1}}
+.hs-l{{font-size:9px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}}
 
-/* content */
+/* layout */
 .content{{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}}
-.panel{{display:none;padding:16px 16px calc(16px + var(--sb))}}.panel.active{{display:block}}
+.panel{{display:none;padding:14px 14px calc(16px + var(--sb))}}.panel.active{{display:block}}
 
 /* bottom nav */
-.bnav{{background:var(--bg);border-top:1px solid var(--border);display:flex;padding:8px 4px calc(var(--sb)+4px);flex-shrink:0}}
+.bnav{{background:var(--bg);border-top:1px solid var(--border);display:flex;padding:6px 0 calc(var(--sb)+4px);flex-shrink:0}}
 .nb{{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;
-border:none;background:none;color:var(--muted);font-size:10px;font-weight:600;cursor:pointer;border-radius:10px}}
-.nb .ic{{font-size:22px;line-height:1}}.nb.on{{color:var(--amber)}}
+  border:none;background:none;color:var(--muted);font-size:9px;font-weight:700;cursor:pointer;
+  letter-spacing:.03em;transition:color .15s}}
+.nb .ic{{font-size:21px;line-height:1}}.nb.on{{color:var(--amber)}}
 
-/* section heading */
-.sh{{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--amber);margin:20px 0 10px}}
+/* section label */
+.sh{{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--amber);margin:18px 0 10px;opacity:.8}}
 .sh:first-child{{margin-top:0}}
 
-/* project cards */
-.proj{{background:var(--raised);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:10px}}
-.proj-h{{display:flex;align-items:center;gap:10px;margin-bottom:10px}}
-.p-icon{{font-size:24px;flex-shrink:0}}
-.p-title{{font-weight:700;font-size:15px}}.p-sub{{font-size:12px;color:var(--muted)}}
-.sbadge{{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;margin-left:auto;flex-shrink:0;white-space:nowrap}}
+/* ── HERO STATS ── */
+.hero{{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}}
+.hcard{{border-radius:var(--r);padding:14px 10px 12px;text-align:center;position:relative;overflow:hidden;
+  border:1px solid var(--border)}}
+.hcard-inner{{position:relative;z-index:1}}
+.hcard::before{{content:"";position:absolute;inset:0;opacity:1}}
+.hcard.c-green{{background:linear-gradient(145deg,#0a2318,#111)}}
+.hcard.c-green::before{{background:radial-gradient(circle at 50% 0%,rgba(16,185,129,.2),transparent 70%)}}
+.hcard.c-amber{{background:linear-gradient(145deg,#1e1100,#111)}}
+.hcard.c-amber::before{{background:radial-gradient(circle at 50% 0%,rgba(212,122,42,.25),transparent 70%)}}
+.hcard.c-blue{{background:linear-gradient(145deg,#0a1428,#111)}}
+.hcard.c-blue::before{{background:radial-gradient(circle at 50% 0%,rgba(59,130,246,.2),transparent 70%)}}
+.h-num{{font-size:28px;font-weight:800;line-height:1;margin-bottom:5px}}
+.hcard.c-green .h-num{{color:var(--green)}}
+.hcard.c-amber .h-num{{color:var(--a4)}}
+.hcard.c-blue .h-num{{color:#60A5FA}}
+.h-lbl{{font-size:10px;color:var(--t2);font-weight:600;line-height:1.4}}
+
+/* ── PROJECT GRID ── */
+.proj-grid{{display:grid;grid-template-columns:1fr 1fr;gap:10px}}
+.pcard{{border-radius:var(--r);padding:14px 12px 12px;cursor:pointer;position:relative;
+  overflow:hidden;border:1px solid var(--border);background:var(--raised);
+  transition:border-color .15s,transform .1s;active:scale(.98)}}
+.pcard:active{{transform:scale(.97)}}
+.pcard::before{{content:"";position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r) var(--r) 0 0}}
+.pcard.st-done::before{{background:var(--green)}}
+.pcard.st-running::before{{background:var(--amber)}}
+.pcard.st-phase1::before{{background:var(--blue)}}
+.pcard.st-blocked::before{{background:var(--red)}}
+.pcard.st-research::before{{background:var(--purple)}}
+.pcard.st-done{{background:linear-gradient(160deg,#0e1e18,#1a1a1a)}}
+.pcard.st-running{{background:linear-gradient(160deg,#1e1500,#1a1a1a)}}
+.pcard.st-phase1{{background:linear-gradient(160deg,#0e1428,#1a1a1a)}}
+.pcard.st-blocked{{background:linear-gradient(160deg,#1e0e0e,#1a1a1a)}}
+.pcard.st-research{{background:linear-gradient(160deg,#150e28,#1a1a1a)}}
+.pc-icon{{font-size:24px;line-height:1;margin-bottom:8px}}
+.pc-title{{font-weight:700;font-size:13px;line-height:1.3;margin-bottom:2px}}
+.pc-sub{{font-size:10px;color:var(--muted);line-height:1.3;margin-bottom:8px}}
+.sbadge{{padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;display:inline-block;margin-bottom:8px}}
 .s-done{{background:rgba(16,185,129,.15);color:#34D399}}
 .s-running{{background:rgba(245,158,11,.15);color:#FCD34D}}
 .s-phase1{{background:rgba(59,130,246,.15);color:#60A5FA}}
 .s-blocked{{background:rgba(239,68,68,.15);color:#FCA5A5}}
 .s-research{{background:rgba(139,92,246,.15);color:#C4B5FD}}
-.pbar-w{{background:var(--overlay);border-radius:4px;height:4px;margin:0 0 10px;overflow:hidden}}
-.pbar{{height:100%;border-radius:4px;background:var(--amber)}}
-.proj-det{{list-style:none;font-size:13px;color:var(--t2);margin-bottom:8px}}.proj-det li{{padding:1px 0}}
-.proj-next{{font-size:12px;color:var(--amber);background:var(--at);border-radius:8px;padding:8px 10px}}
-.proj-next::before{{content:"→ "}}
+.pbar-w{{background:rgba(255,255,255,.07);border-radius:4px;height:3px;margin-bottom:6px;overflow:hidden}}
+.pbar{{height:100%;border-radius:4px;transition:width .5s ease}}
+.pc-next{{font-size:10px;color:var(--t2);line-height:1.4}}
+.pc-next::before{{content:"→ ";color:var(--amber)}}
 
-/* pipeline */
-.pipe-row{{background:var(--raised);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:10px}}
-.pipe-h{{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}}
-.pipe-label{{font-weight:600;font-size:14px}}.pipe-pct{{font-size:12px;color:var(--muted)}}
-.pipe-n{{font-size:22px;font-weight:800;color:var(--amber);margin-bottom:8px}}
+/* ── PIPELINE INFOGRAPHIC ── */
+.pipe-card{{background:var(--raised);border:1px solid var(--border);border-radius:var(--r);
+  padding:16px;margin-bottom:10px;position:relative;overflow:hidden}}
+.pipe-glow{{position:absolute;top:0;left:0;right:0;height:100%;opacity:.04;pointer-events:none}}
+.pipe-label{{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}}
+.pipe-nums{{display:flex;align-items:baseline;gap:6px;margin-bottom:12px}}
+.pipe-done{{font-size:36px;font-weight:800;line-height:1}}
+.pipe-sep{{font-size:16px;color:var(--muted)}}
+.pipe-total{{font-size:16px;color:var(--muted);font-weight:600}}
+.pipe-pct{{margin-left:auto;font-size:13px;font-weight:700;padding:4px 12px;
+  border-radius:20px}}
+.pipe-pct.p-done{{background:rgba(16,185,129,.15);color:#34D399}}
+.pipe-pct.p-active{{background:rgba(212,122,42,.15);color:var(--a4)}}
+.pipe-pct.p-zero{{background:var(--overlay);color:var(--muted)}}
+.pipe-bar-w{{background:rgba(255,255,255,.06);border-radius:6px;height:8px;overflow:hidden}}
+.pipe-bar{{height:100%;border-radius:6px;transition:width .7s ease}}
 
-/* todos */
-.todo-item{{display:flex;align-items:flex-start;gap:12px;background:var(--raised);border:1px solid var(--border);border-radius:var(--r);padding:12px;margin-bottom:8px}}
-.chk{{width:24px;height:24px;border-radius:6px;border:1px solid var(--border);background:var(--overlay);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer}}
+/* roadmap */
+.roadmap{{display:grid;grid-template-columns:1fr 1fr;gap:8px}}
+.rm{{background:var(--raised);border:1px solid var(--border);border-radius:12px;
+  padding:14px 12px;text-align:center}}
+.rm-ic{{font-size:22px;margin-bottom:6px}}
+.rm-title{{font-size:12px;font-weight:700;margin-bottom:3px}}
+.rm-sub{{font-size:10px;color:var(--muted);line-height:1.5}}
+.rm.done{{border-color:rgba(16,185,129,.25);background:linear-gradient(145deg,#0e1e18,#1a1a1a)}}
+.rm.done .rm-title{{color:var(--green)}}
+.rm.pending{{border-color:rgba(212,122,42,.2);background:linear-gradient(145deg,#1e1500,#1a1a1a)}}
+.rm.pending .rm-title{{color:var(--a4)}}
+.rm.locked .rm-title{{color:var(--muted)}}
+
+/* ── TODOS ── */
+.todo-item{{display:flex;align-items:flex-start;gap:10px;background:var(--raised);
+  border:1px solid var(--border);border-radius:var(--r);padding:12px;margin-bottom:8px;
+  border-left-width:3px}}
+.todo-item.urgent{{border-left-color:var(--red)}}
+.todo-item.soon{{border-left-color:var(--amber)}}
+.todo-item.backlog{{border-left-color:var(--border)}}
+.chk{{width:22px;height:22px;border-radius:6px;border:1px solid rgba(255,255,255,.15);
+  background:var(--overlay);flex-shrink:0;display:flex;align-items:center;
+  justify-content:center;font-size:13px;cursor:pointer;transition:all .15s}}
 .chk.on{{background:var(--green);border-color:var(--green)}}
-.todo-body{{flex:1;min-width:0}}.todo-text{{font-size:14px;line-height:1.4}}.todo-text.done{{text-decoration:line-through;color:var(--muted)}}
-.todo-meta{{margin-top:5px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}}
-.due{{font-size:11px;color:var(--muted)}}
-.tag{{padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;text-transform:uppercase}}
-.tag-book{{background:rgba(59,130,246,.2);color:#60A5FA}}.tag-content{{background:rgba(16,185,129,.2);color:#34D399}}
-.tag-aa{{background:rgba(139,92,246,.2);color:#C4B5FD}}.tag-eightcap{{background:rgba(245,158,11,.2);color:#FCD34D}}
-.tag-knowledge{{background:rgba(212,122,42,.15);color:var(--amber)}}.tag-norms-corp{{background:rgba(239,68,68,.15);color:#FCA5A5}}
+.todo-body{{flex:1;min-width:0}}
+.todo-text{{font-size:13px;line-height:1.5}}
+.todo-text.done{{text-decoration:line-through;color:var(--muted)}}
+.todo-meta{{margin-top:4px;display:flex;gap:5px;align-items:center;flex-wrap:wrap}}
+.due{{font-size:10px;color:var(--muted)}}
+.tag{{padding:2px 7px;border-radius:4px;font-size:9px;font-weight:700;text-transform:uppercase}}
+.tag-book{{background:rgba(59,130,246,.2);color:#60A5FA}}
+.tag-content{{background:rgba(16,185,129,.2);color:#34D399}}
+.tag-aa{{background:rgba(139,92,246,.2);color:#C4B5FD}}
+.tag-eightcap{{background:rgba(245,158,11,.2);color:#FCD34D}}
+.tag-knowledge{{background:rgba(212,122,42,.15);color:var(--amber)}}
+.tag-norms-corp{{background:rgba(239,68,68,.15);color:#FCA5A5}}
 
-/* topics / prep */
-.tcard{{background:var(--raised);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:8px;display:flex;gap:12px}}
-.t-ic{{font-size:24px;flex-shrink:0}}.t-title{{font-weight:700;font-size:14px;margin-bottom:3px}}.t-detail{{font-size:13px;color:var(--t2);line-height:1.4}}
+/* ── TOPICS / PREP (2-col grid) ── */
+.tgrid{{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px}}
+.tcard{{background:var(--raised);border:1px solid var(--border);border-radius:var(--r);
+  padding:12px;display:flex;flex-direction:column;gap:5px}}
+.t-ic{{font-size:20px;line-height:1}}
+.t-title{{font-weight:700;font-size:12px;line-height:1.3}}
+.t-detail{{font-size:10px;color:var(--t2);line-height:1.5}}
 
-/* content cards */
-.fscroll{{display:flex;gap:8px;overflow-x:auto;padding-bottom:12px;scrollbar-width:none}}.fscroll::-webkit-scrollbar{{display:none}}
-.fbtn{{flex-shrink:0;padding:7px 16px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--t2);font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}}
+/* ── CONTENT ── */
+.fscroll{{display:flex;gap:7px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none}}
+.fscroll::-webkit-scrollbar{{display:none}}
+.fbtn{{flex-shrink:0;padding:6px 14px;border-radius:20px;border:1px solid var(--border);
+  background:transparent;color:var(--t2);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap}}
 .fbtn.on{{background:var(--amber);border-color:var(--amber);color:#000}}
-#search{{width:100%;background:var(--raised);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:15px;padding:10px 14px;outline:none;-webkit-appearance:none;margin-bottom:14px}}
+#search{{width:100%;background:var(--raised);border:1px solid var(--border);border-radius:10px;
+  color:var(--text);font-size:14px;padding:10px 14px;outline:none;-webkit-appearance:none;margin-bottom:12px}}
 #search:focus{{border-color:var(--amber)}}
-.card{{background:var(--raised);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:10px;cursor:pointer;position:relative}}
-.card:active{{background:var(--overlay)}}.card.posted{{opacity:.45}}
-.series-badge{{padding:3px 9px;border-radius:4px;font-size:11px;font-weight:700}}
-.card-topic{{font-weight:700;font-size:15px;line-height:1.3;margin:6px 0 4px}}
-.card-meta{{display:flex;gap:6px}}.time-tag{{background:var(--overlay);padding:2px 8px;border-radius:4px;font-size:11px;color:var(--muted)}}
-.cid{{font-size:11px;color:var(--muted)}}.pdot{{position:absolute;top:12px;right:12px;width:9px;height:9px;border-radius:50%;background:var(--green)}}
+.card{{background:var(--raised);border:1px solid var(--border);border-radius:var(--r);
+  padding:12px;margin-bottom:8px;cursor:pointer;position:relative;transition:border-color .15s}}
+.card:active{{background:var(--overlay)}}.card.posted{{opacity:.4}}
+.series-badge{{padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700}}
+.card-topic{{font-weight:700;font-size:14px;line-height:1.3;margin:5px 0 4px}}
+.card-meta{{display:flex;gap:5px}}
+.time-tag{{background:var(--overlay);padding:2px 7px;border-radius:4px;font-size:10px;color:var(--muted)}}
+.cid{{font-size:10px;color:var(--muted)}}
+.pdot{{position:absolute;top:10px;right:10px;width:8px;height:8px;border-radius:50%;background:var(--green)}}
 
-/* sheet */
-.sheet-bg{{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:300;align-items:flex-end}}
+/* ── BOTTOM SHEET (shared) ── */
+.sheet-bg{{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:300;align-items:flex-end}}
 .sheet-bg.open{{display:flex}}
-.sheet{{background:var(--surface);border-radius:20px 20px 0 0;width:100%;max-height:90vh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 0 calc(20px + var(--sb))}}
-.handle{{width:40px;height:4px;background:var(--border);border-radius:2px;margin:12px auto 16px}}
-.si{{padding:0 18px}}
-.s-badge{{margin-bottom:8px}}.s-title{{font-size:18px;font-weight:800;margin-bottom:4px;line-height:1.3}}.s-meta{{font-size:12px;color:var(--muted);margin-bottom:16px}}
-.sec-l{{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--amber);margin-bottom:8px}}
-.cbox{{background:var(--raised);border:1px solid var(--border);border-radius:10px;padding:14px;font-size:14px;line-height:1.8;white-space:pre-wrap;word-break:break-word;margin-bottom:8px}}
-.cpbtn{{width:100%;background:var(--overlay);border:1px solid var(--border);border-radius:10px;color:var(--t2);font-size:14px;padding:12px;cursor:pointer;margin-bottom:14px;font-weight:600}}
+.sheet{{background:var(--surface);border-radius:20px 20px 0 0;width:100%;max-height:88vh;
+  overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 0 calc(20px + var(--sb))}}
+.handle{{width:36px;height:4px;background:var(--border);border-radius:2px;margin:12px auto 14px}}
+.si{{padding:0 16px}}
+.s-badge{{margin-bottom:6px}}
+.s-title{{font-size:18px;font-weight:800;margin-bottom:4px;line-height:1.3}}
+.s-meta{{font-size:11px;color:var(--muted);margin-bottom:14px}}
+.sec-l{{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--amber);margin-bottom:7px;margin-top:14px}}
+.sec-l:first-child{{margin-top:0}}
+.cbox{{background:var(--raised);border:1px solid var(--border);border-radius:10px;padding:12px;
+  font-size:13px;line-height:1.8;white-space:pre-wrap;word-break:break-word;margin-bottom:7px}}
+.cpbtn{{width:100%;background:var(--overlay);border:1px solid var(--border);border-radius:10px;
+  color:var(--t2);font-size:13px;padding:11px;cursor:pointer;margin-bottom:10px;font-weight:600}}
 .cpbtn:active{{background:var(--border)}}.cpbtn.cp{{border-color:var(--green);color:var(--green)}}
-.comp{{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:10px 12px;font-size:13px;color:#FCD34D;margin-bottom:14px}}
-.post-action{{display:flex;gap:10px;padding:0 18px;margin-top:4px}}
-.postbtn{{flex:1;background:var(--amber);border:none;color:#000;font-size:15px;font-weight:700;padding:14px;border-radius:12px;cursor:pointer}}
-.postbtn.unpost{{background:var(--overlay);color:var(--t2)}}
+.comp{{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:8px;
+  padding:9px 11px;font-size:12px;color:#FCD34D;margin-bottom:12px}}
+.post-action{{display:flex;gap:10px;padding:0 16px;margin-top:6px}}
+.postbtn{{flex:1;background:var(--amber);border:none;color:#000;font-size:14px;font-weight:700;
+  padding:14px;border-radius:12px;cursor:pointer}}
+.postbtn.unpost{{background:var(--overlay);color:var(--t2);border:1px solid var(--border)}}
+
+/* project sheet extras */
+.proj-det{{list-style:none;font-size:13px;color:var(--t2);margin-bottom:4px}}
+.proj-det li{{padding:3px 0;line-height:1.5}}
+.proj-next-s{{font-size:13px;color:var(--amber);background:var(--at);border-radius:10px;
+  padding:10px 12px;margin-top:8px}}
+.proj-next-s::before{{content:"→ "}}
+.big-prog{{margin:14px 0 8px}}
+.big-prog-n{{font-size:40px;font-weight:800;line-height:1;margin-bottom:6px}}
+
+/* ── CLAUDE TAB ── */
+.warn-box{{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;
+  padding:9px 11px;font-size:12px;color:#FCA5A5;margin-bottom:8px;line-height:1.5}}
+.cmd-box{{background:var(--overlay);border:1px solid var(--border);border-radius:8px;
+  padding:9px 12px;font-family:monospace;font-size:12px;color:var(--amber);margin-top:6px;word-break:break-all}}
+.tok-grid{{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:10px}}
+.tok-cell{{background:var(--overlay);border-radius:8px;padding:8px;text-align:center}}
+.tok-n{{font-size:15px;font-weight:700}}.tok-l{{font-size:9px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.04em}}
+.cl-card{{background:var(--raised);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:10px}}
 
 /* update banner */
-.update-banner{{display:none;position:fixed;top:calc(var(--st)+65px);left:50%;transform:translateX(-50%);
-background:#1a3a1a;border:1px solid var(--green);color:var(--green);font-size:13px;font-weight:600;
-padding:10px 20px;border-radius:20px;z-index:200;cursor:pointer;white-space:nowrap}}
-.update-banner.show{{display:block}}
-
-/* claude monitor */
-.warn-box{{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:10px 12px;font-size:13px;color:#FCA5A5;margin-bottom:10px;line-height:1.5}}
-.cmd-box{{background:var(--overlay);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-family:monospace;font-size:13px;color:var(--amber);margin-top:4px}}
+.update-banner{{display:none;position:fixed;top:calc(var(--st)+62px);left:50%;transform:translateX(-50%);
+  background:#0f2b0f;border:1px solid var(--green);color:var(--green);font-size:12px;font-weight:600;
+  padding:9px 20px;border-radius:20px;z-index:200;cursor:pointer;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.5)}}
+.update-banner.show{{display:block;animation:slideDown .3s ease}}
+@keyframes slideDown{{from{{opacity:0;transform:translateX(-50%) translateY(-8px)}}to{{opacity:1;transform:translateX(-50%) translateY(0)}}}}
 </style>
 </head>
 <body>
 <div class="app">
   <div class="topbar">
     <div class="topbar-row">
-      <div class="logo">Norms Corp</div>
+      <div class="logo">⬡ Norms Corp</div>
       <span class="update-ts"><span class="pulse"></span>{ts_thai}</span>
       <div class="hstats">
-        <div class="hs"><span class="hs-n" style="color:var(--yellow)">{alive_count}</span><span class="hs-l">รันอยู่</span></div>
-        <div class="hs"><span class="hs-n" style="color:var(--amber)">58</span><span class="hs-l">drafts</span></div>
-        <div class="hs"><span class="hs-n" id="h-posted" style="color:var(--green)">0</span><span class="hs-l">posted</span></div>
+        <div class="hs"><span class="hs-n" style="color:var(--yellow)">{alive_count}</span><span class="hs-l">Running</span></div>
+        <div class="hs"><span class="hs-n" style="color:var(--amber)">{draft_count}</span><span class="hs-l">Drafts</span></div>
+        <div class="hs"><span class="hs-n" id="h-posted" style="color:var(--green)">0</span><span class="hs-l">Posted</span></div>
       </div>
     </div>
   </div>
 
   <div class="content">
-    <div class="panel active" id="p-overview"><div id="proj-list"></div></div>
 
+    <!-- OVERVIEW -->
+    <div class="panel active" id="p-overview">
+      <div class="hero">
+        <div class="hcard c-green">
+          <div class="hcard-inner">
+            <div class="h-num">{done_count}/{len(PROJECTS)}</div>
+            <div class="h-lbl">Projects<br>Done</div>
+          </div>
+        </div>
+        <div class="hcard c-amber">
+          <div class="hcard-inner">
+            <div class="h-num">{draft_count}</div>
+            <div class="h-lbl">Content<br>Drafts</div>
+          </div>
+        </div>
+        <div class="hcard c-blue">
+          <div class="hcard-inner">
+            <div class="h-num">{trans_pct}%</div>
+            <div class="h-lbl">Trans.<br>Done</div>
+          </div>
+        </div>
+      </div>
+      <div class="sh">Projects</div>
+      <div class="proj-grid" id="proj-list"></div>
+    </div>
+
+    <!-- PIPELINE -->
     <div class="panel" id="p-pipeline">
-      <div class="sh">Transcription (live)</div>
+      <div class="sh">Transcription Live</div>
       <div id="pipe-list"></div>
       <div class="sh">Knowledge Roadmap</div>
-      <div style="background:var(--raised);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:10px">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border)">
-          <div style="background:var(--raised);padding:12px"><div style="color:var(--green);font-weight:700;font-size:13px">✅ Pass 1</div><div style="font-size:12px;color:var(--t2)">Transcription</div><div style="font-size:11px;color:var(--muted)">Gen1 Done · Gen2 WIP</div></div>
-          <div style="background:var(--raised);padding:12px"><div style="color:var(--amber);font-weight:700;font-size:13px">⏳ Pass 2</div><div style="font-size:12px;color:var(--t2)">ThinkAloud Agent</div><div style="font-size:11px;color:var(--muted)">0 Logic Notes yet</div></div>
-          <div style="background:var(--raised);padding:12px"><div style="color:var(--muted);font-weight:700;font-size:13px">🔴 Pass 3</div><div style="font-size:12px;color:var(--t2)">Human Review</div><div style="font-size:11px;color:var(--muted)">raw → golden</div></div>
-          <div style="background:var(--raised);padding:12px"><div style="color:var(--muted);font-weight:700;font-size:13px">🔴 Train</div><div style="font-size:12px;color:var(--t2)">Digital Twin</div><div style="font-size:11px;color:var(--muted)">ต้องการ 50 golden</div></div>
+      <div class="roadmap">
+        <div class="rm done">
+          <div class="rm-ic">✅</div>
+          <div class="rm-title">Pass 1</div>
+          <div class="rm-sub">Transcription<br>Gen1 Done</div>
+        </div>
+        <div class="rm pending">
+          <div class="rm-ic">⏳</div>
+          <div class="rm-title">Pass 2</div>
+          <div class="rm-sub">ThinkAloud Agent<br>0 Logic Notes</div>
+        </div>
+        <div class="rm locked">
+          <div class="rm-ic">🔴</div>
+          <div class="rm-title">Pass 3</div>
+          <div class="rm-sub">Human Review<br>raw → golden</div>
+        </div>
+        <div class="rm locked">
+          <div class="rm-ic">🔴</div>
+          <div class="rm-title">Train</div>
+          <div class="rm-sub">Digital Twin<br>ต้องการ 50 golden</div>
         </div>
       </div>
     </div>
 
+    <!-- TODOS -->
     <div class="panel" id="p-todos">
       <div class="sh">🚨 ด่วน</div><div id="todo-urgent"></div>
       <div class="sh">📅 สัปดาห์นี้</div><div id="todo-soon"></div>
       <div class="sh">📋 Backlog</div><div id="todo-backlog"></div>
     </div>
 
+    <!-- TOPICS -->
     <div class="panel" id="p-topics">
-      <div class="sh">หัวข้อที่จะคุยต่อ</div><div id="topic-list"></div>
-      <div class="sh">สิ่งที่ต้องเตรียม</div><div id="prep-list"></div>
+      <div class="sh">หัวข้อที่จะคุยต่อ</div>
+      <div class="tgrid" id="topic-list"></div>
+      <div class="sh">สิ่งที่ต้องเตรียม</div>
+      <div class="tgrid" id="prep-list"></div>
     </div>
 
+    <!-- CONTENT -->
     <div class="panel" id="p-content">
       <div class="fscroll" id="filters">
         <button class="fbtn on" data-f="all">ทั้งหมด</button>
@@ -368,25 +522,28 @@ padding:10px 20px;border-radius:20px;z-index:200;cursor:pointer;white-space:nowr
       <div id="card-list"></div>
     </div>
 
+    <!-- CLAUDE -->
     <div class="panel" id="p-claude">
       <div class="sh">Claude Sessions</div>
       <div id="claude-sessions"></div>
-      <div class="sh">วิธีกลับมาคุยงานที่เพิ่งปิด</div>
-      <div class="tcard"><span class="t-ic">⚡</span><div>
-        <div class="t-title">ต่อ session ล่าสุดของ dir นั้น</div>
-        <div class="cmd-box">claude --continue</div>
-        <div class="t-detail" style="margin-top:6px">เปิด terminal ใน dir เดิม แล้วพิมพ์คำสั่งนี้ — Claude จะโหลด conversation ล่าสุดต่อได้เลย</div>
-      </div></div>
-      <div class="tcard"><span class="t-ic">🔍</span><div>
-        <div class="t-title">เลือก session เจาะจง (จาก Session ID)</div>
-        <div class="cmd-box">claude --resume &lt;sessionId&gt;</div>
-        <div class="t-detail" style="margin-top:6px">Session ID 8 ตัวแรกอยู่ในการ์ดด้านบน — ใช้คำสั่งนี้เพื่อเปิด session เจาะจงได้</div>
-      </div></div>
-      <div class="tcard"><span class="t-ic">🚨</span><div>
-        <div class="t-title">เมื่อไหร่ควรเริ่ม session ใหม่?</div>
-        <div class="t-detail">เมื่อ Context bar เกิน 75% (สีแดง) — context เต็มทำให้ Claude ลืมต้นบทสนทนา ประสิทธิภาพลด ค่าใช้จ่ายสูงขึ้น<br><br>แนะนำ: สรุปงานที่ทำค้างไว้ แล้ว /clear หรือเปิด terminal ใหม่</div>
-      </div></div>
+      <div class="sh">วิธีกลับมาคุยงาน</div>
+      <div class="tcard" style="flex-direction:row;gap:12px;margin-bottom:8px">
+        <span class="t-ic">⚡</span>
+        <div><div class="t-title">ต่อ session ล่าสุด</div>
+        <div class="cmd-box">claude --continue</div></div>
+      </div>
+      <div class="tcard" style="flex-direction:row;gap:12px;margin-bottom:8px">
+        <span class="t-ic">🔍</span>
+        <div><div class="t-title">เลือก session เจาะจง</div>
+        <div class="cmd-box">claude --resume &lt;sessionId&gt;</div></div>
+      </div>
+      <div class="tcard" style="flex-direction:row;gap:12px">
+        <span class="t-ic">🚨</span>
+        <div><div class="t-title">เมื่อไหร่เริ่ม session ใหม่?</div>
+        <div class="t-detail" style="font-size:11px;color:var(--t2);line-height:1.5;margin-top:4px">Context bar เกิน 75% (สีแดง) → /clear หรือเปิด terminal ใหม่</div></div>
+      </div>
     </div>
+
   </div>
 
   <nav class="bnav">
@@ -399,6 +556,7 @@ padding:10px 20px;border-radius:20px;z-index:200;cursor:pointer;white-space:nowr
   </nav>
 </div>
 
+<!-- Content detail sheet -->
 <div class="sheet-bg" id="sheet-bg">
   <div class="sheet">
     <div class="handle"></div>
@@ -423,6 +581,14 @@ padding:10px 20px;border-radius:20px;z-index:200;cursor:pointer;white-space:nowr
   </div>
 </div>
 
+<!-- Project detail sheet -->
+<div class="sheet-bg" id="proj-bg">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="si" id="proj-si"></div>
+  </div>
+</div>
+
 <div class="update-banner" id="upd-banner" onclick="location.reload()">🔄 มีอัพเดทใหม่ — กดเพื่อโหลด</div>
 
 <script>
@@ -437,8 +603,9 @@ const SC       = {json.dumps(SC,       ensure_ascii=False)};
 const CLAUDE_SESSIONS = {json.dumps(claude_sessions, ensure_ascii=False)};
 const SLABELS  = {{done:"✅ Done",running:"🔄 Running",phase1:"Phase 1",blocked:"🔴 Blocked",research:"Research"}};
 const SCLASS   = {{done:"s-done",running:"s-running",phase1:"s-phase1",blocked:"s-blocked",research:"s-research"}};
+const STCLS    = {{done:"st-done",running:"st-running",phase1:"st-phase1",blocked:"st-blocked",research:"st-research"}};
+const PBARCOL  = {{done:"var(--green)",running:"var(--amber)",phase1:"var(--blue)",blocked:"var(--red)",research:"var(--purple)"}};
 
-/* storage */
 const gp=()=>{{try{{return JSON.parse(localStorage.getItem("sn_p")||"{{}}")}}catch{{return{{}}}}}};
 const sp=(id,v)=>{{const p=gp();v?p[id]=true:delete p[id];localStorage.setItem("sn_p",JSON.stringify(p))}};
 const gt=()=>{{try{{return JSON.parse(localStorage.getItem("sn_t")||"{{}}")}}catch{{return{{}}}}}};
@@ -452,29 +619,64 @@ document.querySelectorAll(".nb").forEach(b=>b.addEventListener("click",()=>{{
   document.querySelector(".content").scrollTo(0,0);
 }}));
 
-/* projects */
+/* projects grid */
 function rProjects(){{
-  document.getElementById("proj-list").innerHTML="<div class='sh'>Projects</div>"+
-  PROJECTS.map(p=>`<div class="proj">
-    <div class="proj-h"><span class="p-icon">${{p.icon}}</span>
-      <div><div class="p-title">${{p.title}}</div><div class="p-sub">${{p.subtitle}}</div></div>
+  document.getElementById("proj-list").innerHTML=PROJECTS.map((p,i)=>{{
+    const bc=PBARCOL[p.status]||"var(--purple)";
+    return `<div class="pcard ${{STCLS[p.status]||"st-research"}}" onclick="openProj(${{i}})">
+      <div class="pc-icon">${{p.icon}}</div>
+      <div class="pc-title">${{p.title}}</div>
+      <div class="pc-sub">${{p.subtitle}}</div>
       <span class="sbadge ${{SCLASS[p.status]||"s-research"}}">${{SLABELS[p.status]||p.status}}</span>
-    </div>
-    <div class="pbar-w"><div class="pbar" style="width:${{p.progress}}%${{p.status==="done"?";background:var(--green)":""}}"></div></div>
-    <ul class="proj-det">${{p.details.map(d=>`<li>${{d}}</li>`).join("")}}</ul>
-    <div class="proj-next">${{p.next}}</div>
-  </div>`).join("");
+      <div class="pbar-w"><div class="pbar" style="width:${{p.progress}}%;background:${{bc}}"></div></div>
+      <div class="pc-next">${{p.next}}</div>
+    </div>`;
+  }}).join("");
 }}
+
+function openProj(i){{
+  const p=PROJECTS[i];
+  const bc=PBARCOL[p.status]||"var(--purple)";
+  const pct=p.progress;
+  document.getElementById("proj-si").innerHTML=`
+    <span class="sbadge ${{SCLASS[p.status]||"s-research"}}" style="margin-bottom:8px">${{SLABELS[p.status]||p.status}}</span>
+    <div style="font-size:22px;font-weight:800;margin-bottom:4px;line-height:1.2">${{p.icon}} ${{p.title}}</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:16px">${{p.subtitle}}</div>
+    <div class="big-prog">
+      <div class="big-prog-n" style="color:${{bc}}">${{pct}}%</div>
+      <div class="pbar-w" style="height:8px"><div class="pbar" style="width:${{pct}}%;background:${{bc}}"></div></div>
+    </div>
+    <div class="sec-l">รายละเอียด</div>
+    <ul class="proj-det">${{p.details.map(d=>`<li>${{d}}</li>`).join("")}}</ul>
+    <div class="proj-next-s">${{p.next}}</div>
+    <div style="height:8px"></div>
+  `;
+  document.getElementById("proj-bg").classList.add("open");
+  document.body.style.overflow="hidden";
+}}
+document.getElementById("proj-bg").addEventListener("click",e=>{{
+  if(e.target===document.getElementById("proj-bg")){{
+    document.getElementById("proj-bg").classList.remove("open");
+    document.body.style.overflow="";
+  }}
+}});
 
 /* pipeline */
 function rPipeline(){{
   document.getElementById("pipe-list").innerHTML=Object.values(PIPELINE).map(v=>{{
     const pct=Math.round(v.done/v.total*100)||0;
-    const bc=pct===100?"var(--green)":pct>0?"var(--amber)":"transparent";
-    return `<div class="pipe-row">
-      <div class="pipe-h"><span class="pipe-label">${{v.label}}</span><span class="pipe-pct">${{pct}}%</span></div>
-      <div class="pipe-n">${{v.done}}<span style="font-size:14px;color:var(--muted)"> / ${{v.total}}</span></div>
-      <div class="pbar-w" style="height:6px"><div class="pbar" style="width:${{pct}}%;background:${{bc}}"></div></div>
+    const done=pct===100;const active=pct>0&&!done;
+    const bc=done?"var(--green)":active?"var(--amber)":"rgba(255,255,255,.06)";
+    const pc=done?"p-done":active?"p-active":"p-zero";
+    return `<div class="pipe-card">
+      <div class="pipe-label">${{v.label}}</div>
+      <div class="pipe-nums">
+        <span class="pipe-done" style="color:${{done?"var(--green)":"var(--a4)}}">${{v.done}}</span>
+        <span class="pipe-sep">/</span>
+        <span class="pipe-total">${{v.total}}</span>
+        <span class="pipe-pct ${{pc}}">${{pct}}%</span>
+      </div>
+      <div class="pipe-bar-w"><div class="pipe-bar" style="width:${{pct}}%;background:${{bc}}"></div></div>
     </div>`;
   }}).join("");
 }}
@@ -485,7 +687,7 @@ function rTodos(){{
   ["urgent","soon","backlog"].forEach(s=>{{
     document.getElementById("todo-"+s).innerHTML=TODOS[s].map((t,i)=>{{
       const id=s+"-"+i,ck=!!done[id];
-      return `<div class="todo-item">
+      return `<div class="todo-item ${{s}}">
         <div class="chk${{ck?" on":""}}" onclick="tTodo('${{id}}',this)">${{ck?"✓":""}}</div>
         <div class="todo-body">
           <div class="todo-text${{ck?" done":""}}">${{t.text}}</div>
@@ -504,15 +706,21 @@ function tTodo(id,el){{
 /* topics */
 function rTopics(){{
   document.getElementById("topic-list").innerHTML=TOPICS.map(t=>`
-    <div class="tcard"><span class="t-ic">${{t.icon}}</span>
-    <div><div class="t-title">${{t.title}}</div><div class="t-detail">${{t.detail}}</div></div></div>`).join("");
+    <div class="tcard">
+      <div class="t-ic">${{t.icon}}</div>
+      <div class="t-title">${{t.title}}</div>
+      <div class="t-detail">${{t.detail}}</div>
+    </div>`).join("");
   document.getElementById("prep-list").innerHTML=PREPS.map(p=>`
-    <div class="tcard"><span class="t-ic">${{p.icon}}</span>
-    <div><div class="t-title">${{p.title}}</div><div class="t-detail">${{p.detail}}</div></div></div>`).join("");
+    <div class="tcard">
+      <div class="t-ic">${{p.icon}}</div>
+      <div class="t-title">${{p.title}}</div>
+      <div class="t-detail">${{p.detail}}</div>
+    </div>`).join("");
 }}
 
 /* content */
-let cF="all",cQ="",cD=null;
+let cF="all",cQ="",cD_draft=null;
 function rContent(){{
   const posted=gp(),q=cQ.toLowerCase();
   const items=DRAFTS.filter(d=>{{
@@ -533,7 +741,7 @@ function rContent(){{
       return `<div class="card${{ip?" posted":""}}" onclick="openSheet('${{d.chapter_id}}')">
         ${{ip?'<div class="pdot"></div>':""}}
         <span class="series-badge" style="background:${{sc.bg}};color:${{sc.color}}">${{d.series}}</span>
-        <span class="cid" style="float:right;margin-top:3px">${{d.chapter_id.substring(0,6)}}</span>
+        <span class="cid" style="float:right;margin-top:2px">${{d.chapter_id.substring(0,6)}}</span>
         <div class="card-topic">${{d.topic}}</div>
         <div class="card-meta"><span class="time-tag">${{tl}}</span></div>
       </div>`;
@@ -547,7 +755,6 @@ document.querySelectorAll(".fbtn").forEach(b=>b.addEventListener("click",()=>{{
 }}));
 document.getElementById("search").addEventListener("input",e=>{{cQ=e.target.value;rContent()}});
 
-let cD_draft=null;
 function openSheet(id){{
   const d=DRAFTS.find(x=>x.chapter_id===id);if(!d)return;
   cD_draft=d;const sc=SC[d.series]||{{bg:"rgba(255,255,255,.1)",color:"#aaa"}};const ip=!!gp()[id];
@@ -576,7 +783,7 @@ function cp(eid,btn){{
 }}
 document.getElementById("sheet-bg").addEventListener("click",e=>{{if(e.target===document.getElementById("sheet-bg"))closeSheet()}});
 
-/* claude monitor */
+/* claude */
 function rClaude(){{
   const el=document.getElementById("claude-sessions");
   if(!CLAUDE_SESSIONS.length){{el.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted)">ไม่มี session</div>';return}}
@@ -584,37 +791,31 @@ function rClaude(){{
   el.innerHTML=CLAUDE_SESSIONS.map(s=>{{
     const pct=s.tokens.context_pct;
     const bc=pct>75?'var(--red)':pct>50?'var(--yellow)':'var(--green)';
-    const stC=s.alive?'s-done':'s-blocked';
-    const warn=s.warn?`<div class="warn-box">⚠️ Context ${{pct}}% — ควรเริ่ม session ใหม่<br><small>พิมพ์ /clear หรือเปิด terminal ใหม่แล้วพิมพ์ claude</small></div>`:'';
-    return `<div class="proj">
-      <div class="proj-h"><span class="p-icon">⚡</span>
-        <div><div class="p-title">${{s.cwd}}</div><div class="p-sub">PID ${{s.pid}} · ${{s.runtime_min}} นาที · #${{s.session_id}}</div></div>
-        <span class="sbadge ${{stC}}">${{s.alive?'LIVE':'STOPPED'}}</span>
+    const warn=s.warn?`<div class="warn-box">⚠️ Context ${{pct}}% — ควรเริ่ม session ใหม่<br><small>พิมพ์ /clear หรือเปิด terminal ใหม่</small></div>`:'';
+    return `<div class="cl-card">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <span style="font-size:20px">⚡</span>
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:700;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${{s.cwd}}</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:2px">PID ${{s.pid}} · ${{s.runtime_min}} min · #${{s.session_id}}</div>
+        </div>
+        <span class="sbadge ${{s.alive?"s-done":"s-blocked"}}">${{s.alive?"LIVE":"OFF"}}</span>
       </div>
       ${{warn}}
-      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:4px">
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:4px">
         <span>Context ${{pct}}%</span><span>${{ik(s.tokens.latest_cache_read)}} / 200k tokens</span>
       </div>
-      <div class="pbar-w"><div class="pbar" style="width:${{pct}}%;background:${{bc}}"></div></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:10px">
-        <div style="background:var(--overlay);border-radius:8px;padding:8px;text-align:center">
-          <div style="font-size:15px;font-weight:700;color:var(--blue)">${{ik(s.tokens.total_input)}}</div>
-          <div style="font-size:10px;color:var(--muted)">Input</div>
-        </div>
-        <div style="background:var(--overlay);border-radius:8px;padding:8px;text-align:center">
-          <div style="font-size:15px;font-weight:700;color:var(--amber)">${{ik(s.tokens.total_output)}}</div>
-          <div style="font-size:10px;color:var(--muted)">Output</div>
-        </div>
-        <div style="background:var(--overlay);border-radius:8px;padding:8px;text-align:center">
-          <div style="font-size:15px;font-weight:700;color:var(--t2)">${{s.tokens.msg_count}}</div>
-          <div style="font-size:10px;color:var(--muted)">Messages</div>
-        </div>
+      <div class="pbar-w" style="height:6px"><div class="pbar" style="width:${{pct}}%;background:${{bc}}"></div></div>
+      <div class="tok-grid">
+        <div class="tok-cell"><div class="tok-n" style="color:var(--blue)">${{ik(s.tokens.total_input)}}</div><div class="tok-l">Input</div></div>
+        <div class="tok-cell"><div class="tok-n" style="color:var(--amber)">${{ik(s.tokens.total_output)}}</div><div class="tok-l">Output</div></div>
+        <div class="tok-cell"><div class="tok-n" style="color:var(--t2)">${{s.tokens.msg_count}}</div><div class="tok-l">Msgs</div></div>
       </div>
     </div>`;
   }}).join('');
 }}
 
-/* auto-update check */
+/* auto-update check — ปล่อยไว้ตามเดิม */
 function checkUpdate(){{
   fetch(location.href+"?_="+Date.now(),{{cache:"no-store"}})
     .then(r=>r.text()).then(html=>{{
@@ -622,7 +823,7 @@ function checkUpdate(){{
       if(m&&m[1]!==BUILD_TIME)document.getElementById("upd-banner").classList.add("show");
     }}).catch(()=>{{}});
 }}
-setInterval(checkUpdate, 60000); // ตรวจทุก 60 วินาที
+setInterval(checkUpdate, 60000);
 
 /* init */
 rProjects();rPipeline();rTodos();rTopics();rContent();rClaude();
