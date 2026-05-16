@@ -4,7 +4,7 @@ Norms Corp Dashboard Builder
 อ่านข้อมูลจริงจากระบบ → build index.html → push to GitHub Pages
 """
 
-import json, os, datetime
+import json, os, datetime, subprocess
 from pathlib import Path
 
 ROOT      = Path.home() / "Documents/Norms-Corp/Social-Norms"
@@ -37,6 +37,67 @@ def get_pipeline():
         "nmspc2026": {"done": count_txt(TRANS/"nmspc2026"), "total": count_mp4(NMSPC_SRC) or 30,  "label": "NMSPC 2026"},
         "facebook":  {"done": count_txt(TRANS/"facebook_live"), "total": count_mp4(FB_SRC) or 116, "label": "Facebook Live"},
     }
+
+def get_claude_stats():
+    sessions_dir = Path.home() / ".claude/sessions"
+    projects_dir = Path.home() / ".claude/projects"
+    now_ms = datetime.datetime.now().timestamp() * 1000
+    sessions = []
+    if not sessions_dir.exists():
+        return sessions
+    for sf in sorted(sessions_dir.glob("*.json"), key=lambda f: f.stat().st_mtime, reverse=True):
+        try:
+            data = json.loads(sf.read_text())
+            pid = data.get("pid")
+            session_id = data.get("sessionId", "")
+            cwd = data.get("cwd", "")
+            started_ms = data.get("startedAt", 0)
+            status = data.get("status", "unknown")
+            r = subprocess.run(["ps", "-p", str(pid), "-o", "pid="], capture_output=True, text=True)
+            is_alive = bool(r.stdout.strip())
+            runtime_min = int((now_ms - started_ms) / 60000) if started_ms else 0
+            tokens = {"total_input": 0, "total_output": 0, "total_cache_read": 0,
+                      "latest_cache_read": 0, "msg_count": 0, "context_pct": 0}
+            for proj_subdir in projects_dir.iterdir():
+                if not proj_subdir.is_dir():
+                    continue
+                jsonl_path = proj_subdir / f"{session_id}.jsonl"
+                if jsonl_path.exists():
+                    try:
+                        lines = jsonl_path.read_text(encoding="utf-8", errors="ignore").splitlines()
+                        latest_cache = 0
+                        for line in lines:
+                            try:
+                                d = json.loads(line)
+                                if d.get("type") == "assistant" and isinstance(d.get("message"), dict):
+                                    u = d["message"].get("usage", {})
+                                    tokens["total_input"] += u.get("input_tokens", 0)
+                                    tokens["total_output"] += u.get("output_tokens", 0)
+                                    cr = u.get("cache_read_input_tokens", 0)
+                                    tokens["total_cache_read"] += cr
+                                    if cr > latest_cache:
+                                        latest_cache = cr
+                                    tokens["msg_count"] += 1
+                            except Exception:
+                                pass
+                        tokens["latest_cache_read"] = latest_cache
+                        tokens["context_pct"] = min(100, round(latest_cache / 200000 * 100))
+                    except Exception:
+                        pass
+                    break
+            sessions.append({
+                "pid": pid,
+                "session_id": session_id[:8],
+                "cwd": cwd.replace(str(Path.home()), "~"),
+                "runtime_min": runtime_min,
+                "status": status,
+                "alive": is_alive,
+                "tokens": tokens,
+                "warn": tokens["context_pct"] > 75,
+            })
+        except Exception:
+            pass
+    return sessions
 
 PROJECTS = [
     {"id":"npc-book","icon":"📚","title":"NPC Book","subtitle":"3 เล่ม · 58 บท","status":"done","progress":100,
@@ -105,6 +166,8 @@ def build():
     ts_thai  = now.strftime("อัพเดท %d/%m/%y %H:%M")
     drafts   = load_drafts()
     pipeline = get_pipeline()
+    claude_sessions = get_claude_stats()
+    alive_count = sum(1 for s in claude_sessions if s["alive"])
 
     # คำนวณ transcription progress
     total_done  = sum(v["done"]  for v in pipeline.values())
@@ -242,6 +305,10 @@ border:none;background:none;color:var(--muted);font-size:10px;font-weight:600;cu
 background:#1a3a1a;border:1px solid var(--green);color:var(--green);font-size:13px;font-weight:600;
 padding:10px 20px;border-radius:20px;z-index:200;cursor:pointer;white-space:nowrap}}
 .update-banner.show{{display:block}}
+
+/* claude monitor */
+.warn-box{{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:10px 12px;font-size:13px;color:#FCA5A5;margin-bottom:10px;line-height:1.5}}
+.cmd-box{{background:var(--overlay);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-family:monospace;font-size:13px;color:var(--amber);margin-top:4px}}
 </style>
 </head>
 <body>
@@ -251,7 +318,7 @@ padding:10px 20px;border-radius:20px;z-index:200;cursor:pointer;white-space:nowr
       <div class="logo">Norms Corp</div>
       <span class="update-ts"><span class="pulse"></span>{ts_thai}</span>
       <div class="hstats">
-        <div class="hs"><span class="hs-n" style="color:var(--yellow)">1</span><span class="hs-l">รันอยู่</span></div>
+        <div class="hs"><span class="hs-n" style="color:var(--yellow)">{alive_count}</span><span class="hs-l">รันอยู่</span></div>
         <div class="hs"><span class="hs-n" style="color:var(--amber)">58</span><span class="hs-l">drafts</span></div>
         <div class="hs"><span class="hs-n" id="h-posted" style="color:var(--green)">0</span><span class="hs-l">posted</span></div>
       </div>
@@ -299,6 +366,26 @@ padding:10px 20px;border-radius:20px;z-index:200;cursor:pointer;white-space:nowr
       <input type="search" id="search" placeholder="ค้นหาหัวข้อ...">
       <div id="card-list"></div>
     </div>
+
+    <div class="panel" id="p-claude">
+      <div class="sh">Claude Sessions</div>
+      <div id="claude-sessions"></div>
+      <div class="sh">วิธีกลับมาคุยงานที่เพิ่งปิด</div>
+      <div class="tcard"><span class="t-ic">⚡</span><div>
+        <div class="t-title">ต่อ session ล่าสุดของ dir นั้น</div>
+        <div class="cmd-box">claude --continue</div>
+        <div class="t-detail" style="margin-top:6px">เปิด terminal ใน dir เดิม แล้วพิมพ์คำสั่งนี้ — Claude จะโหลด conversation ล่าสุดต่อได้เลย</div>
+      </div></div>
+      <div class="tcard"><span class="t-ic">🔍</span><div>
+        <div class="t-title">เลือก session เจาะจง (จาก Session ID)</div>
+        <div class="cmd-box">claude --resume &lt;sessionId&gt;</div>
+        <div class="t-detail" style="margin-top:6px">Session ID 8 ตัวแรกอยู่ในการ์ดด้านบน — ใช้คำสั่งนี้เพื่อเปิด session เจาะจงได้</div>
+      </div></div>
+      <div class="tcard"><span class="t-ic">🚨</span><div>
+        <div class="t-title">เมื่อไหร่ควรเริ่ม session ใหม่?</div>
+        <div class="t-detail">เมื่อ Context bar เกิน 75% (สีแดง) — context เต็มทำให้ Claude ลืมต้นบทสนทนา ประสิทธิภาพลด ค่าใช้จ่ายสูงขึ้น<br><br>แนะนำ: สรุปงานที่ทำค้างไว้ แล้ว /clear หรือเปิด terminal ใหม่</div>
+      </div></div>
+    </div>
   </div>
 
   <nav class="bnav">
@@ -307,6 +394,7 @@ padding:10px 20px;border-radius:20px;z-index:200;cursor:pointer;white-space:nowr
     <button class="nb" data-nav="todos"><span class="ic">✅</span>Todos</button>
     <button class="nb" data-nav="topics"><span class="ic">💬</span>Topics</button>
     <button class="nb" data-nav="content"><span class="ic">📣</span>Content</button>
+    <button class="nb" data-nav="claude"><span class="ic">⚡</span>Claude</button>
   </nav>
 </div>
 
@@ -345,6 +433,7 @@ const TOPICS   = {json.dumps(TOPICS,   ensure_ascii=False)};
 const PREPS    = {json.dumps(PREPS,    ensure_ascii=False)};
 const PIPELINE = {json.dumps(pipeline, ensure_ascii=False)};
 const SC       = {json.dumps(SC,       ensure_ascii=False)};
+const CLAUDE_SESSIONS = {json.dumps(claude_sessions, ensure_ascii=False)};
 const SLABELS  = {{done:"✅ Done",running:"🔄 Running",phase1:"Phase 1",blocked:"🔴 Blocked",research:"Research"}};
 const SCLASS   = {{done:"s-done",running:"s-running",phase1:"s-phase1",blocked:"s-blocked",research:"s-research"}};
 
@@ -486,6 +575,44 @@ function cp(eid,btn){{
 }}
 document.getElementById("sheet-bg").addEventListener("click",e=>{{if(e.target===document.getElementById("sheet-bg"))closeSheet()}});
 
+/* claude monitor */
+function rClaude(){{
+  const el=document.getElementById("claude-sessions");
+  if(!CLAUDE_SESSIONS.length){{el.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted)">ไม่มี session</div>';return}}
+  const ik=n=>n>=1000?(n/1000).toFixed(1)+'k':String(n);
+  el.innerHTML=CLAUDE_SESSIONS.map(s=>{{
+    const pct=s.tokens.context_pct;
+    const bc=pct>75?'var(--red)':pct>50?'var(--yellow)':'var(--green)';
+    const stC=s.alive?'s-done':'s-blocked';
+    const warn=s.warn?`<div class="warn-box">⚠️ Context ${{pct}}% — ควรเริ่ม session ใหม่<br><small>พิมพ์ /clear หรือเปิด terminal ใหม่แล้วพิมพ์ claude</small></div>`:'';
+    return `<div class="proj">
+      <div class="proj-h"><span class="p-icon">⚡</span>
+        <div><div class="p-title">${{s.cwd}}</div><div class="p-sub">PID ${{s.pid}} · ${{s.runtime_min}} นาที · #${{s.session_id}}</div></div>
+        <span class="sbadge ${{stC}}">${{s.alive?'LIVE':'STOPPED'}}</span>
+      </div>
+      ${{warn}}
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:4px">
+        <span>Context ${{pct}}%</span><span>${{ik(s.tokens.latest_cache_read)}} / 200k tokens</span>
+      </div>
+      <div class="pbar-w"><div class="pbar" style="width:${{pct}}%;background:${{bc}}"></div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:10px">
+        <div style="background:var(--overlay);border-radius:8px;padding:8px;text-align:center">
+          <div style="font-size:15px;font-weight:700;color:var(--blue)">${{ik(s.tokens.total_input)}}</div>
+          <div style="font-size:10px;color:var(--muted)">Input</div>
+        </div>
+        <div style="background:var(--overlay);border-radius:8px;padding:8px;text-align:center">
+          <div style="font-size:15px;font-weight:700;color:var(--amber)">${{ik(s.tokens.total_output)}}</div>
+          <div style="font-size:10px;color:var(--muted)">Output</div>
+        </div>
+        <div style="background:var(--overlay);border-radius:8px;padding:8px;text-align:center">
+          <div style="font-size:15px;font-weight:700;color:var(--t2)">${{s.tokens.msg_count}}</div>
+          <div style="font-size:10px;color:var(--muted)">Messages</div>
+        </div>
+      </div>
+    </div>`;
+  }}).join('');
+}}
+
 /* auto-update check */
 function checkUpdate(){{
   fetch(location.href+"?_="+Date.now(),{{cache:"no-store"}})
@@ -497,7 +624,7 @@ function checkUpdate(){{
 setInterval(checkUpdate, 60000); // ตรวจทุก 60 วินาที
 
 /* init */
-rProjects();rPipeline();rTodos();rTopics();rContent();
+rProjects();rPipeline();rTodos();rTopics();rContent();rClaude();
 </script>
 </body>
 </html>"""
