@@ -1,0 +1,11 @@
+{
+  "name": "Norms Corp",
+  "short_name": "Norms Corp",
+  "display": "standalone",
+  "background_color": "#0C0C0C",
+  "theme_color": "#0C0C0C",
+  "start_url": "/",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
