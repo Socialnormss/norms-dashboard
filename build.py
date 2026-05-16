@@ -213,7 +213,7 @@ html,body{{height:100%;overflow:hidden;background:var(--base);color:var(--text);
 .app{{display:flex;flex-direction:column;height:100%;height:100dvh}}
 
 /* topbar */
-.topbar{{background:var(--bg);padding:calc(var(--st)+10px) 16px 10px;border-bottom:1px solid var(--border);flex-shrink:0}}
+.topbar{{background:var(--bg);padding:max(calc(var(--st)+18px),58px) 16px 14px;border-bottom:1px solid var(--border);flex-shrink:0}}
 .topbar-row{{display:flex;align-items:center;gap:8px}}
 .logo{{font-size:15px;font-weight:800;color:var(--amber);letter-spacing:.03em}}
 .update-ts{{font-size:10px;color:var(--muted);margin-left:4px}}
@@ -414,7 +414,7 @@ html,body{{height:100%;overflow:hidden;background:var(--base);color:var(--text);
 .cl-card{{background:var(--raised);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:10px}}
 
 /* update banner */
-.update-banner{{display:none;position:fixed;top:calc(var(--st)+62px);left:50%;transform:translateX(-50%);
+.update-banner{{display:none;position:fixed;top:max(calc(var(--st)+62px),80px);left:50%;transform:translateX(-50%);
   background:#0f2b0f;border:1px solid var(--green);color:var(--green);font-size:12px;font-weight:600;
   padding:9px 20px;border-radius:20px;z-index:200;cursor:pointer;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.5)}}
 .update-banner.show{{display:block;animation:slideDown .3s ease}}
@@ -667,11 +667,12 @@ function rPipeline(){{
     const pct=Math.round(v.done/v.total*100)||0;
     const done=pct===100;const active=pct>0&&!done;
     const bc=done?"var(--green)":active?"var(--amber)":"rgba(255,255,255,.06)";
+    const nc=done?"var(--green)":"#E0944A";
     const pc=done?"p-done":active?"p-active":"p-zero";
     return `<div class="pipe-card">
       <div class="pipe-label">${{v.label}}</div>
       <div class="pipe-nums">
-        <span class="pipe-done" style="color:${{done?"var(--green)":"var(--a4)}}">${{v.done}}</span>
+        <span class="pipe-done" style="color:${{nc}}">${{v.done}}</span>
         <span class="pipe-sep">/</span>
         <span class="pipe-total">${{v.total}}</span>
         <span class="pipe-pct ${{pc}}">${{pct}}%</span>
