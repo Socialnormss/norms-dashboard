@@ -225,15 +225,22 @@ html,body{{height:100%;overflow:hidden;background:var(--base);color:var(--text);
 .hs-l{{font-size:9px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}}
 
 /* layout */
-.content{{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}}
-.panel{{display:none;padding:14px 14px calc(16px + var(--sb))}}.panel.active{{display:block}}
+.content{{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+  padding-bottom:calc(var(--sb) + 88px)}}
+.panel{{display:none;padding:14px 14px 0}}.panel.active{{display:block}}
 
-/* bottom nav */
-.bnav{{background:var(--bg);border-top:1px solid var(--border);display:flex;padding:6px 0 calc(var(--sb)+4px);flex-shrink:0}}
-.nb{{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;
-  border:none;background:none;color:var(--muted);font-size:9px;font-weight:700;cursor:pointer;
-  letter-spacing:.03em;transition:color .15s}}
-.nb .ic{{font-size:21px;line-height:1}}.nb.on{{color:var(--amber)}}
+/* floating pill nav */
+.bnav{{position:fixed;bottom:calc(var(--sb) + 12px);left:50%;transform:translateX(-50%);
+  background:rgba(26,26,26,.96);border:1px solid rgba(255,255,255,.12);
+  border-radius:50px;padding:8px 10px;display:flex;gap:2px;
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  box-shadow:0 8px 32px rgba(0,0,0,.7);z-index:100}}
+.nb{{display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 12px;
+  border:none;background:none;color:rgba(255,255,255,.38);font-size:9px;font-weight:700;
+  cursor:pointer;border-radius:36px;letter-spacing:.03em;transition:all .2s;white-space:nowrap}}
+.nb .ic{{font-size:20px;line-height:1;transition:transform .2s}}
+.nb.on{{background:rgba(255,255,255,.1);color:#fff}}
+.nb.on .ic{{transform:scale(1.1)}}
 
 /* section label */
 .sh{{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
@@ -461,11 +468,7 @@ html,body{{height:100%;overflow:hidden;background:var(--base);color:var(--text);
       </div>
       <div class="sh">Projects</div>
       <div class="proj-grid" id="proj-list"></div>
-    </div>
-
-    <!-- PIPELINE -->
-    <div class="panel" id="p-pipeline">
-      <div class="sh">Transcription Live</div>
+      <div class="sh">Transcription</div>
       <div id="pipe-list"></div>
       <div class="sh">Knowledge Roadmap</div>
       <div class="roadmap">
@@ -548,7 +551,6 @@ html,body{{height:100%;overflow:hidden;background:var(--base);color:var(--text);
 
   <nav class="bnav">
     <button class="nb on" data-nav="overview"><span class="ic">🏠</span>Overview</button>
-    <button class="nb" data-nav="pipeline"><span class="ic">🔄</span>Pipeline</button>
     <button class="nb" data-nav="todos"><span class="ic">✅</span>Todos</button>
     <button class="nb" data-nav="topics"><span class="ic">💬</span>Topics</button>
     <button class="nb" data-nav="content"><span class="ic">📣</span>Content</button>
