@@ -139,6 +139,12 @@ html,body{height:100%;overflow:hidden;background:var(--base);color:var(--text);
 .rm.pending .rm-title{color:var(--a4)}
 .rm.locked .rm-title{color:var(--muted)}
 
+/* ── TODAY'S FOCUS ── */
+.focus-block{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-left:3px solid var(--red);border-radius:var(--r);padding:12px 14px;margin-bottom:14px}
+.focus-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#FCA5A5;margin-bottom:5px}
+.focus-txt{font-size:14px;font-weight:700;color:var(--text);line-height:1.4}
+.focus-why{font-size:11px;color:var(--muted);margin-top:3px}
+
 /* ── TODOS ── */
 .todo-item{display:flex;align-items:flex-start;gap:10px;background:var(--raised);
   border:1px solid var(--border);border-radius:var(--r);padding:12px;margin-bottom:8px;
@@ -248,7 +254,6 @@ html,body{height:100%;overflow:hidden;background:var(--base);color:var(--text);
       <div class="logo">⬡ Norms Corp</div>
       <span class="update-ts"><span class="pulse"></span>อัพเดท 17/05/26 11:14</span>
       <div class="hstats">
-        <div class="hs"><span class="hs-n" style="color:var(--yellow)">1</span><span class="hs-l">Running</span></div>
         <div class="hs"><span class="hs-n" style="color:var(--amber)">58</span><span class="hs-l">Drafts</span></div>
         <div class="hs"><span class="hs-n" id="h-posted" style="color:var(--green)">0</span><span class="hs-l">Posted</span></div>
       </div>
@@ -259,51 +264,56 @@ html,body{height:100%;overflow:hidden;background:var(--base);color:var(--text);
 
     <!-- OVERVIEW -->
     <div class="panel active" id="p-overview">
+      <div class="focus-block">
+        <div class="focus-lbl">🎯 Priority ตอนนี้</div>
+        <div class="focus-txt">กรอก AI Vocab 125 fields</div>
+        <div class="focus-why">Unblocks: ThinkAloud → Logic Notes → Digital Twin → ทุกอย่าง</div>
+      </div>
       <div class="hero">
         <div class="hcard c-green">
-          <div class="hcard-inner">
-            <div class="h-num">1/6</div>
-            <div class="h-lbl">Projects<br>Done</div>
-          </div>
-        </div>
-        <div class="hcard c-amber">
-          <div class="hcard-inner">
-            <div class="h-num">58</div>
-            <div class="h-lbl">Content<br>Drafts</div>
-          </div>
-        </div>
-        <div class="hcard c-blue">
           <div class="hcard-inner">
             <div class="h-num">80%</div>
             <div class="h-lbl">Trans.<br>Done</div>
           </div>
         </div>
+        <div class="hcard c-amber">
+          <div class="hcard-inner">
+            <div class="h-num">37/141</div>
+            <div class="h-lbl">Gen2<br>Book</div>
+          </div>
+        </div>
+        <div class="hcard c-blue">
+          <div class="hcard-inner">
+            <div class="h-num">58</div>
+            <div class="h-lbl">Drafts<br>Ready</div>
+          </div>
+        </div>
       </div>
       <div class="sh">Projects</div>
       <div class="proj-grid" id="proj-list"></div>
-      <div class="sh">Transcription</div>
+      <div class="sh">Knowledge Pipeline</div>
       <div id="pipe-list"></div>
-      <div class="sh">Knowledge Roadmap</div>
+      <div class="sh">Roadmap</div>
       <div class="roadmap">
-        <div class="rm done">
-          <div class="rm-ic">✅</div>
-          <div class="rm-title">Pass 1</div>
-          <div class="rm-sub">Transcription<br>Gen1 Done</div>
+        <div class="rm pending">
+          <div class="rm-ic">🔄</div>
+          <div class="rm-title">Transcribe</div>
+          <div class="rm-sub">490/609 done<br>FB Live รันอยู่</div>
         </div>
         <div class="rm pending">
           <div class="rm-ic">⏳</div>
-          <div class="rm-title">Pass 2</div>
-          <div class="rm-sub">ThinkAloud Agent<br>0 Logic Notes</div>
+          <div class="rm-title">Extract</div>
+          <div class="rm-sub">Gen2 37/141<br>ThinkAloud pending</div>
         </div>
         <div class="rm locked">
-          <div class="rm-ic">🔴</div>
-          <div class="rm-title">Pass 3</div>
-          <div class="rm-sub">Human Review<br>raw → golden</div>
+          <div class="rm-ic">🔒</div>
+          <div class="rm-title">Review</div>
+          <div class="rm-sub">Human Review<br>raw → golden notes</div>
         </div>
         <div class="rm locked">
-          <div class="rm-ic">🔴</div>
-          <div class="rm-title">Train</div>
-          <div class="rm-sub">Digital Twin<br>ต้องการ 50 golden</div>
+          <div class="rm-ic">🔒</div>
+          <div class="rm-title">Launch</div>
+          <div class="rm-sub">Digital Twin<br>50 golden = AI หลิว</div>
         </div>
       </div>
     </div>
@@ -315,12 +325,12 @@ html,body{height:100%;overflow:hidden;background:var(--base);color:var(--text);
       <div class="sh">📋 Backlog</div><div id="todo-backlog"></div>
     </div>
 
-    <!-- TOPICS -->
+    <!-- FOCUS -->
     <div class="panel" id="p-topics">
-      <div class="sh">หัวข้อที่จะคุยต่อ</div>
-      <div class="tgrid" id="topic-list"></div>
-      <div class="sh">สิ่งที่ต้องเตรียม</div>
+      <div class="sh">🔧 สิ่งที่ต้องเตรียม / Setup</div>
       <div class="tgrid" id="prep-list"></div>
+      <div class="sh">💬 หัวข้อที่จะคุยต่อ</div>
+      <div class="tgrid" id="topic-list"></div>
     </div>
 
     <!-- CONTENT -->
@@ -365,9 +375,8 @@ html,body{height:100%;overflow:hidden;background:var(--base);color:var(--text);
   <nav class="bnav">
     <button class="nb on" data-nav="overview"><span class="ic">🏠</span>Overview</button>
     <button class="nb" data-nav="todos"><span class="ic">✅</span>Todos</button>
-    <button class="nb" data-nav="topics"><span class="ic">💬</span>Topics</button>
     <button class="nb" data-nav="content"><span class="ic">📣</span>Content</button>
-    <button class="nb" data-nav="claude"><span class="ic">⚡</span>Claude</button>
+    <button class="nb" data-nav="topics"><span class="ic">🎯</span>Focus</button>
   </nav>
 </div>
 
@@ -412,8 +421,8 @@ const DRAFTS   = [{"chapter_id": "B1_C01_High-Low_จุดเริ่มต้
 const PROJECTS = [{"id": "npc-book", "icon": "📚", "title": "NPC Book", "subtitle": "Gen1 PDF pending · Gen2 37/141", "status": "running", "progress": 65, "details": ["✅ Gen1: 58 บท Stage 1–3 เสร็จ", "⏳ Gen1: Stage 4 PDF รอ print", "🟡 Gen2: 37/141 chapters extracted", "📚 3 HTML books พร้อม"], "next": "stage4_pdf.py --book 1 → Cmd+P → A5, No margins, BG ON"}, {"id": "content", "icon": "📣", "title": "Content Pipeline", "subtitle": "58 drafts พร้อมโพสต์", "status": "done", "progress": 100, "details": ["📘 อ่านตลาดได้ 22 บท", "📙 หลิวคิดอะไรอยู่ 18 บท", "📗 จิตใจนักเทรด 18 บท"], "next": "เติม API credit → รัน content_pipeline.py"}, {"id": "transcription", "icon": "🎙️", "title": "Transcription", "subtitle": "แปล video → text", "status": "running", "progress": 72, "details": ["✅ NPC Gen1: 167/168", "✅ NPC Gen2: 145/145", "🔄 NMSPC 2026: 62/62", "🔄 Facebook Live: 58/223"], "next": "รันทิ้งข้ามคืน · orchestrator auto-restart"}, {"id": "norms-corp", "icon": "🏢", "title": "Norms Corp", "subtitle": "9 departments · AI agents", "status": "phase1", "progress": 40, "details": ["✅ Structure + CLAUDE.md + INDEX.md + WORKFLOW.md", "✅ Agent Briefs ครบ 9 แผนก", "✅ AI Empire dissolved → merged", "⏳ Phase 2: API orchestration"], "next": "Phase 2: orchestrator.py + task queue"}, {"id": "digital-twin", "icon": "🤖", "title": "Digital Twin", "subtitle": "AI ที่สอนแบบหลิว", "status": "blocked", "progress": 5, "details": ["🔴 ต้องการ 50 golden Logic Notes", "🔴 ThinkAloud Pass 2 ยังไม่รัน", "✅ DigitalTwin_Config.md พร้อม", "✅ ThinkAloud_Prompt.md พร้อม"], "next": "รอ transcript ครบ → ThinkAloud → human review → golden"}, {"id": "aa", "icon": "⚡", "title": "AnotherAi", "subtitle": "Another AI · Workflow framework", "status": "running", "progress": 30, "details": ["✅ Case studies: Ali Abdaal + ลงทุน Diary", "✅ Synthesis + Priority Matrix", "🔴 รอ APIFY_TOKEN", "🔴 รอ NotebookLM login"], "next": "ขอ APIFY_TOKEN + login NotebookLM"}];
 const TODOS    = {"urgent": [{"text": "กรอก AI Vocab 125 fields — unblocks ทุกอย่าง", "due": "ASAP", "tag": "knowledge"}, {"text": "รัน stage4_pdf.py --book 1 → Cmd+P → A5, No margins, BG ON", "due": "ก่อนพุธ 20 พ.ค.", "tag": "book"}, {"text": "ส่ง NPC Book ให้ทีมตรวจ", "due": "พุธ 20 พ.ค.", "tag": "book"}], "soon": [{"text": "เติม Anthropic API credit (58 บท < $0.10)", "due": "สัปดาห์นี้", "tag": "content"}, {"text": "ติดตั้ง Whisper Flow — พูดแทนพิมพ์ ลด friction 5-10x", "due": "สัปดาห์นี้", "tag": "aa"}, {"text": "Eightcap 3 posts (Gold → Oil/Silver pivot) รอ visuals", "due": "สัปดาห์นี้", "tag": "eightcap"}], "backlog": [{"text": "รัน ThinkAloud Pass 2 → Logic Notes", "due": "หลัง transcript จบ", "tag": "knowledge"}, {"text": "Human review Logic Notes (เฉพาะ [UNCLEAR] flags)", "due": "หลัง Pass 2", "tag": "knowledge"}, {"text": "NPC Gen2 + NMSPC + Facebook Live books", "due": "หลัง transcript", "tag": "book"}, {"text": "ลอง NotebookLM MCP (ประหยัด token ระยะยาว)", "due": "เดือนนี้", "tag": "aa"}, {"text": "Phase 2: orchestrator.py + task queue", "due": "เดือนหน้า", "tag": "norms-corp"}, {"text": "Phase 3: Web Dashboard CEO → departments", "due": "หลัง Phase 2", "tag": "norms-corp"}]};
 const TOPICS   = [{"icon": "📚", "title": "NPC Gen2 Book", "detail": "หลัง transcript → book_pipeline → 4 เล่มใหม่"}, {"icon": "📺", "title": "Facebook Live Book", "detail": "~116 คลิป → insights การสอนสด → เล่มที่ 4"}, {"icon": "🎓", "title": "ปรับ Class Structure", "detail": "ใช้หนังสือทั้งหมดออกแบบหลักสูตร NMSPC + NPC รุ่นใหม่"}, {"icon": "🤖", "title": "Digital Twin Training", "detail": "50 golden notes → เริ่ม train ได้เลย"}, {"icon": "💰", "title": "Eightcap Content System", "detail": "workflow drafts → compliance → post"}, {"icon": "⚡", "title": "AA Implementation", "detail": "Whisper Flow + NotebookLM MCP + Custom MCP server"}, {"icon": "🏢", "title": "Phase 2 Automation", "detail": "Claude API orchestrator · CEO → departments task routing"}, {"icon": "🌐", "title": "Social Norms Website V2", "detail": "mentorship · advanced · about · free pages"}];
-const PREPS    = [{"icon": "💳", "title": "Anthropic API Credit", "detail": "console.anthropic.com · 58 บท < $0.10 · รัน content_pipeline.py"}, {"icon": "🎙️", "title": "Whisper Flow", "detail": "whisperflow.app · กด Fn+Space แล้วพูด · ลด friction 5-10x"}, {"icon": "📒", "title": "NotebookLM MCP", "detail": "NPC 168 ไฟล์ใน NotebookLM · Claude query ตรงไป · ค้นหา 'notebooklm mcp' GitHub"}, {"icon": "📄", "title": "NPC Book PDF", "detail": "03-Knowledge/book_pipeline/output/*.html → Print → Save as PDF"}, {"icon": "🔌", "title": "External Drive", "detail": "เสียบ /Volumes/socialnorms ก่อนรัน transcription · orchestrator รอ auto"}, {"icon": "🎨", "title": "Eightcap Visuals", "detail": "3 posts รอ visuals · Gold→Oil/Silver · ดู EIGHTCAP_STYLE_GUIDE.md"}];
-const PIPELINE = {"npc_gen1": {"done": 167, "total": 168, "label": "NPC Gen1"}, "npc_gen2": {"done": 145, "total": 145, "label": "NPC Gen2"}, "nmspc2026": {"done": 62, "total": 62, "label": "NMSPC 2026"}, "facebook": {"done": 116, "total": 234, "label": "Facebook Live"}};
+const PREPS    = [{"icon": "🔑", "title": "APIFY_TOKEN", "detail": "ต้องการสำหรับ AnotherAi — ขอ token จาก apify.com"}, {"icon": "📒", "title": "NotebookLM Login", "detail": "notebooklm.google.com · login แล้ว setup NPC corpus"}, {"icon": "📄", "title": "NPC Book Stage 4 PDF", "detail": "python3 stage4_pdf.py --book 1 → Cmd+P → A5 · No margins · BG ON"}, {"icon": "🔌", "title": "External Drive", "detail": "เสียบ /Volumes/SocialNorms ก่อนรัน transcription"}, {"icon": "📝", "title": "AI Vocab 125 Fields", "detail": "กรอก ~/Norms-Corp/05-Projects/Vocabulary-Input.md — unblocks ทุกอย่าง"}, {"icon": "📅", "title": "Eightcap Brief", "detail": "รอ brief: World Cup promo + Eightcap event — สิ้นเดือน report.md"}];
+const PIPELINE = {"book_gen2": {"done": 37, "total": 141, "label": "📖 Gen2 Book Extract"}, "npc_gen1": {"done": 167, "total": 168, "label": "🎙️ Transcription — NPC Gen1"}, "npc_gen2": {"done": 145, "total": 145, "label": "🎙️ Transcription — NPC Gen2"}, "nmspc2026": {"done": 62, "total": 62, "label": "🎙️ Transcription — NMSPC 2026"}, "facebook": {"done": 116, "total": 234, "label": "🎙️ Transcription — Facebook Live"}};
 const SC       = {"อ่านตลาดได้": {"bg": "rgba(59,130,246,.2)", "color": "#60A5FA"}, "หลิวคิดอะไรอยู่": {"bg": "rgba(245,158,11,.2)", "color": "#FCD34D"}, "จิตใจนักเทรด": {"bg": "rgba(16,185,129,.2)", "color": "#34D399"}};
 const CLAUDE_SESSIONS = [{"pid": 28631, "session_id": "c2225748", "cwd": "~", "name": "วิเคราะห์ไฟล์ทั้งหมดที่เกี่วกับ claude และobsidian จ…", "runtime_min": 46, "status": "idle", "alive": true, "tokens": {"total_input": 2604, "total_output": 179122, "total_cache_read": 12514887, "latest_cache_read": 129899, "msg_count": 172, "context_pct": 65}, "warn": false}];
 const SLABELS  = {done:"✅ Done",running:"🔄 Running",phase1:"Phase 1",blocked:"🔴 Blocked",research:"Research"};
