@@ -7,35 +7,40 @@ Norms Corp Dashboard Builder
 import json, os, datetime, subprocess
 from pathlib import Path
 
-ROOT      = Path.home() / "Documents/Norms-Corp/Social-Norms"
-DRAFTS    = ROOT / "02-Content/content_pipeline/drafts"
-TRANS     = ROOT / "03-Knowledge/transcripts"
+KV        = Path.home() / "Documents/Norms-Corp/Knowledge"
+TRANS     = KV / "transcripts"
 OUT       = Path(__file__).parent / "index.html"
 
-DRIVE     = Path("/Volumes/socialnorms")
+DRIVE     = Path("/Volumes/SocialNorms")
 GEN1_SRC  = DRIVE / "SocialNorms PV Course/NPC GEN1"
 GEN2_SRC  = DRIVE / "SocialNorms PV Course/NPC GEN2"
 NMSPC_SRC = DRIVE / "SocialNorms PV Course/NMSPC 2026/NMSPC"
-FB_SRC    = DRIVE / "Facebook Live"
+FB_SRC    = DRIVE / "SocialNorms PV Course/FacebookLive"
 
 def count_mp4(path):
     if not path.exists(): return 0
-    return len(list(path.glob("*.mp4")) + list(path.glob("*.mov")))
+    return len([f for ext in ("*.mp4", "*.mov", "*.m4v")
+                for f in path.glob(ext)
+                if not f.name.startswith("._")])
 
 def count_txt(path):
     if not path.exists(): return 0
     return len(list(path.glob("*.txt")))
+
+def count_txt_multi(*paths):
+    return sum(count_txt(p) for p in paths)
 
 def load_drafts():
     if not DRAFTS.exists(): return []
     return [json.loads(f.read_text(encoding="utf-8")) for f in sorted(DRAFTS.glob("*.json"))]
 
 def get_pipeline():
+    nmspc_done = count_txt_multi(TRANS/"nmspc2026", TRANS/"nmspc2026_misc", TRANS/"nmspc2026_plan")
     return {
-        "npc_gen1":  {"done": count_txt(TRANS/"npc_gen1"),  "total": 168,            "label": "NPC Gen1"},
-        "npc_gen2":  {"done": count_txt(TRANS/"npc_gen2"),  "total": count_mp4(GEN2_SRC) or 144, "label": "NPC Gen2"},
-        "nmspc2026": {"done": count_txt(TRANS/"nmspc2026"), "total": count_mp4(NMSPC_SRC) or 30,  "label": "NMSPC 2026"},
-        "facebook":  {"done": count_txt(TRANS/"facebook_live"), "total": count_mp4(FB_SRC) or 116, "label": "Facebook Live"},
+        "npc_gen1":  {"done": count_txt(TRANS/"npc_gen1"),      "total": 168,                       "label": "NPC Gen1"},
+        "npc_gen2":  {"done": count_txt(TRANS/"npc_gen2"),      "total": 145,                       "label": "NPC Gen2"},
+        "nmspc2026": {"done": nmspc_done,                       "total": max(nmspc_done, 62),        "label": "NMSPC 2026"},
+        "facebook":  {"done": count_txt(TRANS/"facebook_live"), "total": count_mp4(FB_SRC) or 224,  "label": "Facebook Live"},
     }
 
 def get_claude_stats():
@@ -58,6 +63,7 @@ def get_claude_stats():
             runtime_min = int((now_ms - started_ms) / 60000) if started_ms else 0
             tokens = {"total_input": 0, "total_output": 0, "total_cache_read": 0,
                       "latest_cache_read": 0, "msg_count": 0, "context_pct": 0}
+            session_name = ""
             for proj_subdir in projects_dir.iterdir():
                 if not proj_subdir.is_dir():
                     continue
@@ -78,6 +84,21 @@ def get_claude_stats():
                                     if cr > latest_cache:
                                         latest_cache = cr
                                     tokens["msg_count"] += 1
+                                # extract name from first real human message
+                                if not session_name and d.get("type") == "user":
+                                    msg = d.get("message", {})
+                                    content = msg.get("content", "")
+                                    if isinstance(content, list):
+                                        for block in content:
+                                            if isinstance(block, dict) and block.get("type") == "text":
+                                                content = block.get("text", "")
+                                                break
+                                    if isinstance(content, str):
+                                        text = content.strip()
+                                        # skip caveat/system injected messages
+                                        if text and not text.startswith("<") and "caveat" not in text.lower():
+                                            raw = text.splitlines()[0].strip()
+                                            session_name = raw[:52] + ("…" if len(raw) > 52 else "")
                             except Exception:
                                 pass
                         tokens["latest_cache_read"] = latest_cache
@@ -89,6 +110,7 @@ def get_claude_stats():
                 "pid": pid,
                 "session_id": session_id[:8],
                 "cwd": cwd.replace(str(Path.home()), "~"),
+                "name": session_name,
                 "runtime_min": runtime_min,
                 "status": status,
                 "alive": is_alive,
@@ -799,8 +821,8 @@ function rClaude(){{
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
         <span style="font-size:20px">⚡</span>
         <div style="flex:1;min-width:0">
-          <div style="font-weight:700;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${{s.cwd}}</div>
-          <div style="font-size:10px;color:var(--muted);margin-top:2px">PID ${{s.pid}} · ${{s.runtime_min}} min · #${{s.session_id}}</div>
+          <div style="font-weight:700;font-size:13px;line-height:1.3;margin-bottom:2px">${{s.name||s.cwd}}</div>
+          <div style="font-size:10px;color:var(--muted)">PID ${{s.pid}} · ${{s.runtime_min}} min · #${{s.session_id}}</div>
         </div>
         <span class="sbadge ${{s.alive?"s-done":"s-blocked"}}">${{s.alive?"LIVE":"OFF"}}</span>
       </div>
