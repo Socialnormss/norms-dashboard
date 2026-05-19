@@ -550,7 +550,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
 html,body{{height:100%;background:var(--bg);color:var(--text);
   font-family:-apple-system,"SF Pro Display","Helvetica Neue",Sarabun,sans-serif;
-  font-size:14px;line-height:1.4;overflow-x:hidden}}
+  font-size:14px;line-height:1.4;overflow-x:hidden;
+  scrollbar-width:none;-ms-overflow-style:none}}
+html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{{width:0;height:0;display:none}}
 body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent 55%),
                 var(--bg);min-height:100vh}}
 
@@ -575,7 +577,7 @@ body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent
 @media (max-width:540px){{.h-stats{{display:none}}}}
 
 /* ── LAYOUT ────────────────────────────────────────────────────── */
-.app{{max-width:1400px;margin:0 auto;padding:16px;padding-bottom:calc(120px + var(--sb))}}
+.app{{max-width:1400px;margin:0 auto;padding:16px;padding-bottom:calc(150px + var(--sb))}}
 .panel{{display:none;animation:fadein .25s ease}}
 .panel.active{{display:block}}
 @keyframes fadein{{from{{opacity:0;transform:translateY(6px)}}to{{opacity:1;transform:translateY(0)}}}}
@@ -774,10 +776,10 @@ body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent
 .pipe-pct.zero{{background:var(--surface);color:var(--muted)}}
 
 /* ── RUNNING / LIVE ───────────────────────────────────────────── */
-.running-row{{display:flex;align-items:center;gap:10px;padding:10px 12px;
+.running-row{{display:flex;align-items:center;gap:10px;padding:10px 12px 10px 26px;
   background:var(--surface);border-radius:var(--r-sm);margin-bottom:6px;
   border-left:3px solid var(--green);position:relative}}
-.running-row::before{{content:"";position:absolute;left:-2px;top:50%;width:6px;height:6px;
+.running-row::before{{content:"";position:absolute;left:10px;top:50%;width:6px;height:6px;
   border-radius:50%;background:var(--green);transform:translateY(-50%);
   box-shadow:0 0 8px var(--green-glow);animation:pulse-dot 1.5s infinite}}
 .running-icon{{font-size:14px}}
@@ -880,7 +882,7 @@ body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent
 }}
 
 /* ── READ PANEL · sub-tabs ───────────────────────────────────── */
-.read-tabs{{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px;
+.read-tabs{{display:flex;gap:6px;overflow-x:auto;padding:6px 0 8px;margin-top:8px;margin-bottom:12px;
   scrollbar-width:none;-webkit-overflow-scrolling:touch}}
 .read-tabs::-webkit-scrollbar{{display:none}}
 .read-tab{{display:flex;align-items:center;gap:6px;padding:8px 14px;
@@ -1500,14 +1502,23 @@ document.querySelectorAll('.nb').forEach(btn => {{
 }});
 
 // ─── AUTO-REFRESH check ─────────────────────────────────────
-function checkUpdate(){{
+function checkUpdate(autoReload){{
   fetch(location.href + '?_=' + Date.now(), {{cache: 'no-store'}})
     .then(r => r.text()).then(html => {{
       const m = html.match(/content="(\\d{{4}}-\\d{{2}}-\\d{{2}}T[^"]+)"/);
-      if (m && m[1] !== BUILD_TIME) document.getElementById('upd-banner').classList.add('show');
+      if (m && m[1] !== BUILD_TIME) {{
+        if (autoReload) location.reload();
+        else document.getElementById('upd-banner').classList.add('show');
+      }}
     }}).catch(() => {{}});
 }}
-setInterval(checkUpdate, 60000);
+setInterval(() => checkUpdate(false), 60000);
+// Auto-reload when user returns to tab (data may be stale after being away)
+document.addEventListener('visibilitychange', () => {{
+  if (!document.hidden) checkUpdate(true);
+}});
+// Also check on window focus (desktop)
+window.addEventListener('focus', () => checkUpdate(true));
 
 // ─── INIT ───────────────────────────────────────────────────
 renderPhases();
