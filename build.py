@@ -258,29 +258,31 @@ def collect_claude_sessions():
         except Exception: pass
     return sessions[:6]
 
+REPOS = [
+    ("dashboard",     NC/"IT/dashboard"),
+    ("norms-website", NC/"IT/social-norms-website"),
+    ("dog-feeder",    HOME/"dog-feeder"),
+    ("bell-app",      NC/"Bell/app"),
+    ("bell-hero",     NC/"Bell/Hero"),
+]
+
+def _git(path, *args):
+    return subprocess.run(["git","-C",str(path),*args], capture_output=True, text=True, timeout=2).stdout
+
 def collect_git_repos():
-    """Multi-repo status"""
-    repos = [
-        ("dashboard",          NC/"IT/dashboard"),
-        ("norms-website",      NC/"IT/social-norms-website"),
-        ("dog-feeder",         HOME/"dog-feeder"),
-        ("bell-app",           NC/"Bell/app"),
-        ("bell-hero",          NC/"Bell/Hero"),
-    ]
+    """Multi-repo status · one subprocess per stat (was 4 per repo)"""
     out = []
-    for name, path in repos:
+    for name, path in REPOS:
         if not (path/".git").exists(): continue
         try:
-            pending = int(subprocess.run(["git","-C",str(path),"status","-s"],
-                          capture_output=True, text=True, timeout=2).stdout.strip().count("\n") + (1 if subprocess.run(["git","-C",str(path),"status","-s"], capture_output=True, text=True, timeout=2).stdout.strip() else 0))
-            last = subprocess.run(["git","-C",str(path),"log","-1","--format=%ct"],
-                          capture_output=True, text=True, timeout=2).stdout.strip()
-            last_msg = subprocess.run(["git","-C",str(path),"log","-1","--format=%s"],
-                          capture_output=True, text=True, timeout=2).stdout.strip()[:60]
+            pending = len(_git(path, "status", "--porcelain").splitlines())
+            log = _git(path, "log", "-1", "--format=%ct%n%s").splitlines()
+            last_ts  = log[0].strip() if log else ""
+            last_msg = (log[1] if len(log) > 1 else "")[:60]
             out.append({
                 "name": name,
                 "pending": pending,
-                "last": get_relative_time(int(last)) if last else "—",
+                "last": get_relative_time(int(last_ts)) if last_ts else "—",
                 "msg": last_msg,
                 "status": "warn" if pending > 5 else ("dirty" if pending > 0 else "clean")
             })
@@ -298,7 +300,6 @@ def collect_chapters():
     return {
         "total": len(all_files),
         "new": len(new_files),
-        "original": len(all_files) - len(new_files),
         "edited_today": edited_today,
         "new_files": [f.name for f in sorted(new_files)],
     }
@@ -534,19 +535,13 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   --green:#3BCC8B;--green-glow:rgba(59,204,139,.4);
   --red:#E15461;--red-glow:rgba(225,84,97,.4);
   --yellow:#E8B547;
-  /* Brand-aliased accents (cyan/magenta/purple → amber/slate · keep code refs valid) */
-  --cyan:var(--slate-light);--cyan-glow:var(--border-glow);
-  --magenta:var(--amber-soft);--purple:var(--slate-light);
   --r:16px;--r-sm:10px;
   --sb:env(safe-area-inset-bottom);
 }}
 *{{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}}
 @keyframes pulse-glow{{0%,100%{{opacity:.5;transform:scale(.9)}}50%{{opacity:1;transform:scale(1.1)}}}}
 @keyframes pulse-dot{{0%,100%{{opacity:1}}50%{{opacity:.3}}}}
-@keyframes gradient-shift{{0%,100%{{background-position:0% 50%}}50%{{background-position:100% 50%}}}}
 @keyframes shimmer{{0%{{background-position:-200% 0}}100%{{background-position:200% 0}}}}
-@keyframes ring-rotate{{from{{transform:rotate(0deg)}}to{{transform:rotate(360deg)}}}}
-@keyframes blink-warn{{0%,50%{{box-shadow:0 0 0 0 var(--red-glow)}}51%,100%{{box-shadow:0 0 0 8px rgba(255,59,92,0)}}}}
 
 html,body{{height:100%;background:var(--bg);color:var(--text);
   font-family:-apple-system,"SF Pro Display","Helvetica Neue",Sarabun,sans-serif;
@@ -687,13 +682,11 @@ body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent
 .kpi::before{{content:"";position:absolute;top:0;left:0;right:0;height:2px;
   background:linear-gradient(90deg,var(--amber),var(--amber-2))}}
 .kpi.k-done::before{{background:var(--green);opacity:.7}}
-.kpi.k-warn::before{{background:var(--red);opacity:.8}}
 .kpi-l{{font-size:10px;font-weight:700;color:var(--t2);letter-spacing:.1em;
   text-transform:uppercase;margin-bottom:8px}}
 .kpi-n{{font-size:34px;font-weight:900;line-height:1;letter-spacing:-.02em;
   font-feature-settings:"tnum";margin-bottom:4px;color:var(--amber-2)}}
 .kpi.k-done .kpi-n{{color:var(--green)}}
-.kpi.k-warn .kpi-n{{color:var(--red)}}
 .kpi.k-text .kpi-n{{color:var(--text)}}
 .kpi-sub{{font-size:11px;color:var(--muted);font-weight:500}}
 
@@ -773,7 +766,7 @@ body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent
 .pipe-total{{font-size:13px;color:var(--t2);font-feature-settings:"tnum"}}
 .pipe-pct{{margin-left:auto;font-size:10px;font-weight:800;padding:2px 6px;border-radius:4px}}
 .pipe-pct.done{{background:rgba(0,245,147,.12);color:var(--green)}}
-.pipe-pct.active{{background:rgba(0,212,255,.12);color:var(--cyan)}}
+.pipe-pct.active{{background:rgba(192,120,64,.12);color:var(--amber-2)}}
 .pipe-pct.zero{{background:var(--surface);color:var(--muted)}}
 
 /* ── RUNNING / LIVE ───────────────────────────────────────────── */
@@ -897,21 +890,22 @@ body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent
 .read-tab-count{{font-size:9px;opacity:.7;font-weight:600}}
 
 /* ── READ PANEL ────────────────────────────────────────────────── */
-/* Sticky composite: search + tabs together · no see-through gap */
-.read-sticky{{position:sticky;top:62px;z-index:10;
+/* Sticky composite: search + tabs in one solid container.
+   No backdrop-filter — solid bg already opaque + filter causes iOS Safari
+   sticky layer bug where text bleeds through when scrolled. */
+.read-sticky{{position:sticky;top:60px;z-index:40;
   background:var(--bg);
-  backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);
   margin:-16px -16px 14px;padding:12px 16px 6px;
   border-bottom:1px solid var(--border)}}
 .read-search{{margin:0 0 10px}}
 .read-search input{{width:100%;background:var(--raised);border:1px solid var(--border);
   border-radius:50px;padding:11px 16px;color:var(--text);font-size:14px;font-family:inherit;
   outline:none;transition:border-color .2s}}
-.read-search input:focus{{border-color:var(--cyan)}}
+.read-search input:focus{{border-color:var(--amber-2)}}
 .read-list{{display:flex;flex-direction:column;gap:8px}}
 .read-card{{background:var(--raised);border:1px solid var(--border);border-radius:var(--r-sm);
   overflow:hidden;transition:border-color .2s}}
-.read-card.open{{border-color:var(--cyan-glow)}}
+.read-card.open{{border-color:var(--border-glow)}}
 .read-head{{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;
   user-select:none}}
 .read-icon{{font-size:18px;flex-shrink:0}}
@@ -954,6 +948,7 @@ body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent
 .read-content th{{background:var(--surface);color:var(--amber-2);font-weight:700;font-size:10px}}
 .read-content td{{font-size:11px}}
 .read-content a{{color:var(--amber-2);text-decoration:none;border-bottom:1px dotted var(--amber)}}
+.read-content .wlink{{color:var(--amber-2);background:rgba(192,120,64,.08);padding:0 4px;border-radius:3px;font-size:.94em}}
 .read-content hr{{border:none;border-top:1px solid var(--border);margin:14px 0}}
 .read-content strong{{color:var(--text)}}
 .read-content img{{max-width:100%;height:auto}}
@@ -962,18 +957,18 @@ body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent
 .shortcut-grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}}
 .shortcut{{background:var(--raised);border:1px solid var(--border);border-radius:var(--r-sm);
   padding:10px 12px;cursor:pointer;text-align:left;transition:all .15s;position:relative;overflow:hidden}}
-.shortcut:hover{{border-color:var(--cyan-glow);transform:translateY(-1px)}}
+.shortcut:hover{{border-color:var(--border-glow);transform:translateY(-1px)}}
 .shortcut::before{{content:"";position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,var(--cyan),var(--magenta));opacity:.6}}
+  background:linear-gradient(90deg,var(--amber),var(--amber-2));opacity:.7}}
 .shortcut-icon{{font-size:18px;margin-bottom:4px}}
 .shortcut-l{{font-size:11px;font-weight:700;line-height:1.3}}
 .shortcut-s{{font-size:9px;color:var(--muted);margin-top:2px}}
 
 /* update banner */
 .upd{{position:fixed;top:60px;left:50%;transform:translateX(-50%);
-  background:linear-gradient(135deg,var(--cyan),var(--magenta));color:#000;
+  background:linear-gradient(135deg,var(--amber),var(--amber-2));color:#000;
   padding:8px 16px;border-radius:50px;font-size:12px;font-weight:800;
-  display:none;z-index:90;cursor:pointer;box-shadow:0 4px 20px var(--cyan-glow)}}
+  display:none;z-index:90;cursor:pointer;box-shadow:0 4px 20px var(--amber-glow)}}
 .upd.show{{display:block}}
 </style>
 </head>
@@ -1127,10 +1122,10 @@ function renderMission(){{
       <div class="mission-mega-pct">${{m.overall_pct}}%</div>
     </div>
     <div class="mission-stats">
-      <div class="ms"><div class="ms-n" style="color:var(--cyan)">${{m.total_target}}</div><div class="ms-l">Total EPs</div></div>
+      <div class="ms"><div class="ms-n" style="color:var(--slate-light)">${{m.total_target}}</div><div class="ms-l">Total EPs</div></div>
       <div class="ms"><div class="ms-n" style="color:var(--green)">${{m.total_done}}</div><div class="ms-l">Done</div></div>
       <div class="ms"><div class="ms-n" style="color:var(--amber-2)">${{m.total_remaining}}</div><div class="ms-l">Remaining</div></div>
-      <div class="ms"><div class="ms-n" style="color:var(--magenta)">${{m.hours_total}}h</div><div class="ms-l">Total est.</div></div>
+      <div class="ms"><div class="ms-n" style="color:var(--amber-soft)">${{m.hours_total}}h</div><div class="ms-l">Total est.</div></div>
     </div>
     <div class="mission-src-grid">
       ${{m.sources.map(s => `
@@ -1178,7 +1173,7 @@ function renderLive(){{
     </div>`);
   }}
   if (D.sessions.filter(s => s.alive).length) {{
-    items.push(`<div class="running-row" style="border-left-color:var(--cyan)">
+    items.push(`<div class="running-row" style="border-left-color:var(--amber-2)">
       <span class="running-icon">⚡</span>
       <div style="flex:1"><div class="running-text">${{D.sessions.filter(s=>s.alive).length}} Claude session(s) live</div>
       <div class="running-sub">see Claude panel below</div></div>
@@ -1274,9 +1269,9 @@ function renderClaude(){{
       </div>
       <div class="pbar"><div class="pbar-fill" style="width:${{pct}}%;background:${{bc}}"></div></div>
       <div class="cl-tokens">
-        <div class="cl-tok"><div class="cl-tok-n" style="color:var(--cyan)">${{ik(s.tokens.in)}}</div><div class="cl-tok-l">Input</div></div>
+        <div class="cl-tok"><div class="cl-tok-n" style="color:var(--slate-light)">${{ik(s.tokens.in)}}</div><div class="cl-tok-l">Input</div></div>
         <div class="cl-tok"><div class="cl-tok-n" style="color:var(--amber-2)">${{ik(s.tokens.out)}}</div><div class="cl-tok-l">Output</div></div>
-        <div class="cl-tok"><div class="cl-tok-n" style="color:var(--purple)">${{s.tokens.msgs}}</div><div class="cl-tok-l">Msgs</div></div>
+        <div class="cl-tok"><div class="cl-tok-n" style="color:var(--text)">${{s.tokens.msgs}}</div><div class="cl-tok-l">Msgs</div></div>
       </div>
     </div>`;
   }}).join('');
@@ -1349,8 +1344,8 @@ function renderVault(){{
   const tiles = [];
   tiles.push(`<div class="stat-tile"><div class="stat-tile-n" style="color:var(--amber-2)">${{D.memory.total}}</div><div class="stat-tile-l">Memory items</div></div>`);
   const mbt = D.memory.by_type;
-  if (mbt.feedback) tiles.push(`<div class="stat-tile"><div class="stat-tile-n" style="color:var(--magenta)">${{mbt.feedback}}</div><div class="stat-tile-l">Feedback</div></div>`);
-  if (mbt.project) tiles.push(`<div class="stat-tile"><div class="stat-tile-n" style="color:var(--cyan)">${{mbt.project}}</div><div class="stat-tile-l">Project mem</div></div>`);
+  if (mbt.feedback) tiles.push(`<div class="stat-tile"><div class="stat-tile-n" style="color:var(--amber-soft)">${{mbt.feedback}}</div><div class="stat-tile-l">Feedback</div></div>`);
+  if (mbt.project) tiles.push(`<div class="stat-tile"><div class="stat-tile-n" style="color:var(--slate-light)">${{mbt.project}}</div><div class="stat-tile-l">Project mem</div></div>`);
   if (mbt.user) tiles.push(`<div class="stat-tile"><div class="stat-tile-n" style="color:var(--green)">${{mbt.user}}</div><div class="stat-tile-l">User mem</div></div>`);
   tiles.push(`<div class="stat-tile"><div class="stat-tile-n" style="color:var(--text)">${{D.chapters.total}}</div><div class="stat-tile-l">NPC chapters</div></div>`);
   tiles.push(`<div class="stat-tile"><div class="stat-tile-n" style="color:var(--green)">${{D.chapters.new}}</div><div class="stat-tile-l">New (Phase 3)</div></div>`);
@@ -1389,8 +1384,8 @@ function md2html(md){{
   h = h.replace(/\\*\\*([^*]+)\\*\\*/g, '<strong>$1</strong>');
   // Inline code
   h = h.replace(/`([^`]+)`/g, '<code>$1</code>');
-  // Wiki-links [[foo]]
-  h = h.replace(/\\[\\[([^\\]]+)\\]\\]/g, '<a>$1</a>');
+  // Wiki-links [[foo]] · render as styled span (not <a> without href)
+  h = h.replace(/\\[\\[([^\\]]+)\\]\\]/g, '<span class="wlink">$1</span>');
   // Links [text](url)
   h = h.replace(/\\[([^\\]]+)\\]\\(([^)]+)\\)/g, '<a href="$2">$1</a>');
   // Lists
@@ -1433,12 +1428,15 @@ function renderReadTabs(){{
   }});
 }}
 
+// Pre-lowercase title+content once (search runs on every keystroke)
+D.must_read.forEach(f => {{ f._title_lc = f.title.toLowerCase(); f._content_lc = f.content.toLowerCase(); }});
+
 function renderRead(){{
   const list = document.getElementById('read-list');
   const q = readSearchQuery.toLowerCase().trim();
   const filtered = D.must_read.filter(f => {{
     if (readActiveCat !== 'all' && f.cat !== readActiveCat) return false;
-    if (q && !f.title.toLowerCase().includes(q) && !f.content.toLowerCase().includes(q)) return false;
+    if (q && !f._title_lc.includes(q) && !f._content_lc.includes(q)) return false;
     return true;
   }});
   list.innerHTML = filtered.map(f => {{
@@ -1508,8 +1506,11 @@ document.querySelectorAll('.nb').forEach(btn => {{
   btn.addEventListener('click', () => switchPanel(btn.dataset.panel));
 }});
 
-// ─── AUTO-REFRESH check ─────────────────────────────────────
+// ─── AUTO-REFRESH check (debounced · single in-flight) ───────
+let updateInFlight = false, lastReturnCheck = 0;
 function checkUpdate(autoReload){{
+  if (updateInFlight) return;
+  updateInFlight = true;
   fetch(location.href + '?_=' + Date.now(), {{cache: 'no-store'}})
     .then(r => r.text()).then(html => {{
       const m = html.match(/content="(\\d{{4}}-\\d{{2}}-\\d{{2}}T[^"]+)"/);
@@ -1517,15 +1518,18 @@ function checkUpdate(autoReload){{
         if (autoReload) location.reload();
         else document.getElementById('upd-banner').classList.add('show');
       }}
-    }}).catch(() => {{}});
+    }}).catch(() => {{}}).finally(() => {{ updateInFlight = false; }});
 }}
 setInterval(() => checkUpdate(false), 60000);
-// Auto-reload when user returns to tab (data may be stale after being away)
-document.addEventListener('visibilitychange', () => {{
-  if (!document.hidden) checkUpdate(true);
-}});
-// Also check on window focus (desktop)
-window.addEventListener('focus', () => checkUpdate(true));
+// On tab return: auto-reload if stale · throttle 5s between checks (prevent alt-tab spam)
+function onReturn(){{
+  const now = Date.now();
+  if (now - lastReturnCheck < 5000) return;
+  lastReturnCheck = now;
+  checkUpdate(true);
+}}
+document.addEventListener('visibilitychange', () => {{ if (!document.hidden) onReturn(); }});
+window.addEventListener('focus', onReturn);
 
 // ─── INIT ───────────────────────────────────────────────────
 renderPhases();
@@ -1534,11 +1538,13 @@ renderLive();
 renderShortcuts();
 renderReadTabs();
 renderRead();
-// Search bar listener
+// Search bar listener (debounced 150ms · 24+ files × content.toLowerCase is expensive on every keystroke)
+let searchDebounce;
 const searchInput = document.getElementById('read-search-input');
 if (searchInput) searchInput.addEventListener('input', e => {{
-  readSearchQuery = e.target.value;
-  renderRead();
+  clearTimeout(searchDebounce);
+  const v = e.target.value;
+  searchDebounce = setTimeout(() => {{ readSearchQuery = v; renderRead(); }}, 150);
 }});
 renderProjects();
 renderPipeline();
