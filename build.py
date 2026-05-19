@@ -90,6 +90,8 @@ MUST_READ_FILES = [
     {"id":"worklog-book",  "cat":"working", "icon":"📝", "title":"Norms Book · WORKLOG",          "path": VAULT/"05-Projects/Norms-Book/WORKLOG.md",                              "tier":"P2"},
     {"id":"handoff-book",  "cat":"working", "icon":"🤝", "title":"Norms Book · Handoff",          "path": VAULT/"05-Projects/Norms-Book/Handoff.md",                              "tier":"P3"},
     {"id":"handoff-sync",  "cat":"working", "icon":"🔄", "title":"Pro↔Max · HANDOFF",             "path": NC/"SYNC/HANDOFF.md",                                                   "tier":"P2"},
+    {"id":"worklog-dog",   "cat":"working", "icon":"🐕", "title":"Dog Feeder · WORKLOG (v4 plan)","path": VAULT/"05-Projects/Dog-Feeder/WORKLOG.md",                              "tier":"P2"},
+    {"id":"hero-v2-setup", "cat":"working", "icon":"🦸", "title":"Hero V2 · SETUP (Drive integ.)", "path": NC/"Bell/Hero/v2/SETUP.md",                                             "tier":"P2"},
 
     # ── Book content (NPC course material) ──────────────────────
     {"id":"phase1-km",     "cat":"book",    "icon":"📘", "title":"Phase 1 Knowledge Map",         "path": VAULT/"05-Projects/Norms-Book/Phase1-Knowledge-Map.md",                 "tier":"P2"},
@@ -361,14 +363,17 @@ PROJECTS = [
      "subtitle":"Apple-premium landing","tag":"website",
      "details":["Content A1-A10 locked","Visual direction notes","Hero copy locked","6-block curriculum visible","Awaiting Pro Hero cinematic"],
      "next":"Pro visual session","deadline":"2026-07-19"},
-    {"id":"dog-feeder","icon":"🐕","title":"Dog Feeder v3","tier":"P2","status":"phase1","progress":60,
-     "subtitle":"Soft Cozy redesign","tag":"app",
-     "details":["v2.1 live · skip-meal","Round 2 mockup ผ่าน","4 Magnific sheets dictated","Awaiting CSS+HTML from Pro"],
-     "next":"Pro assets → Max integrate"},
-    {"id":"hero-bell","icon":"🦸","title":"Hero (Bell)","tier":"P2","status":"phase1","progress":85,
-     "subtitle":"Claude Project · BD Manager AI","tag":"client",
-     "details":["Deployed @ liewsk129","7 knowledge files","Test 9/10 passed","V2 vision: brief→deliverable"],
-     "next":"V2 design 2026-05-20"},
+    {"id":"dog-feeder","icon":"🐕","title":"Dog Feeder v3 → v4 rebuild","tier":"P2","status":"blocked","progress":50,
+     "subtitle":"Paused · cozy-reference blueprint","tag":"app",
+     "details":["v3.3 deployed 0ecf375 แต่ off-spec","Authority: handoff/cozy-reference.html (792 lines)","34 PNG assets installed","Pending: topbar avatar · light-btn · tabs"],
+     "next":"Full v4 rebuild ตาม blueprint (2-3h)"},
+    {"id":"hero-bell","icon":"🦸","title":"Hero V1 + V2 (Bell)","tier":"P2","status":"phase1","progress":95,
+     "subtitle":"V1 deployed · V2 awaiting Drive","tag":"client",
+     "details":["V1 live @ liewsk129 (Claude Project)","V2 pipeline ครบ · E2E tested","launchd + watch.py + template ready","รอเบล share Drive + Desktop install"],
+     "next":"Drive folder + Desktop install"},
+    {"id":"bell-app","icon":"🔔","title":"Bell Web App V1","tier":"DONE","status":"done","progress":100,
+     "subtitle":"Fallback · socialnormss.github.io/bell-app","tag":"client",
+     "details":["Shipped 2026-05-19","Live · used as fallback","Repo: github.com/Socialnormss/bell-app"],"next":"—"},
     {"id":"transcription","icon":"🎙️","title":"Transcription Stack","tier":"P3","status":"running","progress":0,
      "subtitle":"Accurate batch · ETA ~2d","tag":"pipeline",
      "details":[],"next":"Background batch"},
@@ -392,12 +397,15 @@ PROJECTS = [
 TODOS = {
     "urgent":[
         {"text":"หลิว review Phase 2 doc → sign-off C1-C10","due":"ASAP","tag":"book","emoji":"🥇"},
-        {"text":"Pro Hero visual implementation","due":"this week","tag":"website","emoji":"🎨"},
-        {"text":"Dog Feeder v3 CSS+HTML integrate","due":"this week","tag":"app","emoji":"🐕"},
+        {"text":"หลิว review 6 NEW chapters (Norms-Corp/.../NEW_*.md)","due":"ASAP","tag":"book","emoji":"📕"},
+        {"text":"Dog Feeder v4 rebuild (cozy-reference blueprint · 2-3h)","due":"next session","tag":"app","emoji":"🐕"},
+        {"text":"Hero V2: Drive folder share + Desktop install + launchd load","due":"รอเบล","tag":"client","emoji":"🦸"},
     ],
     "soon":[
-        {"text":"Phase 3 production: rename + 5 new chapters","due":"after sign-off","tag":"book","emoji":"📚"},
+        {"text":"Phase 3 production round 2: rewrite per locked decisions","due":"after sign-off","tag":"book","emoji":"📚"},
         {"text":"File rename: B1_C11 NES_Synthesis · B1_C13 Liquidity_Complex","due":"after sign-off","tag":"book","emoji":"📝"},
+        {"text":"Tier 1 packaging: Prop Firm Challenge (4 chapters ready)","due":"after sign-off","tag":"book","emoji":"📦"},
+        {"text":"Pro Hero visual session — NPC Website cinematic","due":"parallel · ไม่ block","tag":"website","emoji":"🎨"},
         {"text":"Eightcap June brief · World Cup + event","due":"June","tag":"sponsor","emoji":"📰"},
         {"text":"NotebookLM bulk upload NPC transcripts (manual)","due":"this week","tag":"knowledge","emoji":"📒"},
     ],
@@ -526,6 +534,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   --green:#3BCC8B;--green-glow:rgba(59,204,139,.4);
   --red:#E15461;--red-glow:rgba(225,84,97,.4);
   --yellow:#E8B547;
+  /* Brand-aliased accents (cyan/magenta/purple → amber/slate · keep code refs valid) */
+  --cyan:var(--slate-light);--cyan-glow:var(--border-glow);
+  --magenta:var(--amber-soft);--purple:var(--slate-light);
   --r:16px;--r-sm:10px;
   --sb:env(safe-area-inset-bottom);
 }}
