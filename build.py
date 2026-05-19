@@ -511,7 +511,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="Norms Mission Control">
@@ -550,8 +550,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
 html,body{{height:100%;background:var(--bg);color:var(--text);
   font-family:-apple-system,"SF Pro Display","Helvetica Neue",Sarabun,sans-serif;
-  font-size:14px;line-height:1.4;overflow-x:hidden;
-  scrollbar-width:none;-ms-overflow-style:none}}
+  font-size:15px;line-height:1.45;overflow-x:hidden;
+  scrollbar-width:none;-ms-overflow-style:none;
+  -webkit-text-size-adjust:100%;text-size-adjust:100%}}
 html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{{width:0;height:0;display:none}}
 body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent 55%),
                 var(--bg);min-height:100vh}}
@@ -882,7 +883,7 @@ body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent
 }}
 
 /* ── READ PANEL · sub-tabs ───────────────────────────────────── */
-.read-tabs{{display:flex;gap:6px;overflow-x:auto;padding:6px 0 8px;margin-top:8px;margin-bottom:12px;
+.read-tabs{{display:flex;gap:6px;overflow-x:auto;padding:6px 0 8px;margin-top:18px;margin-bottom:14px;
   scrollbar-width:none;-webkit-overflow-scrolling:touch}}
 .read-tabs::-webkit-scrollbar{{display:none}}
 .read-tab{{display:flex;align-items:center;gap:6px;padding:8px 14px;
@@ -897,10 +898,12 @@ body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent
 
 /* ── READ PANEL ────────────────────────────────────────────────── */
 .read-search{{position:sticky;top:62px;z-index:10;
-  background:rgba(10,10,11,.85);backdrop-filter:blur(20px);
-  padding:10px 0;margin:-16px -16px 14px;padding-left:16px;padding-right:16px}}
+  background:var(--bg);
+  backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);
+  border-bottom:1px solid var(--border);
+  padding:12px 16px;margin:-16px -16px 0}}
 .read-search input{{width:100%;background:var(--raised);border:1px solid var(--border);
-  border-radius:50px;padding:10px 16px;color:var(--text);font-size:13px;font-family:inherit;
+  border-radius:50px;padding:11px 16px;color:var(--text);font-size:14px;font-family:inherit;
   outline:none;transition:border-color .2s}}
 .read-search input:focus{{border-color:var(--cyan)}}
 .read-list{{display:flex;flex-direction:column;gap:8px}}
