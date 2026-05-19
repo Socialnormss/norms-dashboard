@@ -83,6 +83,51 @@ def collect_running():
             jobs.append({"type": "transcribe", "label": f"Accurate · {file_target[:40]}", "icon": "🎤"})
     return jobs
 
+MUST_READ_FILES = [
+    {"id":"status",        "icon":"📊", "title":"STATUS · current state",        "path": VAULT/"STATUS.md",                                                       "tier":"P1"},
+    {"id":"phase2",        "icon":"🥇", "title":"Phase 2 Architecture",          "path": VAULT/"05-Projects/Norms-Book/Phase2-Architecture.md",                  "tier":"P1"},
+    {"id":"phase1-km",     "icon":"📘", "title":"Phase 1 Knowledge Map",         "path": VAULT/"05-Projects/Norms-Book/Phase1-Knowledge-Map.md",                 "tier":"P2"},
+    {"id":"worklog-book",  "icon":"📝", "title":"Norms Book · WORKLOG",          "path": VAULT/"05-Projects/Norms-Book/WORKLOG.md",                              "tier":"P2"},
+    {"id":"handoff-book",  "icon":"🤝", "title":"Norms Book · Handoff",          "path": VAULT/"05-Projects/Norms-Book/Handoff.md",                              "tier":"P3"},
+    {"id":"handoff-sync",  "icon":"🔄", "title":"Pro↔Max · HANDOFF",             "path": NC/"SYNC/HANDOFF.md",                                                   "tier":"P2"},
+    {"id":"npc-website",   "icon":"🌐", "title":"NPC Website Content Draft",     "path": VAULT/"05-Projects/NPC/Website-Content-Draft.md",                       "tier":"P2"},
+    {"id":"audit",         "icon":"🔍", "title":"NPC Master Audit",              "path": VAULT/"05-Projects/Norms-Book/NPC-Master-Audit-2026-05-19.md",          "tier":"P3"},
+    {"id":"evidence",      "icon":"📑", "title":"Evidence Pack",                 "path": VAULT/"05-Projects/Norms-Book/Evidence-Pack-2026-05-19.md",             "tier":"P3"},
+    {"id":"lexicon",       "icon":"📚", "title":"Canonical Lexicon",             "path": VAULT/"05-Projects/Norms-Book/Canonical-Lexicon-2026-05-19.md",         "tier":"P3"},
+    {"id":"ch-3pillar",    "icon":"🆕", "title":"Ch 1.0 · 3-Pillar Preview",     "path": KV/"Norms-Book/npc_gen1/chapters/NEW_B1_C00_3-Pillar_Preview.md",       "tier":"NEW"},
+    {"id":"ch-psy1",       "icon":"🆕", "title":"Ch 5.1 · Psy1 Intro (Day 1)",   "path": KV/"Norms-Book/npc_gen1/chapters/NEW_B5_C01_Psy1_Intro.md",             "tier":"NEW"},
+    {"id":"ch-closing",    "icon":"🆕", "title":"Ch 6.20 · Market is a Game",    "path": KV/"Norms-Book/npc_gen1/chapters/NEW_B6_C20_Market_is_a_Game.md",       "tier":"NEW"},
+    {"id":"ch-structure",  "icon":"🆕", "title":"Ch 3.7 · Structure 1-8",        "path": KV/"Norms-Book/npc_gen1/chapters/NEW_B3_C07_Structure_1-8_Framework.md","tier":"NEW"},
+    {"id":"ch-nes-wf",     "icon":"🆕", "title":"Ch 4.5 · NES Workflow",         "path": KV/"Norms-Book/npc_gen1/chapters/NEW_B4_C05_NES_Workflow.md",           "tier":"NEW"},
+    {"id":"ch-review",     "icon":"🆕", "title":"Ch 6.19 · Review System",       "path": KV/"Norms-Book/npc_gen1/chapters/NEW_B6_C19_Review_System.md",          "tier":"NEW"},
+]
+
+def collect_must_read():
+    """Embed must-read files inline · accessible on mobile"""
+    out = []
+    for spec in MUST_READ_FILES:
+        path = spec["path"]
+        if not path.exists():
+            continue
+        try:
+            content = path.read_text(encoding="utf-8")
+            stat = path.stat()
+            mtime_ago = get_relative_time(stat.st_mtime)
+            out.append({
+                "id": spec["id"],
+                "icon": spec["icon"],
+                "title": spec["title"],
+                "tier": spec["tier"],
+                "content": content,
+                "size": len(content),
+                "lines": content.count("\n") + 1,
+                "mtime_ago": mtime_ago,
+                "path_short": str(path).replace(str(HOME), "~"),
+            })
+        except Exception:
+            pass
+    return out
+
 def collect_retranscribe_mission():
     """Full re-transcribe mission — accurate model across all sources"""
     # Source totals (accurate target = all 4 corpora)
@@ -360,6 +405,7 @@ def build():
     system = collect_system_health()
     phases = collect_phase_progress()
     mission = collect_retranscribe_mission()
+    must_read = collect_must_read()
 
     # Pipeline-derived values
     pipe_total_done = sum(v["done"] for v in pipeline.values())
@@ -399,6 +445,7 @@ def build():
         "system": system,
         "phases": phases,
         "mission": mission,
+        "must_read": must_read,
         "projects": PROJECTS,
         "todos": TODOS,
         "stats": {
@@ -493,6 +540,9 @@ body{{background:radial-gradient(ellipse at top,rgba(212,122,42,.05),transparent
 
 /* ── LAYOUT ────────────────────────────────────────────────────── */
 .app{{max-width:1400px;margin:0 auto;padding:16px;padding-bottom:calc(120px + var(--sb))}}
+.panel{{display:none;animation:fadein .25s ease}}
+.panel.active{{display:block}}
+@keyframes fadein{{from{{opacity:0;transform:translateY(6px)}}to{{opacity:1;transform:translateY(0)}}}}
 .grid{{display:grid;gap:14px}}
 .grid-2{{grid-template-columns:repeat(2,1fr)}}
 .grid-3{{grid-template-columns:repeat(3,1fr)}}
@@ -786,16 +836,82 @@ body{{background:radial-gradient(ellipse at top,rgba(212,122,42,.05),transparent
   display:flex;align-items:center;justify-content:center;background:var(--surface);
   border-radius:50%;cursor:pointer;font-size:18px;line-height:1;border:none;color:var(--text)}}
 
-/* ── FOOTER (Mission control bar) ─────────────────────────────── */
-.footer-bar{{position:fixed;bottom:calc(var(--sb) + 12px);left:50%;transform:translateX(-50%);
+/* ── BOTTOM NAV (Mission control bar) ─────────────────────────── */
+.bnav{{position:fixed;bottom:calc(var(--sb) + 12px);left:50%;transform:translateX(-50%);
   background:rgba(18,18,20,.95);border:1px solid var(--border-glow);
   border-radius:50px;padding:6px 8px;display:flex;gap:2px;
-  backdrop-filter:blur(20px);box-shadow:0 12px 36px rgba(0,0,0,.7);z-index:100}}
-.fb-btn{{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 14px;
+  backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);
+  box-shadow:0 12px 36px rgba(0,0,0,.7);z-index:100}}
+.nb{{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 13px;
   border:none;background:none;color:var(--muted);font-size:9px;font-weight:700;
-  cursor:pointer;border-radius:40px;letter-spacing:.04em;transition:all .2s}}
-.fb-btn .ic{{font-size:18px;line-height:1}}
-.fb-btn.on{{background:linear-gradient(135deg,rgba(212,122,42,.2),rgba(255,46,151,.1));color:#fff}}
+  cursor:pointer;border-radius:40px;letter-spacing:.04em;transition:all .2s;white-space:nowrap}}
+.nb .ic{{font-size:18px;line-height:1;transition:transform .2s}}
+.nb.on{{background:linear-gradient(135deg,rgba(212,122,42,.25),rgba(0,212,255,.15));color:#fff;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}}
+.nb.on .ic{{transform:scale(1.1)}}
+.nb-badge{{position:absolute;top:2px;right:6px;min-width:14px;height:14px;padding:0 4px;
+  background:var(--red);color:#fff;font-size:8px;font-weight:800;border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 8px var(--red-glow)}}
+
+/* ── READ PANEL ────────────────────────────────────────────────── */
+.read-search{{position:sticky;top:62px;z-index:10;
+  background:rgba(10,10,11,.85);backdrop-filter:blur(20px);
+  padding:10px 0;margin:-16px -16px 14px;padding-left:16px;padding-right:16px}}
+.read-search input{{width:100%;background:var(--raised);border:1px solid var(--border);
+  border-radius:50px;padding:10px 16px;color:var(--text);font-size:13px;font-family:inherit;
+  outline:none;transition:border-color .2s}}
+.read-search input:focus{{border-color:var(--cyan)}}
+.read-list{{display:flex;flex-direction:column;gap:8px}}
+.read-card{{background:var(--raised);border:1px solid var(--border);border-radius:var(--r-sm);
+  overflow:hidden;transition:border-color .2s}}
+.read-card.open{{border-color:var(--cyan-glow)}}
+.read-head{{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;
+  user-select:none}}
+.read-icon{{font-size:18px;flex-shrink:0}}
+.read-body{{flex:1;min-width:0}}
+.read-title{{font-size:13px;font-weight:700;line-height:1.3}}
+.read-meta{{font-size:10px;color:var(--muted);margin-top:2px;font-feature-settings:"tnum"}}
+.read-tier{{font-size:9px;font-weight:800;padding:3px 7px;border-radius:4px;letter-spacing:.06em;flex-shrink:0}}
+.read-tier.p1{{background:rgba(255,46,151,.15);color:var(--magenta)}}
+.read-tier.p2{{background:rgba(212,122,42,.15);color:var(--amber-2)}}
+.read-tier.p3{{background:rgba(0,212,255,.15);color:var(--cyan)}}
+.read-tier.new{{background:rgba(0,245,147,.15);color:var(--green)}}
+.read-chevron{{color:var(--muted);transition:transform .25s;font-size:14px;flex-shrink:0}}
+.read-card.open .read-chevron{{transform:rotate(90deg);color:var(--cyan)}}
+.read-content{{display:none;padding:0 16px 16px;border-top:1px solid var(--border);
+  font-size:13px;line-height:1.6;color:var(--t2);max-height:60vh;overflow-y:auto}}
+.read-card.open .read-content{{display:block}}
+.read-content h1,.read-content h2,.read-content h3{{color:var(--text);margin:14px 0 8px;font-weight:800;letter-spacing:-.01em}}
+.read-content h1{{font-size:18px}}.read-content h2{{font-size:15px;color:var(--amber-2)}}
+.read-content h3{{font-size:13px;color:var(--cyan)}}
+.read-content p{{margin:8px 0;color:var(--t2)}}
+.read-content ul,.read-content ol{{margin:8px 0;padding-left:22px}}
+.read-content li{{margin:3px 0}}
+.read-content code{{background:var(--surface);padding:1px 6px;border-radius:4px;
+  font-family:"SF Mono",Menlo,monospace;font-size:11px;color:var(--amber-2)}}
+.read-content pre{{background:var(--surface);padding:10px;border-radius:6px;overflow-x:auto;
+  font-size:11px;line-height:1.5;margin:8px 0;border:1px solid var(--border)}}
+.read-content pre code{{background:none;padding:0;color:var(--text)}}
+.read-content blockquote{{border-left:3px solid var(--amber);padding:6px 12px;margin:8px 0;
+  background:rgba(212,122,42,.04);color:var(--t2);font-style:italic}}
+.read-content table{{width:100%;border-collapse:collapse;margin:8px 0;font-size:11px}}
+.read-content th,.read-content td{{padding:6px 10px;border:1px solid var(--border);text-align:left}}
+.read-content th{{background:var(--surface);color:var(--amber-2);font-weight:700}}
+.read-content a{{color:var(--cyan)}}
+.read-content hr{{border:none;border-top:1px solid var(--border);margin:14px 0}}
+.read-content strong{{color:var(--text)}}
+
+/* must-read shortcuts (overview panel) */
+.shortcut-grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}}
+.shortcut{{background:var(--raised);border:1px solid var(--border);border-radius:var(--r-sm);
+  padding:10px 12px;cursor:pointer;text-align:left;transition:all .15s;position:relative;overflow:hidden}}
+.shortcut:hover{{border-color:var(--cyan-glow);transform:translateY(-1px)}}
+.shortcut::before{{content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--cyan),var(--magenta));opacity:.6}}
+.shortcut-icon{{font-size:18px;margin-bottom:4px}}
+.shortcut-l{{font-size:11px;font-weight:700;line-height:1.3}}
+.shortcut-s{{font-size:9px;color:var(--muted);margin-top:2px}}
 
 /* update banner */
 .upd{{position:fixed;top:60px;left:50%;transform:translateX(-50%);
@@ -824,76 +940,102 @@ body{{background:radial-gradient(ellipse at top,rgba(212,122,42,.05),transparent
 
 <div class="app">
 
-  <!-- ── HERO MISSION ──────────────────────────────────────── -->
-  <div class="hero-mission">
-    <div class="hero-row">
-      <div class="hero-count">{days_left}</div>
-      <div class="hero-text">
-        <div class="hero-eyebrow">🥇 NPC Mission · Norms Book + Website</div>
-        <div class="hero-title">Days until launch</div>
-        <div class="hero-sub">2026-07-19 · Phase 2 sign-off pending · Phase 3 production active</div>
-        <div class="hero-phase-strip" id="phase-strip"></div>
+  <!-- ═══ HOME PANEL ═══════════════════════════════════════════════ -->
+  <div class="panel active" id="p-home">
+    <!-- Hero countdown -->
+    <div class="hero-mission">
+      <div class="hero-row">
+        <div class="hero-count">{days_left}</div>
+        <div class="hero-text">
+          <div class="hero-eyebrow">🥇 NPC Mission · Norms Book + Website</div>
+          <div class="hero-title">Days until launch</div>
+          <div class="hero-sub">2026-07-19 · Phase 2 sign-off pending · Phase 3 production active</div>
+          <div class="hero-phase-strip" id="phase-strip"></div>
+        </div>
       </div>
     </div>
+
+    <!-- KPI cards -->
+    <div class="kpi-row">
+      <div class="kpi k-amber">
+        <div class="kpi-l">Accurate Batch</div>
+        <div class="kpi-n">{accurate_pct}%</div>
+        <div class="kpi-sub">{accurate_done}/25 EP · background</div>
+      </div>
+      <div class="kpi k-cyan">
+        <div class="kpi-l">Chapters · New</div>
+        <div class="kpi-n">{chapters_new}/{chapters_total}</div>
+        <div class="kpi-sub">drafted Phase 3</div>
+      </div>
+      <div class="kpi k-magenta">
+        <div class="kpi-l">Memory</div>
+        <div class="kpi-n">{memory_total}</div>
+        <div class="kpi-sub">items active</div>
+      </div>
+      <div class="kpi k-green">
+        <div class="kpi-l">Disk</div>
+        <div class="kpi-n">{disk_pct}%</div>
+        <div class="kpi-sub">{disk_used} used</div>
+      </div>
+    </div>
+
+    <!-- Live now -->
+    <div class="section-h"><span class="section-h-icon">⚡</span><span class="section-h-l">Live now</span><div class="section-h-line"></div></div>
+    <div id="live-running"></div>
+
+    <!-- Must-read shortcuts -->
+    <div class="section-h"><span class="section-h-icon">📖</span><span class="section-h-l">Quick read · จากที่ไหนก็ได้</span><div class="section-h-line"></div></div>
+    <div class="shortcut-grid" id="shortcut-grid"></div>
   </div>
 
-  <!-- ── KPI ROW ────────────────────────────────────────────── -->
-  <div class="kpi-row">
-    <div class="kpi k-amber">
-      <div class="kpi-l">Accurate Batch</div>
-      <div class="kpi-n">{accurate_pct}%</div>
-      <div class="kpi-sub">{accurate_done}/25 EP · background</div>
-    </div>
-    <div class="kpi k-cyan">
-      <div class="kpi-l">Chapters · New</div>
-      <div class="kpi-n">{chapters_new}/{chapters_total}</div>
-      <div class="kpi-sub">drafted Phase 3</div>
-    </div>
-    <div class="kpi k-magenta">
-      <div class="kpi-l">Memory</div>
-      <div class="kpi-n">{memory_total}</div>
-      <div class="kpi-sub">items active</div>
-    </div>
-    <div class="kpi k-green">
-      <div class="kpi-l">Disk</div>
-      <div class="kpi-n">{disk_pct}%</div>
-      <div class="kpi-sub">{disk_used} used</div>
-    </div>
+  <!-- ═══ PROJECTS PANEL ════════════════════════════════════════════ -->
+  <div class="panel" id="p-projects">
+    <div class="section-h"><span class="section-h-icon">🚀</span><span class="section-h-l">Projects · priority order</span><div class="section-h-line"></div></div>
+    <div class="proj-grid" id="proj-grid"></div>
+
+    <div class="section-h"><span class="section-h-icon">📋</span><span class="section-h-l">Action items</span><div class="section-h-line"></div></div>
+    <div id="todo-list"></div>
   </div>
 
-  <!-- ── RE-TRANSCRIBE MISSION ──────────────────────────────── -->
-  <div class="section-h"><span class="section-h-icon">🎤</span><span class="section-h-l">Re-transcribe mission · accurate model</span><div class="section-h-line"></div></div>
-  <div class="mission-box" id="mission-box"></div>
+  <!-- ═══ PIPELINE PANEL ════════════════════════════════════════════ -->
+  <div class="panel" id="p-pipeline">
+    <div class="section-h"><span class="section-h-icon">🎤</span><span class="section-h-l">Re-transcribe mission · accurate model</span><div class="section-h-line"></div></div>
+    <div class="mission-box" id="mission-box"></div>
 
-  <!-- ── LIVE NOW ───────────────────────────────────────────── -->
-  <div class="section-h"><span class="section-h-icon">⚡</span><span class="section-h-l">Live now</span><div class="section-h-line"></div></div>
-  <div id="live-running"></div>
+    <div class="section-h"><span class="section-h-icon">🎙️</span><span class="section-h-l">Transcription pipeline</span><div class="section-h-line"></div></div>
+    <div class="pipe-grid" id="pipe-grid"></div>
 
-  <!-- ── PROJECTS ───────────────────────────────────────────── -->
-  <div class="section-h"><span class="section-h-icon">🚀</span><span class="section-h-l">Projects · priority order</span><div class="section-h-line"></div></div>
-  <div class="proj-grid" id="proj-grid"></div>
+    <div class="section-h"><span class="section-h-icon">📦</span><span class="section-h-l">Git repos · {git_dirty} dirty</span><div class="section-h-line"></div></div>
+    <div class="grid grid-2" id="git-grid"></div>
+  </div>
 
-  <!-- ── PIPELINE TRACKER ───────────────────────────────────── -->
-  <div class="section-h"><span class="section-h-icon">🎙️</span><span class="section-h-l">Transcription pipeline</span><div class="section-h-line"></div></div>
-  <div class="pipe-grid" id="pipe-grid"></div>
+  <!-- ═══ SYSTEM PANEL ══════════════════════════════════════════════ -->
+  <div class="panel" id="p-system">
+    <div class="section-h"><span class="section-h-icon">⚙️</span><span class="section-h-l">Claude sessions</span><div class="section-h-line"></div></div>
+    <div class="grid grid-2" id="cl-grid"></div>
 
-  <!-- ── CLAUDE SESSIONS ────────────────────────────────────── -->
-  <div class="section-h"><span class="section-h-icon">⚙️</span><span class="section-h-l">Claude sessions</span><div class="section-h-line"></div></div>
-  <div class="grid grid-2" id="cl-grid"></div>
+    <div class="section-h"><span class="section-h-icon">🗂️</span><span class="section-h-l">Knowledge base</span><div class="section-h-line"></div></div>
+    <div class="stat-grid" id="vault-grid"></div>
+  </div>
 
-  <!-- ── TODOS ──────────────────────────────────────────────── -->
-  <div class="section-h"><span class="section-h-icon">📋</span><span class="section-h-l">Action items</span><div class="section-h-line"></div></div>
-  <div id="todo-list"></div>
-
-  <!-- ── GIT REPOS ──────────────────────────────────────────── -->
-  <div class="section-h"><span class="section-h-icon">📦</span><span class="section-h-l">Git repos · {git_dirty} dirty</span><div class="section-h-line"></div></div>
-  <div class="grid grid-2" id="git-grid"></div>
-
-  <!-- ── VAULT + MEMORY ─────────────────────────────────────── -->
-  <div class="section-h"><span class="section-h-icon">🗂️</span><span class="section-h-l">Knowledge base</span><div class="section-h-line"></div></div>
-  <div class="stat-grid" id="vault-grid"></div>
+  <!-- ═══ READ PANEL ════════════════════════════════════════════════ -->
+  <div class="panel" id="p-read">
+    <div class="read-search">
+      <input type="text" id="read-search-input" placeholder="🔍 ค้นหาในไฟล์ทั้งหมด..." autocomplete="off">
+    </div>
+    <div class="read-list" id="read-list"></div>
+  </div>
 
 </div>
+
+<!-- Bottom nav bar -->
+<nav class="bnav">
+  <button class="nb on" data-panel="p-home"><span class="ic">🏠</span><span>Home</span></button>
+  <button class="nb" data-panel="p-projects"><span class="ic">🚀</span><span>Projects</span></button>
+  <button class="nb" data-panel="p-pipeline"><span class="ic">🎤</span><span>Pipeline</span></button>
+  <button class="nb" data-panel="p-system"><span class="ic">⚙️</span><span>System</span></button>
+  <button class="nb" data-panel="p-read"><span class="ic">📖</span><span>Read</span></button>
+</nav>
 
 <!-- ── MODAL ────────────────────────────────────────────────── -->
 <div class="modal-bg" id="modal-bg" onclick="if(event.target===this)closeModal()">
@@ -1162,6 +1304,115 @@ function renderVault(){{
   el.innerHTML = tiles.join('');
 }}
 
+// ─── MARKDOWN → HTML (lightweight) ──────────────────────────
+function md2html(md){{
+  // Escape HTML
+  let h = md.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  // Code blocks (fenced)
+  h = h.replace(/```([a-z]*)\\n([\\s\\S]*?)```/g, (m,lang,code) => `<pre><code>${{code}}</code></pre>`);
+  // Tables (basic GFM)
+  h = h.replace(/((?:^\\|[^\\n]+\\|\\n)+)/gm, table => {{
+    const rows = table.trim().split('\\n');
+    if(rows.length < 2) return table;
+    const head = rows[0].split('|').slice(1,-1).map(c => `<th>${{c.trim()}}</th>`).join('');
+    const body = rows.slice(2).map(r => '<tr>' + r.split('|').slice(1,-1).map(c => `<td>${{c.trim()}}</td>`).join('') + '</tr>').join('');
+    return `<table><thead><tr>${{head}}</tr></thead><tbody>${{body}}</tbody></table>`;
+  }});
+  // Headings
+  h = h.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+  h = h.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+  h = h.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+  // Blockquote
+  h = h.replace(/^&gt; (.+)$/gm, '<blockquote>$1</blockquote>');
+  // Horizontal rule
+  h = h.replace(/^---$/gm, '<hr>');
+  // Bold + italic
+  h = h.replace(/\\*\\*([^*]+)\\*\\*/g, '<strong>$1</strong>');
+  // Inline code
+  h = h.replace(/`([^`]+)`/g, '<code>$1</code>');
+  // Wiki-links [[foo]]
+  h = h.replace(/\\[\\[([^\\]]+)\\]\\]/g, '<a>$1</a>');
+  // Links [text](url)
+  h = h.replace(/\\[([^\\]]+)\\]\\(([^)]+)\\)/g, '<a href="$2">$1</a>');
+  // Lists
+  h = h.replace(/^(?:- |\\* )(.+)$/gm, '<li>$1</li>');
+  h = h.replace(/(<li>[\\s\\S]*?<\\/li>(?:\\n<li>[\\s\\S]*?<\\/li>)*)/g, '<ul>$1</ul>');
+  // Paragraphs (double newline)
+  h = h.split(/\\n\\n+/).map(p => {{
+    p = p.trim();
+    if (!p) return '';
+    if (p.startsWith('<')) return p;
+    return '<p>' + p.replace(/\\n/g, '<br>') + '</p>';
+  }}).join('\\n');
+  return h;
+}}
+
+// ─── READ PANEL ─────────────────────────────────────────────
+let readSearchQuery = '';
+function renderRead(){{
+  const list = document.getElementById('read-list');
+  const q = readSearchQuery.toLowerCase().trim();
+  const filtered = D.must_read.filter(f => !q ||
+    f.title.toLowerCase().includes(q) || f.content.toLowerCase().includes(q));
+  list.innerHTML = filtered.map(f => {{
+    const sizeKb = (f.size / 1024).toFixed(1);
+    return `<div class="read-card" id="rc-${{f.id}}">
+      <div class="read-head" onclick="toggleRead('${{f.id}}')">
+        <span class="read-icon">${{f.icon}}</span>
+        <div class="read-body">
+          <div class="read-title">${{f.title}}</div>
+          <div class="read-meta">${{f.lines}} lines · ${{sizeKb}}KB · updated ${{f.mtime_ago}}</div>
+        </div>
+        <span class="read-tier ${{f.tier.toLowerCase()}}">${{f.tier}}</span>
+        <span class="read-chevron">›</span>
+      </div>
+      <div class="read-content" id="rcc-${{f.id}}"></div>
+    </div>`;
+  }}).join('') || '<div style="text-align:center;color:var(--muted);padding:30px;font-size:13px">No files match "' + q + '"</div>';
+}}
+function toggleRead(id){{
+  const card = document.getElementById('rc-' + id);
+  const content = document.getElementById('rcc-' + id);
+  const isOpen = card.classList.contains('open');
+  if (isOpen) {{
+    card.classList.remove('open');
+  }} else {{
+    if (!content.dataset.rendered) {{
+      const file = D.must_read.find(f => f.id === id);
+      content.innerHTML = md2html(file.content);
+      content.dataset.rendered = '1';
+    }}
+    card.classList.add('open');
+  }}
+}}
+
+// ─── SHORTCUTS (Home panel) ─────────────────────────────────
+function renderShortcuts(){{
+  const el = document.getElementById('shortcut-grid');
+  // Top 8 most important
+  const priority = ['status','phase2','phase1-km','worklog-book','handoff-sync','npc-website','ch-3pillar','ch-psy1'];
+  const items = priority.map(id => D.must_read.find(f => f.id === id)).filter(Boolean);
+  el.innerHTML = items.map(f => `
+    <div class="shortcut" onclick="switchPanel('p-read');setTimeout(()=>toggleRead('${{f.id}}'),100)">
+      <div class="shortcut-icon">${{f.icon}}</div>
+      <div class="shortcut-l">${{f.title}}</div>
+      <div class="shortcut-s">${{f.mtime_ago}}</div>
+    </div>
+  `).join('');
+}}
+
+// ─── TAB SWITCHING ──────────────────────────────────────────
+function switchPanel(targetId){{
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
+  document.getElementById(targetId).classList.add('active');
+  document.querySelector(`.nb[data-panel="${{targetId}}"]`).classList.add('on');
+  window.scrollTo({{ top: 0, behavior: 'smooth' }});
+}}
+document.querySelectorAll('.nb').forEach(btn => {{
+  btn.addEventListener('click', () => switchPanel(btn.dataset.panel));
+}});
+
 // ─── AUTO-REFRESH check ─────────────────────────────────────
 function checkUpdate(){{
   fetch(location.href + '?_=' + Date.now(), {{cache: 'no-store'}})
@@ -1176,6 +1427,14 @@ setInterval(checkUpdate, 60000);
 renderPhases();
 renderMission();
 renderLive();
+renderShortcuts();
+renderRead();
+// Search bar listener
+const searchInput = document.getElementById('read-search-input');
+if (searchInput) searchInput.addEventListener('input', e => {{
+  readSearchQuery = e.target.value;
+  renderRead();
+}});
 renderProjects();
 renderPipeline();
 renderClaude();
