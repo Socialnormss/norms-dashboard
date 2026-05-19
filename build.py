@@ -30,17 +30,22 @@ def count_txt(path):
 def count_txt_multi(*paths):
     return sum(count_txt(p) for p in paths)
 
+DRAFTS = KV / "content_drafts"  # paused per no-API memory
+
 def load_drafts():
     if not DRAFTS.exists(): return []
     return [json.loads(f.read_text(encoding="utf-8")) for f in sorted(DRAFTS.glob("*.json"))]
 
 def get_pipeline():
     nmspc_done = count_txt_multi(TRANS/"nmspc2026", TRANS/"nmspc2026_misc", TRANS/"nmspc2026_plan")
+    accurate_dir = KV / "transcripts_accurate" / "npc_gen1"
+    accurate_done = count_txt(accurate_dir)
     return {
-        "npc_gen1":  {"done": count_txt(TRANS/"npc_gen1"),      "total": 168,                       "label": "NPC Gen1"},
-        "npc_gen2":  {"done": count_txt(TRANS/"npc_gen2"),      "total": 145,                       "label": "NPC Gen2"},
-        "nmspc2026": {"done": nmspc_done,                       "total": max(nmspc_done, 62),        "label": "NMSPC 2026"},
-        "facebook":  {"done": count_txt(TRANS/"facebook_live"), "total": count_mp4(FB_SRC) or 224,  "label": "Facebook Live"},
+        "npc_gen1":   {"done": count_txt(TRANS/"npc_gen1"),      "total": 168,                       "label": "NPC Gen1 (turbo)"},
+        "accurate":   {"done": accurate_done,                    "total": 25,                        "label": "Accurate Batch (Phase 1)"},
+        "npc_gen2":   {"done": count_txt(TRANS/"npc_gen2"),      "total": 145,                       "label": "NPC Gen2"},
+        "nmspc2026":  {"done": nmspc_done,                       "total": max(nmspc_done, 62),        "label": "NMSPC 2026"},
+        "facebook":   {"done": count_txt(TRANS/"facebook_live"), "total": count_mp4(FB_SRC) or 224,  "label": "Facebook Live"},
     }
 
 def get_claude_stats():
@@ -122,58 +127,66 @@ def get_claude_stats():
     return sessions
 
 PROJECTS = [
-    {"id":"npc-book","icon":"📚","title":"NPC Book","subtitle":"3 เล่ม · 58 บท","status":"done","progress":100,
-     "details":["Stage 1–4 ✅ ครบทุก stage","58 บทเขียนเสร็จแล้ว","3 HTML books พร้อม"],"next":"ส่งทีมตรวจ พุธ 20 พ.ค."},
-    {"id":"content","icon":"📣","title":"Content Pipeline","subtitle":"58 drafts พร้อมโพสต์","status":"done","progress":100,
-     "details":["📘 อ่านตลาดได้ 22 บท","📙 หลิวคิดอะไรอยู่ 18 บท","📗 จิตใจนักเทรด 18 บท"],"next":"เติม API credit → รัน content_pipeline.py"},
-    {"id":"transcription","icon":"🎙️","title":"Transcription","subtitle":"แปล video → text","status":"running","progress":0,
-     "details":[],"next":"รันทิ้งข้ามคืน · orchestrator auto-restart"},
-    {"id":"norms-corp","icon":"🏢","title":"Norms Corp","subtitle":"9 departments · AI agents","status":"phase1","progress":40,
-     "details":["✅ Structure + CLAUDE.md + INDEX.md + WORKFLOW.md","✅ Agent Briefs ครบ 9 แผนก","✅ AI Empire dissolved → merged","⏳ Phase 2: API orchestration"],"next":"Phase 2: orchestrator.py + task queue"},
+    {"id":"norms-book","icon":"🥇","title":"Norms Book + Website","subtitle":"NPC course flagship · ฿50K","status":"phase1","progress":55,
+     "details":["✅ 17/17 Q sign-off (A1-A10 · B1-B7)","✅ Phase 1 KM v1 · 12 EP","✅ 6-block curriculum locked","✅ Phase 2 v1 draft · 53 NPC + 4 T1 + 4 T3","✅ Phase 3 mechanical pass · 12 ch edited","✅ 6 new chapters drafted (842 lines)","⏳ รอ หลิว sign-off C1-C10"],"next":"หลิว review C1-C10 → unlock Phase 3 production"},
+    {"id":"npc-website","icon":"🌐","title":"NPC Website (Hero Visual)","subtitle":"Apple-premium landing","status":"phase1","progress":35,
+     "details":["✅ Content A1-A10 locked","✅ Visual direction notes (Section 6)","✅ Hero copy: \"เทรดด้วย WYCKOFF ไม่ใช่ด้วยความหวัง\"","✅ 6-block curriculum · Tally form · phase refund","⏳ รอ Pro Hero cinematic visual"],"next":"Pro session → Hero visual implementation"},
+    {"id":"dog-feeder","icon":"🐕","title":"Dog Feeder v3","subtitle":"Soft Cozy redesign","status":"phase1","progress":60,
+     "details":["✅ v2.1 live · skip-meal + nutrition","✅ Round 2 (Soft Cozy) mockup ผ่าน","✅ Font prompt + Magnific 4 sheets dictated","⏳ รอ CSS+HTML จาก Claude Design"],"next":"Max integrate after Pro assets done"},
+    {"id":"hero-bell","icon":"🦸","title":"Hero (Bell's Project)","subtitle":"Claude Project · BD Manager AI","status":"phase1","progress":85,
+     "details":["✅ Project deployed @ liewsk129","✅ 7 knowledge files + system prompt","✅ Test 9/10 passed","✅ Memory updated","⏳ V2 vision: brief→deliverable automation"],"next":"V2 design session 2026-05-20"},
+    {"id":"transcription","icon":"🎙️","title":"Transcription","subtitle":"Accurate batch · 25 EP","status":"running","progress":0,
+     "details":[],"next":"Background batch · ETA 2 วัน · accurate model"},
+    {"id":"migration","icon":"🚀","title":"Migration → Claude Max","subtitle":"socialnorms.t@gmail.com","status":"done","progress":100,
+     "details":["✅ APIFY migrated","✅ Firebase Owner transfer","✅ Backup complete","✅ Two-instance setup (Max + Pro)"],"next":"—"},
+    {"id":"norms-corp","icon":"🏢","title":"Norms Corp Infra","subtitle":"9 departments · ownership table","status":"phase1","progress":50,
+     "details":["✅ Structure + CLAUDE.md + INDEX.md","✅ SYNC system (HANDOFF · MAX-LOG · PRO-LOG)","✅ Memory system v2","⏳ Phase 2: orchestrator + task queue"],"next":"Phase 2 orchestrator · backlog"},
     {"id":"digital-twin","icon":"🤖","title":"Digital Twin","subtitle":"AI ที่สอนแบบหลิว","status":"blocked","progress":5,
-     "details":["🔴 ต้องการ 50 golden Logic Notes","🔴 ThinkAloud Pass 2 ยังไม่รัน","✅ DigitalTwin_Config.md พร้อม","✅ ThinkAloud_Prompt.md พร้อม"],"next":"รอ transcript ครบ → ThinkAloud → human review → golden"},
-    {"id":"aa","icon":"⚡","title":"AA System","subtitle":"Another AI · Workflow framework","status":"research","progress":30,
-     "details":["✅ Case studies: Ali Abdaal + ลงทุน Diary","✅ Synthesis + Priority Matrix","⏳ Whisper Flow ยังไม่ติดตั้ง","⏳ NotebookLM MCP ยังไม่ set up"],"next":"ติดตั้ง Whisper Flow (impact สูงสุด)"},
+     "details":["🔴 ต้องการ 50 golden Logic Notes","🔴 ThinkAloud Pass 2 ยังไม่รัน","✅ Config + Prompt พร้อม"],"next":"รอ transcript จบ → ThinkAloud → review → golden"},
+    {"id":"aa","icon":"⚡","title":"AA System","subtitle":"Another AI · workflow","status":"research","progress":35,
+     "details":["✅ APIFY ready","✅ NotebookLM MCP login","⏳ NPC transcripts notebook รอ upload"],"next":"NotebookLM bulk upload (manual per [[notebooklm-upload]])"},
 ]
 
 TODOS = {
     "urgent":[
-        {"text":"ส่ง NPC Book ให้ทีมตรวจ","due":"พุธ 20 พ.ค.","tag":"book"},
-        {"text":"Print HTML books → PDF (เปิด output/*.html → Print → Save as PDF)","due":"ก่อนพุธ","tag":"book"},
+        {"text":"หลิว review Phase 2 doc → ตอบ sign-off C1-C10","due":"ASAP","tag":"book"},
+        {"text":"Pro Hero visual implementation (cinematic)","due":"สัปดาห์นี้","tag":"website"},
+        {"text":"Dog Feeder v3: CSS+HTML จาก Claude Design → integrate","due":"สัปดาห์นี้","tag":"dog-feeder"},
     ],
     "soon":[
-        {"text":"เติม Anthropic API credit (58 บท < $0.10)","due":"สัปดาห์นี้","tag":"content"},
-        {"text":"ติดตั้ง Whisper Flow — พูดแทนพิมพ์ ลด friction 5-10x","due":"สัปดาห์นี้","tag":"aa"},
-        {"text":"Eightcap 3 posts (Gold → Oil/Silver pivot) รอ visuals","due":"สัปดาห์นี้","tag":"eightcap"},
+        {"text":"Phase 3 production: rename + reshape + 5 new chapters","due":"หลัง C1-C10 sign-off","tag":"book"},
+        {"text":"File rename B1_C11 → NES_Synthesis · B1_C13 → Liquidity_Complex","due":"หลัง sign-off","tag":"book"},
+        {"text":"Eightcap June onwards · รอ brief","due":"มิ.ย.","tag":"eightcap"},
+        {"text":"AnotherAi: NPC transcripts → NotebookLM (manual bulk)","due":"สัปดาห์นี้","tag":"aa"},
     ],
     "backlog":[
-        {"text":"รัน ThinkAloud Pass 2 → Logic Notes","due":"หลัง transcript จบ","tag":"knowledge"},
-        {"text":"Human review Logic Notes (เฉพาะ [UNCLEAR] flags)","due":"หลัง Pass 2","tag":"knowledge"},
-        {"text":"NPC Gen2 + NMSPC + Facebook Live books","due":"หลัง transcript","tag":"book"},
-        {"text":"ลอง NotebookLM MCP (ประหยัด token ระยะยาว)","due":"เดือนนี้","tag":"aa"},
-        {"text":"Phase 2: orchestrator.py + task queue","due":"เดือนหน้า","tag":"norms-corp"},
-        {"text":"Phase 3: Web Dashboard CEO → departments","due":"หลัง Phase 2","tag":"norms-corp"},
+        {"text":"Wyckoff Norms: 3D / cinematic visual","due":"ongoing","tag":"brand"},
+        {"text":"AI Vocab (125 fields)","due":"หลัง Norms Book","tag":"book"},
+        {"text":"Tickmill / FocusTrade sponsor","due":"TBD","tag":"sponsor"},
+        {"text":"NPC Gen2 + NMSPC + Facebook Live books","due":"หลัง transcript จบ","tag":"book"},
+        {"text":"Digital Twin: ThinkAloud Pass 2 → Logic Notes","due":"หลัง transcript","tag":"knowledge"},
+        {"text":"Norms Corp Phase 2 orchestrator","due":"เดือนหน้า","tag":"norms-corp"},
     ],
 }
 
 TOPICS = [
-    {"icon":"📚","title":"NPC Gen2 Book","detail":"หลัง transcript → book_pipeline → 4 เล่มใหม่"},
-    {"icon":"📺","title":"Facebook Live Book","detail":"~116 คลิป → insights การสอนสด → เล่มที่ 4"},
-    {"icon":"🎓","title":"ปรับ Class Structure","detail":"ใช้หนังสือทั้งหมดออกแบบหลักสูตร NMSPC + NPC รุ่นใหม่"},
-    {"icon":"🤖","title":"Digital Twin Training","detail":"50 golden notes → เริ่ม train ได้เลย"},
-    {"icon":"💰","title":"Eightcap Content System","detail":"workflow drafts → compliance → post"},
-    {"icon":"⚡","title":"AA Implementation","detail":"Whisper Flow + NotebookLM MCP + Custom MCP server"},
-    {"icon":"🏢","title":"Phase 2 Automation","detail":"Claude API orchestrator · CEO → departments task routing"},
-    {"icon":"🌐","title":"Social Norms Website V2","detail":"mentorship · advanced · about · free pages"},
+    {"icon":"🥇","title":"NPC Course Launch","detail":"2026-07-19 deadline · Block 1-6 curriculum · ฿50,000 · 90 วัน cohort"},
+    {"icon":"📚","title":"Phase 3 Production","detail":"หลัง sign-off C1-C10 → rename pass + 5 new chapters + Tier 1 packaging"},
+    {"icon":"🎨","title":"NPC Website Visual","detail":"Pro session · Hero cinematic · Apple-premium · mascot integration"},
+    {"icon":"🏗️","title":"Tier 1 Sub-courses","detail":"Prop Firm Challenge (ready) · Price Zone XAUUSD · Liquidity Mastery · Wyckoff F/G (parked)"},
+    {"icon":"📖","title":"Tier 3 PDF Library","detail":"4 reference PDFs · ATH · Portfolio · NNE · Wyckoff Complex (post-Phase 3)"},
+    {"icon":"🦸","title":"Hero V2 Vision","detail":"เบล brief → Hero deliverable พร้อมใช้ · Max CLI background · pipeline TBD"},
+    {"icon":"🤖","title":"Digital Twin Training","detail":"50 golden notes · ThinkAloud Pass 2 หลัง transcript จบ"},
+    {"icon":"🎓","title":"NPC Gen2 + NMSPC + FBLive","detail":"หลัง batch accurate · re-purpose สำหรับ Tier 1 + Tier 3"},
 ]
 
 PREPS = [
-    {"icon":"💳","title":"Anthropic API Credit","detail":"console.anthropic.com · 58 บท < $0.10 · รัน content_pipeline.py"},
-    {"icon":"🎙️","title":"Whisper Flow","detail":"whisperflow.app · กด Fn+Space แล้วพูด · ลด friction 5-10x"},
-    {"icon":"📒","title":"NotebookLM MCP","detail":"NPC 168 ไฟล์ใน NotebookLM · Claude query ตรงไป · ค้นหา 'notebooklm mcp' GitHub"},
-    {"icon":"📄","title":"NPC Book PDF","detail":"03-Knowledge/book_pipeline/output/*.html → Print → Save as PDF"},
-    {"icon":"🔌","title":"External Drive","detail":"เสียบ /Volumes/socialnorms ก่อนรัน transcription · orchestrator รอ auto"},
-    {"icon":"🎨","title":"Eightcap Visuals","detail":"3 posts รอ visuals · Gold→Oil/Silver · ดู EIGHTCAP_STYLE_GUIDE.md"},
+    {"icon":"📝","title":"Phase 2 Sign-off","detail":"`Vault/05-Projects/Norms-Book/Phase2-Architecture.md` Section 9 · ตอบ C1-C10"},
+    {"icon":"💻","title":"Chapter Edits (VS Code)","detail":"`~/Documents/Norms-Corp/Knowledge/Norms-Book/npc_gen1/chapters/` · 6 NEW_*.md ตอน review"},
+    {"icon":"🎤","title":"Accurate Batch Monitor","detail":"5/25 EP done · /tmp/accurate_batch.log · caffeinate · ETA ~2 วัน"},
+    {"icon":"🎨","title":"Pro Hero Visual Session","detail":"Hero cinematic · Wyckoff mascot · Apple-premium · `Vault/05-Projects/NPC/Website-Content-Draft.md` Section 6"},
+    {"icon":"🐕","title":"Dog Feeder v3 Assets","detail":"รอ Claude Design ส่ง CSS+HTML · Magnific 4 sheets dictated (Mascot · Time · Food · Danger)"},
+    {"icon":"🦸","title":"Hero V2 Design","detail":"2026-05-20 session · sync mechanism + output format + trigger flow"},
 ]
 
 SC = {
@@ -191,6 +204,11 @@ def build():
     claude_sessions = get_claude_stats()
     alive_count = sum(1 for s in claude_sessions if s["alive"])
 
+    # NPC launch deadline countdown
+    npc_deadline = datetime.date(2026, 7, 19)
+    days_left = (npc_deadline - now.date()).days
+    deadline_color = "var(--red)" if days_left <= 14 else "var(--amber)" if days_left <= 30 else "var(--green)"
+
     total_done  = sum(v["done"]  for v in pipeline.values())
     total_vids  = sum(v["total"] for v in pipeline.values())
     trans_pct   = round(total_done / total_vids * 100) if total_vids else 0
@@ -199,9 +217,12 @@ def build():
 
     for p in PROJECTS:
         if p["id"] == "transcription":
-            p["progress"] = trans_pct
+            acc = pipeline['accurate']
+            acc_pct = round(acc['done'] / acc['total'] * 100) if acc['total'] else 0
+            p["progress"] = acc_pct
             p["details"] = [
-                f"✅ NPC Gen1: {pipeline['npc_gen1']['done']}/{pipeline['npc_gen1']['total']}",
+                f"🔥 Accurate Batch: {acc['done']}/{acc['total']} EP ({acc_pct}%)",
+                f"✅ NPC Gen1 turbo: {pipeline['npc_gen1']['done']}/{pipeline['npc_gen1']['total']}",
                 f"{'🔄' if pipeline['npc_gen2']['done'] < pipeline['npc_gen2']['total'] else '✅'} NPC Gen2: {pipeline['npc_gen2']['done']}/{pipeline['npc_gen2']['total']}",
                 f"{'⏳' if pipeline['nmspc2026']['done'] == 0 else '🔄'} NMSPC 2026: {pipeline['nmspc2026']['done']}/{pipeline['nmspc2026']['total']}",
                 f"{'⏳' if pipeline['facebook']['done'] == 0 else '🔄'} Facebook Live: {pipeline['facebook']['done']}/{pipeline['facebook']['total']}",
@@ -468,6 +489,18 @@ html,body{{height:100%;overflow:hidden;background:var(--base);color:var(--text);
 
     <!-- OVERVIEW -->
     <div class="panel active" id="p-overview">
+      <!-- NPC Launch Countdown Banner -->
+      <div style="background:linear-gradient(135deg,rgba(212,122,42,.15),rgba(212,122,42,.05));border:1px solid rgba(212,122,42,.3);border-radius:14px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:14px">
+        <div style="flex-shrink:0;text-align:center;min-width:62px">
+          <div style="font-size:32px;font-weight:800;color:{deadline_color};line-height:1">{days_left}</div>
+          <div style="font-size:9px;color:var(--t2);font-weight:600;text-transform:uppercase;letter-spacing:.05em">days left</div>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:11px;color:var(--amber);font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px">🥇 NPC Launch Deadline</div>
+          <div style="font-size:14px;color:var(--text);font-weight:600;line-height:1.3">2026-07-19 · Norms Book + Website</div>
+          <div style="font-size:11px;color:var(--t2);margin-top:2px">Phase 2 sign-off pending · Phase 3 ready</div>
+        </div>
+      </div>
       <div class="hero">
         <div class="hcard c-green">
           <div class="hcard-inner">
@@ -477,8 +510,8 @@ html,body{{height:100%;overflow:hidden;background:var(--base);color:var(--text);
         </div>
         <div class="hcard c-amber">
           <div class="hcard-inner">
-            <div class="h-num">{draft_count}</div>
-            <div class="h-lbl">Content<br>Drafts</div>
+            <div class="h-num">{pipeline['accurate']['done']}/{pipeline['accurate']['total']}</div>
+            <div class="h-lbl">Accurate<br>Batch</div>
           </div>
         </div>
         <div class="hcard c-blue">
