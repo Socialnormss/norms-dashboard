@@ -559,8 +559,8 @@ body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent
 
 /* ── TOPBAR ────────────────────────────────────────────────────── */
 .topbar{{position:sticky;top:0;z-index:50;
-  background:rgba(10,10,11,.88);backdrop-filter:blur(20px) saturate(180%);
-  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  background:rgba(10,10,11,.96);backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
   border-bottom:1px solid var(--border);padding:10px 16px}}
 .topbar-row{{display:flex;align-items:center;gap:10px;max-width:1400px;margin:0 auto;flex-wrap:nowrap}}
 .logo{{font-weight:900;font-size:13px;letter-spacing:.04em;white-space:nowrap;
@@ -883,7 +883,7 @@ body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent
 }}
 
 /* ── READ PANEL · sub-tabs ───────────────────────────────────── */
-.read-tabs{{display:flex;gap:6px;overflow-x:auto;padding:6px 0 8px;margin-top:18px;margin-bottom:14px;
+.read-tabs{{display:flex;gap:6px;overflow-x:auto;padding:2px 0 4px;margin:0;
   scrollbar-width:none;-webkit-overflow-scrolling:touch}}
 .read-tabs::-webkit-scrollbar{{display:none}}
 .read-tab{{display:flex;align-items:center;gap:6px;padding:8px 14px;
@@ -897,11 +897,13 @@ body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent
 .read-tab-count{{font-size:9px;opacity:.7;font-weight:600}}
 
 /* ── READ PANEL ────────────────────────────────────────────────── */
-.read-search{{position:sticky;top:62px;z-index:10;
+/* Sticky composite: search + tabs together · no see-through gap */
+.read-sticky{{position:sticky;top:62px;z-index:10;
   background:var(--bg);
   backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);
-  border-bottom:1px solid var(--border);
-  padding:12px 16px;margin:-16px -16px 0}}
+  margin:-16px -16px 14px;padding:12px 16px 6px;
+  border-bottom:1px solid var(--border)}}
+.read-search{{margin:0 0 10px}}
 .read-search input{{width:100%;background:var(--raised);border:1px solid var(--border);
   border-radius:50px;padding:11px 16px;color:var(--text);font-size:14px;font-family:inherit;
   outline:none;transition:border-color .2s}}
@@ -1074,10 +1076,12 @@ body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent
 
   <!-- ═══ READ PANEL ════════════════════════════════════════════════ -->
   <div class="panel" id="p-read">
-    <div class="read-search">
-      <input type="text" id="read-search-input" placeholder="🔍 ค้นหาในไฟล์ทั้งหมด..." autocomplete="off">
+    <div class="read-sticky">
+      <div class="read-search">
+        <input type="text" id="read-search-input" placeholder="🔍 ค้นหาในไฟล์ทั้งหมด..." autocomplete="off">
+      </div>
+      <div class="read-tabs" id="read-tabs"></div>
     </div>
-    <div class="read-tabs" id="read-tabs"></div>
     <div class="read-list" id="read-list"></div>
   </div>
 
