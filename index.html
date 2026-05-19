@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="Norms Mission Control">
 <meta name="theme-color" content="#050505">
-<meta name="build-time" content="2026-05-19T23:29:21">
+<meta name="build-time" content="2026-05-19T23:35:40">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>Norms · Mission Control</title>
 <link rel="manifest" href="manifest.json">
@@ -69,6 +69,68 @@ body{background:radial-gradient(ellipse at top,rgba(212,122,42,.05),transparent 
 .grid-4{grid-template-columns:repeat(4,1fr)}
 @media (max-width:760px){.grid-3,.grid-4{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:480px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}}
+
+/* ── RE-TRANSCRIBE MISSION ────────────────────────────────────── */
+.mission-box{position:relative;border-radius:var(--r);overflow:hidden;
+  background:linear-gradient(135deg,#0a1a2a 0%,#1a0a2a 100%);
+  border:1px solid rgba(0,212,255,.3);
+  padding:20px 22px;margin-bottom:18px;
+  box-shadow:0 0 50px rgba(0,212,255,.15),inset 0 1px 0 rgba(255,255,255,.04)}
+.mission-box::before{content:"";position:absolute;inset:0;
+  background:radial-gradient(circle at 0% 100%,rgba(168,85,247,.15),transparent 60%);
+  pointer-events:none}
+.mission-box::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--cyan),var(--magenta),transparent);
+  animation:shimmer 5s linear infinite;background-size:200% 100%}
+.mission-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap;position:relative;z-index:1}
+.mission-title-wrap{flex:1;min-width:200px}
+.mission-eyebrow{font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--cyan);margin-bottom:4px}
+.mission-title{font-size:20px;font-weight:800;letter-spacing:-.01em}
+.mission-sub{font-size:12px;color:var(--t2);margin-top:2px}
+.mission-eta{text-align:right;flex-shrink:0}
+.mission-eta-n{font-size:32px;font-weight:900;line-height:1;letter-spacing:-.02em;
+  background:linear-gradient(135deg,var(--cyan),var(--magenta));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  font-feature-settings:"tnum"}
+.mission-eta-l{font-size:10px;color:var(--t2);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-top:3px}
+.mission-eta-date{font-size:11px;color:var(--cyan);font-weight:700;margin-top:4px;font-feature-settings:"tnum"}
+
+/* mega progress bar */
+.mission-mega-bar{height:14px;background:rgba(255,255,255,.04);border-radius:7px;overflow:hidden;
+  position:relative;margin-bottom:12px;border:1px solid rgba(255,255,255,.06)}
+.mission-mega-fill{height:100%;border-radius:7px;position:relative;overflow:hidden;
+  background:linear-gradient(90deg,var(--cyan),var(--magenta));
+  box-shadow:0 0 12px var(--cyan-glow);
+  transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+.mission-mega-fill::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);
+  background-size:200% 100%;animation:shimmer 2s linear infinite}
+.mission-mega-pct{position:absolute;top:50%;transform:translateY(-50%);left:50%;translate:-50% -50%;
+  font-size:10px;font-weight:800;color:#000;mix-blend-mode:overlay;font-feature-settings:"tnum"}
+
+/* mission stats grid */
+.mission-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+@media (max-width:640px){.mission-stats{grid-template-columns:repeat(2,1fr)}}
+.ms{padding:10px 12px;background:rgba(255,255,255,.03);border-radius:8px;
+  border:1px solid rgba(255,255,255,.05)}
+.ms-n{font-size:18px;font-weight:800;line-height:1;font-feature-settings:"tnum"}
+.ms-l{font-size:9px;color:var(--t2);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-top:4px}
+
+/* per-source breakdown */
+.mission-src-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+@media (max-width:520px){.mission-src-grid{grid-template-columns:1fr}}
+.msrc{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05);
+  border-radius:8px;padding:10px 12px}
+.msrc-h{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.msrc-icon{font-size:14px}
+.msrc-l{font-size:11px;font-weight:700;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.msrc-pct{font-size:10px;font-weight:800;color:var(--cyan);font-feature-settings:"tnum"}
+.msrc-nums{font-size:10px;color:var(--muted);margin-bottom:6px;font-feature-settings:"tnum"}
+.msrc-bar{height:5px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden}
+.msrc-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--magenta));
+  transition:width 1s cubic-bezier(.2,.8,.2,1);border-radius:3px}
+.msrc-fill.done{background:linear-gradient(90deg,var(--green),#7CFFE0);box-shadow:0 0 6px var(--green-glow)}
 
 /* ── HERO COUNTDOWN ───────────────────────────────────────────── */
 .hero-mission{position:relative;border-radius:var(--r);overflow:hidden;
@@ -318,9 +380,9 @@ body{background:radial-gradient(ellipse at top,rgba(212,122,42,.05),transparent 
 <div class="topbar">
   <div class="topbar-row">
     <div class="logo"><span class="logo-pulse"></span>NORMS · MISSION CONTROL</div>
-    <span class="update-ts">อัพเดท 19 May 26 · 23:29</span>
+    <span class="update-ts">อัพเดท 19 May 26 · 23:35</span>
     <div class="h-stats">
-      <div class="h-stat"><span class="h-stat-n" style="color:var(--green)">4</span><span class="h-stat-l">Live</span></div>
+      <div class="h-stat"><span class="h-stat-n" style="color:var(--green)">5</span><span class="h-stat-l">Live</span></div>
       <div class="h-stat"><span class="h-stat-n" style="color:var(--amber-2)">6/25</span><span class="h-stat-l">Acc.</span></div>
       <div class="h-stat"><span class="h-stat-n" style="color:var(--cyan)">6</span><span class="h-stat-l">New Ch.</span></div>
       <div class="h-stat"><span class="h-stat-n" style="color:var(--green)">✓</span><span class="h-stat-l">Drive</span></div>
@@ -369,6 +431,10 @@ body{background:radial-gradient(ellipse at top,rgba(212,122,42,.05),transparent 
     </div>
   </div>
 
+  <!-- ── RE-TRANSCRIBE MISSION ──────────────────────────────── -->
+  <div class="section-h"><span class="section-h-icon">🎤</span><span class="section-h-l">Re-transcribe mission · accurate model</span><div class="section-h-line"></div></div>
+  <div class="mission-box" id="mission-box"></div>
+
   <!-- ── LIVE NOW ───────────────────────────────────────────── -->
   <div class="section-h"><span class="section-h-icon">⚡</span><span class="section-h-l">Live now</span><div class="section-h-line"></div></div>
   <div id="live-running"></div>
@@ -405,8 +471,51 @@ body{background:radial-gradient(ellipse at top,rgba(212,122,42,.05),transparent 
 </div>
 
 <script>
-const D = {"ts": "2026-05-19T23:29:21", "days_left": 61, "pipeline": {"accurate": {"done": 6, "total": 25, "label": "Accurate Batch", "icon": "🔥", "priority": true}, "npc_gen1": {"done": 167, "total": 168, "label": "NPC Gen1 turbo", "icon": "🎙️"}, "npc_gen2": {"done": 145, "total": 145, "label": "NPC Gen2", "icon": "🎙️"}, "nmspc": {"done": 62, "total": 62, "label": "NMSPC 2026", "icon": "🎙️"}, "facebook": {"done": 222, "total": 223, "label": "Facebook Live", "icon": "📺"}}, "running": [{"type": "transcribe", "label": "Accurate · EP7-1 Noon 2025-02-24", "icon": "🎤"}], "sessions": [{"pid": 11356, "session_id": "1a067581", "cwd": "liew", "name": "ทำโปรเจกต์ฮีโร่กันต่อ", "alive": true, "runtime_min": 37, "tokens": {"in": 128, "out": 77111, "cache": 2667459, "latest_cache": 83281, "msgs": 53, "pct": 42}, "warn": false}, {"pid": 84588, "session_id": "79826f57", "cwd": "liew", "name": "Read ~/Documents/Obsidian\\ Vault/Social\\ Norms/STATUS.md", "alive": true, "runtime_min": 316, "tokens": {"in": 529, "out": 270471, "cache": 51340360, "latest_cache": 288056, "msgs": 301, "pct": 100}, "warn": true}, {"pid": 92374, "session_id": "17b9c48a", "cwd": "liew", "name": "Read ~/Documents/Obsidian\\ Vault/Social\\ Norms/STATUS.md", "alive": true, "runtime_min": 204, "tokens": {"in": 5018, "out": 612019, "cache": 78508909, "latest_cache": 358571, "msgs": 387, "pct": 100}, "warn": true}, {"pid": 62763, "session_id": "d9f6fe25", "cwd": "social-norms-website", "name": "สวัสดี", "alive": true, "runtime_min": 694, "tokens": {"in": 150, "out": 39024, "cache": 2026625, "latest_cache": 53059, "msgs": 62, "pct": 27}, "warn": false}], "git_repos": [{"name": "dashboard", "pending": 3, "last": "21m ago", "msg": "update: dashboard data refresh — Phase 2/3 NPC + countdown +", "status": "dirty"}, {"name": "norms-website", "pending": 1, "last": "2d ago", "msg": "add: Wyckoff Norms scroll-story page + 21 real XAUUSD diagra", "status": "dirty"}, {"name": "dog-feeder", "pending": 3, "last": "22m ago", "msg": "fix: v3.1 Cozy iteration 2 — calendar + nutrition palette + ", "status": "dirty"}, {"name": "bell-app", "pending": 0, "last": "9h ago", "msg": "V1.1 — Disney princess CI", "status": "clean"}], "chapters": {"total": 64, "new": 6, "original": 58, "edited_today": 20, "new_files": ["NEW_B1_C00_3-Pillar_Preview.md", "NEW_B3_C07_Structure_1-8_Framework.md", "NEW_B4_C05_NES_Workflow.md", "NEW_B5_C01_Psy1_Intro.md", "NEW_B6_C19_Review_System.md", "NEW_B6_C20_Market_is_a_Game.md"]}, "memory": {"total": 31, "by_type": {"user": 0, "feedback": 0, "project": 0, "reference": 0, "other": 31}}, "vault": [{"name": "00-Brand", "count": 11}, {"name": "01-Trading", "count": 6357}, {"name": "02-Content", "count": 66}, {"name": "03-Courses", "count": 2}, {"name": "04-Knowledge", "count": 42}, {"name": "05-Projects", "count": 28}, {"name": "06-Operations", "count": 12}, {"name": "_archive", "count": 8}], "system": {"disk": {"used": "335Gi", "total": "460Gi", "pct": 78}, "drive_mounted": true, "vault_exists": true}, "phases": [{"phase": 0, "label": "Strategy Lock", "status": "done", "pct": 100, "note": "Tier 0-3 · NMSPC sunset · NES locked"}, {"phase": 1, "label": "Knowledge Map", "status": "done", "pct": 100, "note": "12 EP sample · 7 B-decisions"}, {"phase": 2, "label": "Architecture", "status": "active", "pct": 70, "note": "v1 draft · awaiting C1-C10"}, {"phase": 3, "label": "Production", "status": "active", "pct": 35, "note": "Mechanical pass + 6 new chapters"}, {"phase": 4, "label": "Launch", "status": "pending", "pct": 0, "note": "Legal · screening · pre-launch QA"}], "projects": [{"id": "norms-book", "icon": "🥇", "title": "Norms Book + Website", "tier": "P1", "status": "phase1", "progress": 55, "subtitle": "NPC course flagship · ฿50K", "tag": "book", "details": ["17/17 Q sign-off complete", "Phase 2 v1 · 53 NPC + 4 T1 + 4 T3", "Phase 3 mechanical pass + 6 new chapters", "842 lines new content", "Awaiting หลิว sign-off C1-C10"], "next": "หลิว review → Phase 3 production", "deadline": "2026-07-19"}, {"id": "npc-website", "icon": "🌐", "title": "NPC Website", "tier": "P1", "status": "phase1", "progress": 35, "subtitle": "Apple-premium landing", "tag": "website", "details": ["Content A1-A10 locked", "Visual direction notes", "Hero copy locked", "6-block curriculum visible", "Awaiting Pro Hero cinematic"], "next": "Pro visual session", "deadline": "2026-07-19"}, {"id": "dog-feeder", "icon": "🐕", "title": "Dog Feeder v3", "tier": "P2", "status": "phase1", "progress": 60, "subtitle": "Soft Cozy redesign", "tag": "app", "details": ["v2.1 live · skip-meal", "Round 2 mockup ผ่าน", "4 Magnific sheets dictated", "Awaiting CSS+HTML from Pro"], "next": "Pro assets → Max integrate"}, {"id": "hero-bell", "icon": "🦸", "title": "Hero (Bell)", "tier": "P2", "status": "phase1", "progress": 85, "subtitle": "Claude Project · BD Manager AI", "tag": "client", "details": ["Deployed @ liewsk129", "7 knowledge files", "Test 9/10 passed", "V2 vision: brief→deliverable"], "next": "V2 design 2026-05-20"}, {"id": "transcription", "icon": "🎙️", "title": "Transcription Stack", "tier": "P3", "status": "running", "progress": 24, "subtitle": "Accurate batch · ETA ~2d", "tag": "pipeline", "details": ["🔥 Accurate: 6/25 EP (24%)", "Gen1 turbo: 167/168", "Gen2: 145/145", "NMSPC: 62/62", "FB Live: 222/223"], "next": "Background batch"}, {"id": "migration", "icon": "🚀", "title": "Migration → Max", "tier": "DONE", "status": "done", "progress": 100, "subtitle": "socialnorms.t@gmail.com", "tag": "infra", "details": ["APIFY · Firebase · Backup ✅", "Two-instance setup live"], "next": "—"}, {"id": "norms-corp", "icon": "🏢", "title": "Norms Corp Infra", "tier": "P3", "status": "phase1", "progress": 50, "subtitle": "9 departments · ownership", "tag": "infra", "details": ["SYNC system live", "Memory v2", "Phase 2 orchestrator backlog"], "next": "Phase 2 orchestrator"}, {"id": "digital-twin", "icon": "🤖", "title": "Digital Twin", "tier": "BLOCKED", "status": "blocked", "progress": 5, "subtitle": "AI ที่สอนแบบหลิว", "tag": "future", "details": ["50 golden notes pending", "ThinkAloud Pass 2 not run", "Config ready"], "next": "After transcript done"}, {"id": "aa", "icon": "⚡", "title": "AnotherAi", "tier": "P3", "status": "research", "progress": 35, "subtitle": "NotebookLM bulk upload", "tag": "knowledge", "details": ["APIFY ready", "NotebookLM MCP login", "NPC transcripts pending upload"], "next": "Manual NotebookLM upload"}, {"id": "wyckoff-norms", "icon": "📈", "title": "Wyckoff Norms", "tier": "BACKLOG", "status": "research", "progress": 40, "subtitle": "3D cinematic visual", "tag": "brand", "details": ["wyckoff.html live", "CREATIVE-BRIEF.md ready"], "next": "3D/cinematic exploration"}], "todos": {"urgent": [{"text": "หลิว review Phase 2 doc → sign-off C1-C10", "due": "ASAP", "tag": "book", "emoji": "🥇"}, {"text": "Pro Hero visual implementation", "due": "this week", "tag": "website", "emoji": "🎨"}, {"text": "Dog Feeder v3 CSS+HTML integrate", "due": "this week", "tag": "app", "emoji": "🐕"}], "soon": [{"text": "Phase 3 production: rename + 5 new chapters", "due": "after sign-off", "tag": "book", "emoji": "📚"}, {"text": "File rename: B1_C11 NES_Synthesis · B1_C13 Liquidity_Complex", "due": "after sign-off", "tag": "book", "emoji": "📝"}, {"text": "Eightcap June brief · World Cup + event", "due": "June", "tag": "sponsor", "emoji": "📰"}, {"text": "NotebookLM bulk upload NPC transcripts (manual)", "due": "this week", "tag": "knowledge", "emoji": "📒"}], "backlog": [{"text": "Wyckoff Norms 3D / cinematic visual", "due": "ongoing", "tag": "brand", "emoji": "📈"}, {"text": "AI Vocab (125 fields)", "due": "after Book", "tag": "book", "emoji": "📒"}, {"text": "Tickmill / FocusTrade sponsor", "due": "TBD", "tag": "sponsor", "emoji": "💼"}, {"text": "NPC Gen2 + NMSPC + FBLive books", "due": "after transcript", "tag": "book", "emoji": "📚"}, {"text": "Digital Twin: ThinkAloud Pass 2", "due": "after transcript", "tag": "knowledge", "emoji": "🤖"}, {"text": "Norms Corp Phase 2 orchestrator", "due": "next month", "tag": "infra", "emoji": "🏢"}]}, "stats": {"alive": 4, "git_dirty": 3, "pipe_pct": 97, "accurate_pct": 24, "chapters_total": 64, "chapters_new": 6, "memory_total": 31}};
+const D = {"ts": "2026-05-19T23:35:40", "days_left": 61, "pipeline": {"accurate": {"done": 6, "total": 25, "label": "Accurate Batch", "icon": "🔥", "priority": true}, "npc_gen1": {"done": 167, "total": 168, "label": "NPC Gen1 turbo", "icon": "🎙️"}, "npc_gen2": {"done": 145, "total": 145, "label": "NPC Gen2", "icon": "🎙️"}, "nmspc": {"done": 62, "total": 62, "label": "NMSPC 2026", "icon": "🎙️"}, "facebook": {"done": 222, "total": 223, "label": "Facebook Live", "icon": "📺"}}, "running": [{"type": "transcribe", "label": "Accurate · EP7-1 Noon 2025-02-24", "icon": "🎤"}], "sessions": [{"pid": 16443, "session_id": "0cdd9c26", "cwd": "liew", "name": "อยากให้ทำงานผ่านอุปกรณ์อื่นได้ด้วย แบบ iphone ipad งี้ ทำยัง", "alive": true, "runtime_min": 0, "tokens": {"in": 0, "out": 0, "cache": 0, "latest_cache": 0, "msgs": 0, "pct": 0}, "warn": false}, {"pid": 11356, "session_id": "1a067581", "cwd": "liew", "name": "ทำโปรเจกต์ฮีโร่กันต่อ", "alive": true, "runtime_min": 43, "tokens": {"in": 171, "out": 141534, "cache": 6831855, "latest_cache": 108229, "msgs": 96, "pct": 54}, "warn": false}, {"pid": 92374, "session_id": "17b9c48a", "cwd": "liew", "name": "Read ~/Documents/Obsidian\\ Vault/Social\\ Norms/STATUS.md", "alive": true, "runtime_min": 210, "tokens": {"in": 5056, "out": 638339, "cache": 87339340, "latest_cache": 397530, "msgs": 410, "pct": 100}, "warn": true}, {"pid": 84588, "session_id": "79826f57", "cwd": "liew", "name": "Read ~/Documents/Obsidian\\ Vault/Social\\ Norms/STATUS.md", "alive": true, "runtime_min": 322, "tokens": {"in": 579, "out": 303300, "cache": 66510075, "latest_cache": 313976, "msgs": 351, "pct": 100}, "warn": true}, {"pid": 62763, "session_id": "d9f6fe25", "cwd": "social-norms-website", "name": "สวัสดี", "alive": true, "runtime_min": 701, "tokens": {"in": 150, "out": 39024, "cache": 2026625, "latest_cache": 53059, "msgs": 62, "pct": 27}, "warn": false}], "git_repos": [{"name": "dashboard", "pending": 3, "last": "5m ago", "msg": "rebuild: Mission Control v2 — comprehensive operations cockp", "status": "dirty"}, {"name": "norms-website", "pending": 1, "last": "2d ago", "msg": "add: Wyckoff Norms scroll-story page + 21 real XAUUSD diagra", "status": "dirty"}, {"name": "dog-feeder", "pending": 5, "last": "28m ago", "msg": "fix: v3.1 Cozy iteration 2 — calendar + nutrition palette + ", "status": "dirty"}, {"name": "bell-app", "pending": 0, "last": "9h ago", "msg": "V1.1 — Disney princess CI", "status": "clean"}], "chapters": {"total": 64, "new": 6, "original": 58, "edited_today": 20, "new_files": ["NEW_B1_C00_3-Pillar_Preview.md", "NEW_B3_C07_Structure_1-8_Framework.md", "NEW_B4_C05_NES_Workflow.md", "NEW_B5_C01_Psy1_Intro.md", "NEW_B6_C19_Review_System.md", "NEW_B6_C20_Market_is_a_Game.md"]}, "memory": {"total": 31, "by_type": {"user": 0, "feedback": 0, "project": 0, "reference": 0, "other": 31}}, "vault": [{"name": "00-Brand", "count": 11}, {"name": "01-Trading", "count": 6357}, {"name": "02-Content", "count": 66}, {"name": "03-Courses", "count": 2}, {"name": "04-Knowledge", "count": 42}, {"name": "05-Projects", "count": 29}, {"name": "06-Operations", "count": 12}, {"name": "_archive", "count": 8}], "system": {"disk": {"used": "335Gi", "total": "460Gi", "pct": 78}, "drive_mounted": true, "vault_exists": true}, "phases": [{"phase": 0, "label": "Strategy Lock", "status": "done", "pct": 100, "note": "Tier 0-3 · NMSPC sunset · NES locked"}, {"phase": 1, "label": "Knowledge Map", "status": "done", "pct": 100, "note": "12 EP sample · 7 B-decisions"}, {"phase": 2, "label": "Architecture", "status": "active", "pct": 70, "note": "v1 draft · awaiting C1-C10"}, {"phase": 3, "label": "Production", "status": "active", "pct": 35, "note": "Mechanical pass + 6 new chapters"}, {"phase": 4, "label": "Launch", "status": "pending", "pct": 0, "note": "Legal · screening · pre-launch QA"}], "mission": {"sources": [{"key": "npc_gen1", "label": "NPC Gen1 (lectures)", "total": 168, "icon": "📘", "done": 6, "remaining": 162, "pct": 4}, {"key": "npc_gen2", "label": "NPC Gen2 (lectures)", "total": 145, "icon": "📙", "done": 0, "remaining": 145, "pct": 0}, {"key": "nmspc", "label": "NMSPC 2026", "total": 62, "icon": "📕", "done": 0, "remaining": 62, "pct": 0}, {"key": "fblive", "label": "Facebook Live archive", "total": 234, "icon": "📺", "done": 0, "remaining": 234, "pct": 0}], "total_target": 609, "total_done": 6, "total_remaining": 603, "overall_pct": 1, "hours_done": 9.0, "hours_remaining": 904.5, "hours_total": 913.5, "days_remaining": 113, "eta_date": "2026-09-09", "avg_h_per_ep": 1.5}, "projects": [{"id": "norms-book", "icon": "🥇", "title": "Norms Book + Website", "tier": "P1", "status": "phase1", "progress": 55, "subtitle": "NPC course flagship · ฿50K", "tag": "book", "details": ["17/17 Q sign-off complete", "Phase 2 v1 · 53 NPC + 4 T1 + 4 T3", "Phase 3 mechanical pass + 6 new chapters", "842 lines new content", "Awaiting หลิว sign-off C1-C10"], "next": "หลิว review → Phase 3 production", "deadline": "2026-07-19"}, {"id": "npc-website", "icon": "🌐", "title": "NPC Website", "tier": "P1", "status": "phase1", "progress": 35, "subtitle": "Apple-premium landing", "tag": "website", "details": ["Content A1-A10 locked", "Visual direction notes", "Hero copy locked", "6-block curriculum visible", "Awaiting Pro Hero cinematic"], "next": "Pro visual session", "deadline": "2026-07-19"}, {"id": "dog-feeder", "icon": "🐕", "title": "Dog Feeder v3", "tier": "P2", "status": "phase1", "progress": 60, "subtitle": "Soft Cozy redesign", "tag": "app", "details": ["v2.1 live · skip-meal", "Round 2 mockup ผ่าน", "4 Magnific sheets dictated", "Awaiting CSS+HTML from Pro"], "next": "Pro assets → Max integrate"}, {"id": "hero-bell", "icon": "🦸", "title": "Hero (Bell)", "tier": "P2", "status": "phase1", "progress": 85, "subtitle": "Claude Project · BD Manager AI", "tag": "client", "details": ["Deployed @ liewsk129", "7 knowledge files", "Test 9/10 passed", "V2 vision: brief→deliverable"], "next": "V2 design 2026-05-20"}, {"id": "transcription", "icon": "🎙️", "title": "Transcription Stack", "tier": "P3", "status": "running", "progress": 24, "subtitle": "Accurate batch · ETA ~2d", "tag": "pipeline", "details": ["🔥 Accurate: 6/25 EP (24%)", "Gen1 turbo: 167/168", "Gen2: 145/145", "NMSPC: 62/62", "FB Live: 222/223"], "next": "Background batch"}, {"id": "migration", "icon": "🚀", "title": "Migration → Max", "tier": "DONE", "status": "done", "progress": 100, "subtitle": "socialnorms.t@gmail.com", "tag": "infra", "details": ["APIFY · Firebase · Backup ✅", "Two-instance setup live"], "next": "—"}, {"id": "norms-corp", "icon": "🏢", "title": "Norms Corp Infra", "tier": "P3", "status": "phase1", "progress": 50, "subtitle": "9 departments · ownership", "tag": "infra", "details": ["SYNC system live", "Memory v2", "Phase 2 orchestrator backlog"], "next": "Phase 2 orchestrator"}, {"id": "digital-twin", "icon": "🤖", "title": "Digital Twin", "tier": "BLOCKED", "status": "blocked", "progress": 5, "subtitle": "AI ที่สอนแบบหลิว", "tag": "future", "details": ["50 golden notes pending", "ThinkAloud Pass 2 not run", "Config ready"], "next": "After transcript done"}, {"id": "aa", "icon": "⚡", "title": "AnotherAi", "tier": "P3", "status": "research", "progress": 35, "subtitle": "NotebookLM bulk upload", "tag": "knowledge", "details": ["APIFY ready", "NotebookLM MCP login", "NPC transcripts pending upload"], "next": "Manual NotebookLM upload"}, {"id": "wyckoff-norms", "icon": "📈", "title": "Wyckoff Norms", "tier": "BACKLOG", "status": "research", "progress": 40, "subtitle": "3D cinematic visual", "tag": "brand", "details": ["wyckoff.html live", "CREATIVE-BRIEF.md ready"], "next": "3D/cinematic exploration"}], "todos": {"urgent": [{"text": "หลิว review Phase 2 doc → sign-off C1-C10", "due": "ASAP", "tag": "book", "emoji": "🥇"}, {"text": "Pro Hero visual implementation", "due": "this week", "tag": "website", "emoji": "🎨"}, {"text": "Dog Feeder v3 CSS+HTML integrate", "due": "this week", "tag": "app", "emoji": "🐕"}], "soon": [{"text": "Phase 3 production: rename + 5 new chapters", "due": "after sign-off", "tag": "book", "emoji": "📚"}, {"text": "File rename: B1_C11 NES_Synthesis · B1_C13 Liquidity_Complex", "due": "after sign-off", "tag": "book", "emoji": "📝"}, {"text": "Eightcap June brief · World Cup + event", "due": "June", "tag": "sponsor", "emoji": "📰"}, {"text": "NotebookLM bulk upload NPC transcripts (manual)", "due": "this week", "tag": "knowledge", "emoji": "📒"}], "backlog": [{"text": "Wyckoff Norms 3D / cinematic visual", "due": "ongoing", "tag": "brand", "emoji": "📈"}, {"text": "AI Vocab (125 fields)", "due": "after Book", "tag": "book", "emoji": "📒"}, {"text": "Tickmill / FocusTrade sponsor", "due": "TBD", "tag": "sponsor", "emoji": "💼"}, {"text": "NPC Gen2 + NMSPC + FBLive books", "due": "after transcript", "tag": "book", "emoji": "📚"}, {"text": "Digital Twin: ThinkAloud Pass 2", "due": "after transcript", "tag": "knowledge", "emoji": "🤖"}, {"text": "Norms Corp Phase 2 orchestrator", "due": "next month", "tag": "infra", "emoji": "🏢"}]}, "stats": {"alive": 5, "git_dirty": 3, "pipe_pct": 97, "accurate_pct": 24, "chapters_total": 64, "chapters_new": 6, "memory_total": 31}};
 const BUILD_TIME = D.ts;
+
+// ─── RE-TRANSCRIBE MISSION ───────────────────────────────────
+function renderMission(){
+  const m = D.mission;
+  const el = document.getElementById('mission-box');
+  el.innerHTML = `
+    <div class="mission-head">
+      <div class="mission-title-wrap">
+        <div class="mission-eyebrow">🎤 Full Re-transcribe · accurate (Whisper Large v3)</div>
+        <div class="mission-title">${m.total_done} / ${m.total_target} EP transcribed</div>
+        <div class="mission-sub">${m.hours_done}h done · ${m.hours_remaining}h remaining · ~${m.avg_h_per_ep}h/EP avg</div>
+      </div>
+      <div class="mission-eta">
+        <div class="mission-eta-n">${m.days_remaining}</div>
+        <div class="mission-eta-l">days @ 8h/day</div>
+        <div class="mission-eta-date">ETA ${m.eta_date}</div>
+      </div>
+    </div>
+    <div class="mission-mega-bar">
+      <div class="mission-mega-fill" style="width:${m.overall_pct}%"></div>
+      <div class="mission-mega-pct">${m.overall_pct}%</div>
+    </div>
+    <div class="mission-stats">
+      <div class="ms"><div class="ms-n" style="color:var(--cyan)">${m.total_target}</div><div class="ms-l">Total EPs</div></div>
+      <div class="ms"><div class="ms-n" style="color:var(--green)">${m.total_done}</div><div class="ms-l">Done</div></div>
+      <div class="ms"><div class="ms-n" style="color:var(--amber-2)">${m.total_remaining}</div><div class="ms-l">Remaining</div></div>
+      <div class="ms"><div class="ms-n" style="color:var(--magenta)">${m.hours_total}h</div><div class="ms-l">Total est.</div></div>
+    </div>
+    <div class="mission-src-grid">
+      ${m.sources.map(s => `
+        <div class="msrc">
+          <div class="msrc-h">
+            <span class="msrc-icon">${s.icon}</span>
+            <span class="msrc-l">${s.label}</span>
+            <span class="msrc-pct">${s.pct}%</span>
+          </div>
+          <div class="msrc-nums">${s.done} / ${s.total} EP · ${s.remaining} remaining</div>
+          <div class="msrc-bar"><div class="msrc-fill ${s.pct === 100 ? 'done' : ''}" style="width:${s.pct}%"></div></div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
 
 // ─── PHASE STRIP ─────────────────────────────────────────────
 function renderPhases(){
@@ -635,6 +744,7 @@ setInterval(checkUpdate, 60000);
 
 // ─── INIT ───────────────────────────────────────────────────
 renderPhases();
+renderMission();
 renderLive();
 renderProjects();
 renderPipeline();

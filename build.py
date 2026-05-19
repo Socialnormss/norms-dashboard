@@ -83,6 +83,51 @@ def collect_running():
             jobs.append({"type": "transcribe", "label": f"Accurate · {file_target[:40]}", "icon": "🎤"})
     return jobs
 
+def collect_retranscribe_mission():
+    """Full re-transcribe mission — accurate model across all sources"""
+    # Source totals (accurate target = all 4 corpora)
+    sources = [
+        {"key":"npc_gen1",  "label":"NPC Gen1 (lectures)",   "path": TRANS_ACC/"npc_gen1",  "total": 168, "icon":"📘"},
+        {"key":"npc_gen2",  "label":"NPC Gen2 (lectures)",   "path": TRANS_ACC/"npc_gen2",  "total": 145, "icon":"📙"},
+        {"key":"nmspc",     "label":"NMSPC 2026",            "path": TRANS_ACC/"nmspc2026", "total": 62,  "icon":"📕"},
+        {"key":"fblive",    "label":"Facebook Live archive", "path": TRANS_ACC/"facebook_live", "total": 234, "icon":"📺"},
+    ]
+    total_target = sum(s["total"] for s in sources)
+    total_done = 0
+    AVG_HOURS_PER_EP = 1.5  # accurate model lecture average
+    for s in sources:
+        done = count_txt(s["path"])
+        s["done"] = done
+        s["remaining"] = s["total"] - done
+        s["pct"] = round(done / s["total"] * 100) if s["total"] else 0
+        total_done += done
+        del s["path"]  # don't serialize Path
+
+    total_remaining = total_target - total_done
+    hours_done = round(total_done * AVG_HOURS_PER_EP, 1)
+    hours_remaining = round(total_remaining * AVG_HOURS_PER_EP, 1)
+    hours_total = round(total_target * AVG_HOURS_PER_EP, 1)
+    overall_pct = round(total_done / total_target * 100) if total_target else 0
+
+    # ETA assuming 8h/day compute (overnight + bg)
+    HOURS_PER_DAY = 8
+    days_remaining = round(hours_remaining / HOURS_PER_DAY)
+    eta_date = (TODAY + datetime.timedelta(days=days_remaining)).isoformat() if days_remaining else TODAY.isoformat()
+
+    return {
+        "sources": sources,
+        "total_target": total_target,
+        "total_done": total_done,
+        "total_remaining": total_remaining,
+        "overall_pct": overall_pct,
+        "hours_done": hours_done,
+        "hours_remaining": hours_remaining,
+        "hours_total": hours_total,
+        "days_remaining": days_remaining,
+        "eta_date": eta_date,
+        "avg_h_per_ep": AVG_HOURS_PER_EP,
+    }
+
 def collect_claude_sessions():
     """Live Claude Code sessions with token usage"""
     sessions_dir = HOME / ".claude/sessions"
@@ -314,6 +359,7 @@ def build():
     vault = collect_vault_stats()
     system = collect_system_health()
     phases = collect_phase_progress()
+    mission = collect_retranscribe_mission()
 
     # Pipeline-derived values
     pipe_total_done = sum(v["done"] for v in pipeline.values())
@@ -352,6 +398,7 @@ def build():
         "vault": vault,
         "system": system,
         "phases": phases,
+        "mission": mission,
         "projects": PROJECTS,
         "todos": TODOS,
         "stats": {
@@ -452,6 +499,68 @@ body{{background:radial-gradient(ellipse at top,rgba(212,122,42,.05),transparent
 .grid-4{{grid-template-columns:repeat(4,1fr)}}
 @media (max-width:760px){{.grid-3,.grid-4{{grid-template-columns:repeat(2,1fr)}}}}
 @media (max-width:480px){{.grid-2,.grid-3,.grid-4{{grid-template-columns:1fr}}}}
+
+/* ── RE-TRANSCRIBE MISSION ────────────────────────────────────── */
+.mission-box{{position:relative;border-radius:var(--r);overflow:hidden;
+  background:linear-gradient(135deg,#0a1a2a 0%,#1a0a2a 100%);
+  border:1px solid rgba(0,212,255,.3);
+  padding:20px 22px;margin-bottom:18px;
+  box-shadow:0 0 50px rgba(0,212,255,.15),inset 0 1px 0 rgba(255,255,255,.04)}}
+.mission-box::before{{content:"";position:absolute;inset:0;
+  background:radial-gradient(circle at 0% 100%,rgba(168,85,247,.15),transparent 60%);
+  pointer-events:none}}
+.mission-box::after{{content:"";position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--cyan),var(--magenta),transparent);
+  animation:shimmer 5s linear infinite;background-size:200% 100%}}
+.mission-head{{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap;position:relative;z-index:1}}
+.mission-title-wrap{{flex:1;min-width:200px}}
+.mission-eyebrow{{font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--cyan);margin-bottom:4px}}
+.mission-title{{font-size:20px;font-weight:800;letter-spacing:-.01em}}
+.mission-sub{{font-size:12px;color:var(--t2);margin-top:2px}}
+.mission-eta{{text-align:right;flex-shrink:0}}
+.mission-eta-n{{font-size:32px;font-weight:900;line-height:1;letter-spacing:-.02em;
+  background:linear-gradient(135deg,var(--cyan),var(--magenta));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  font-feature-settings:"tnum"}}
+.mission-eta-l{{font-size:10px;color:var(--t2);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-top:3px}}
+.mission-eta-date{{font-size:11px;color:var(--cyan);font-weight:700;margin-top:4px;font-feature-settings:"tnum"}}
+
+/* mega progress bar */
+.mission-mega-bar{{height:14px;background:rgba(255,255,255,.04);border-radius:7px;overflow:hidden;
+  position:relative;margin-bottom:12px;border:1px solid rgba(255,255,255,.06)}}
+.mission-mega-fill{{height:100%;border-radius:7px;position:relative;overflow:hidden;
+  background:linear-gradient(90deg,var(--cyan),var(--magenta));
+  box-shadow:0 0 12px var(--cyan-glow);
+  transition:width 1.2s cubic-bezier(.2,.8,.2,1)}}
+.mission-mega-fill::after{{content:"";position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);
+  background-size:200% 100%;animation:shimmer 2s linear infinite}}
+.mission-mega-pct{{position:absolute;top:50%;transform:translateY(-50%);left:50%;translate:-50% -50%;
+  font-size:10px;font-weight:800;color:#000;mix-blend-mode:overlay;font-feature-settings:"tnum"}}
+
+/* mission stats grid */
+.mission-stats{{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}}
+@media (max-width:640px){{.mission-stats{{grid-template-columns:repeat(2,1fr)}}}}
+.ms{{padding:10px 12px;background:rgba(255,255,255,.03);border-radius:8px;
+  border:1px solid rgba(255,255,255,.05)}}
+.ms-n{{font-size:18px;font-weight:800;line-height:1;font-feature-settings:"tnum"}}
+.ms-l{{font-size:9px;color:var(--t2);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-top:4px}}
+
+/* per-source breakdown */
+.mission-src-grid{{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}}
+@media (max-width:520px){{.mission-src-grid{{grid-template-columns:1fr}}}}
+.msrc{{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05);
+  border-radius:8px;padding:10px 12px}}
+.msrc-h{{display:flex;align-items:center;gap:6px;margin-bottom:6px}}
+.msrc-icon{{font-size:14px}}
+.msrc-l{{font-size:11px;font-weight:700;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
+.msrc-pct{{font-size:10px;font-weight:800;color:var(--cyan);font-feature-settings:"tnum"}}
+.msrc-nums{{font-size:10px;color:var(--muted);margin-bottom:6px;font-feature-settings:"tnum"}}
+.msrc-bar{{height:5px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden}}
+.msrc-fill{{height:100%;background:linear-gradient(90deg,var(--cyan),var(--magenta));
+  transition:width 1s cubic-bezier(.2,.8,.2,1);border-radius:3px}}
+.msrc-fill.done{{background:linear-gradient(90deg,var(--green),#7CFFE0);box-shadow:0 0 6px var(--green-glow)}}
 
 /* ── HERO COUNTDOWN ───────────────────────────────────────────── */
 .hero-mission{{position:relative;border-radius:var(--r);overflow:hidden;
@@ -752,6 +861,10 @@ body{{background:radial-gradient(ellipse at top,rgba(212,122,42,.05),transparent
     </div>
   </div>
 
+  <!-- ── RE-TRANSCRIBE MISSION ──────────────────────────────── -->
+  <div class="section-h"><span class="section-h-icon">🎤</span><span class="section-h-l">Re-transcribe mission · accurate model</span><div class="section-h-line"></div></div>
+  <div class="mission-box" id="mission-box"></div>
+
   <!-- ── LIVE NOW ───────────────────────────────────────────── -->
   <div class="section-h"><span class="section-h-icon">⚡</span><span class="section-h-l">Live now</span><div class="section-h-line"></div></div>
   <div id="live-running"></div>
@@ -790,6 +903,49 @@ body{{background:radial-gradient(ellipse at top,rgba(212,122,42,.05),transparent
 <script>
 const D = {payload_json};
 const BUILD_TIME = D.ts;
+
+// ─── RE-TRANSCRIBE MISSION ───────────────────────────────────
+function renderMission(){{
+  const m = D.mission;
+  const el = document.getElementById('mission-box');
+  el.innerHTML = `
+    <div class="mission-head">
+      <div class="mission-title-wrap">
+        <div class="mission-eyebrow">🎤 Full Re-transcribe · accurate (Whisper Large v3)</div>
+        <div class="mission-title">${{m.total_done}} / ${{m.total_target}} EP transcribed</div>
+        <div class="mission-sub">${{m.hours_done}}h done · ${{m.hours_remaining}}h remaining · ~${{m.avg_h_per_ep}}h/EP avg</div>
+      </div>
+      <div class="mission-eta">
+        <div class="mission-eta-n">${{m.days_remaining}}</div>
+        <div class="mission-eta-l">days @ 8h/day</div>
+        <div class="mission-eta-date">ETA ${{m.eta_date}}</div>
+      </div>
+    </div>
+    <div class="mission-mega-bar">
+      <div class="mission-mega-fill" style="width:${{m.overall_pct}}%"></div>
+      <div class="mission-mega-pct">${{m.overall_pct}}%</div>
+    </div>
+    <div class="mission-stats">
+      <div class="ms"><div class="ms-n" style="color:var(--cyan)">${{m.total_target}}</div><div class="ms-l">Total EPs</div></div>
+      <div class="ms"><div class="ms-n" style="color:var(--green)">${{m.total_done}}</div><div class="ms-l">Done</div></div>
+      <div class="ms"><div class="ms-n" style="color:var(--amber-2)">${{m.total_remaining}}</div><div class="ms-l">Remaining</div></div>
+      <div class="ms"><div class="ms-n" style="color:var(--magenta)">${{m.hours_total}}h</div><div class="ms-l">Total est.</div></div>
+    </div>
+    <div class="mission-src-grid">
+      ${{m.sources.map(s => `
+        <div class="msrc">
+          <div class="msrc-h">
+            <span class="msrc-icon">${{s.icon}}</span>
+            <span class="msrc-l">${{s.label}}</span>
+            <span class="msrc-pct">${{s.pct}}%</span>
+          </div>
+          <div class="msrc-nums">${{s.done}} / ${{s.total}} EP · ${{s.remaining}} remaining</div>
+          <div class="msrc-bar"><div class="msrc-fill ${{s.pct === 100 ? 'done' : ''}}" style="width:${{s.pct}}%"></div></div>
+        </div>
+      `).join('')}}
+    </div>
+  `;
+}}
 
 // ─── PHASE STRIP ─────────────────────────────────────────────
 function renderPhases(){{
@@ -1018,6 +1174,7 @@ setInterval(checkUpdate, 60000);
 
 // ─── INIT ───────────────────────────────────────────────────
 renderPhases();
+renderMission();
 renderLive();
 renderProjects();
 renderPipeline();
