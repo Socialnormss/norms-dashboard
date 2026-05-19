@@ -84,22 +84,44 @@ def collect_running():
     return jobs
 
 MUST_READ_FILES = [
-    {"id":"status",        "icon":"📊", "title":"STATUS · current state",        "path": VAULT/"STATUS.md",                                                       "tier":"P1"},
-    {"id":"phase2",        "icon":"🥇", "title":"Phase 2 Architecture",          "path": VAULT/"05-Projects/Norms-Book/Phase2-Architecture.md",                  "tier":"P1"},
-    {"id":"phase1-km",     "icon":"📘", "title":"Phase 1 Knowledge Map",         "path": VAULT/"05-Projects/Norms-Book/Phase1-Knowledge-Map.md",                 "tier":"P2"},
-    {"id":"worklog-book",  "icon":"📝", "title":"Norms Book · WORKLOG",          "path": VAULT/"05-Projects/Norms-Book/WORKLOG.md",                              "tier":"P2"},
-    {"id":"handoff-book",  "icon":"🤝", "title":"Norms Book · Handoff",          "path": VAULT/"05-Projects/Norms-Book/Handoff.md",                              "tier":"P3"},
-    {"id":"handoff-sync",  "icon":"🔄", "title":"Pro↔Max · HANDOFF",             "path": NC/"SYNC/HANDOFF.md",                                                   "tier":"P2"},
-    {"id":"npc-website",   "icon":"🌐", "title":"NPC Website Content Draft",     "path": VAULT/"05-Projects/NPC/Website-Content-Draft.md",                       "tier":"P2"},
-    {"id":"audit",         "icon":"🔍", "title":"NPC Master Audit",              "path": VAULT/"05-Projects/Norms-Book/NPC-Master-Audit-2026-05-19.md",          "tier":"P3"},
-    {"id":"evidence",      "icon":"📑", "title":"Evidence Pack",                 "path": VAULT/"05-Projects/Norms-Book/Evidence-Pack-2026-05-19.md",             "tier":"P3"},
-    {"id":"lexicon",       "icon":"📚", "title":"Canonical Lexicon",             "path": VAULT/"05-Projects/Norms-Book/Canonical-Lexicon-2026-05-19.md",         "tier":"P3"},
-    {"id":"ch-3pillar",    "icon":"🆕", "title":"Ch 1.0 · 3-Pillar Preview",     "path": KV/"Norms-Book/npc_gen1/chapters/NEW_B1_C00_3-Pillar_Preview.md",       "tier":"NEW"},
-    {"id":"ch-psy1",       "icon":"🆕", "title":"Ch 5.1 · Psy1 Intro (Day 1)",   "path": KV/"Norms-Book/npc_gen1/chapters/NEW_B5_C01_Psy1_Intro.md",             "tier":"NEW"},
-    {"id":"ch-closing",    "icon":"🆕", "title":"Ch 6.20 · Market is a Game",    "path": KV/"Norms-Book/npc_gen1/chapters/NEW_B6_C20_Market_is_a_Game.md",       "tier":"NEW"},
-    {"id":"ch-structure",  "icon":"🆕", "title":"Ch 3.7 · Structure 1-8",        "path": KV/"Norms-Book/npc_gen1/chapters/NEW_B3_C07_Structure_1-8_Framework.md","tier":"NEW"},
-    {"id":"ch-nes-wf",     "icon":"🆕", "title":"Ch 4.5 · NES Workflow",         "path": KV/"Norms-Book/npc_gen1/chapters/NEW_B4_C05_NES_Workflow.md",           "tier":"NEW"},
-    {"id":"ch-review",     "icon":"🆕", "title":"Ch 6.19 · Review System",       "path": KV/"Norms-Book/npc_gen1/chapters/NEW_B6_C19_Review_System.md",          "tier":"NEW"},
+    # ── Working docs (current state) ────────────────────────────
+    {"id":"status",        "cat":"working", "icon":"📊", "title":"STATUS · current state",        "path": VAULT/"STATUS.md",                                                       "tier":"P1"},
+    {"id":"phase2",        "cat":"working", "icon":"🥇", "title":"Phase 2 Architecture",          "path": VAULT/"05-Projects/Norms-Book/Phase2-Architecture.md",                  "tier":"P1"},
+    {"id":"worklog-book",  "cat":"working", "icon":"📝", "title":"Norms Book · WORKLOG",          "path": VAULT/"05-Projects/Norms-Book/WORKLOG.md",                              "tier":"P2"},
+    {"id":"handoff-book",  "cat":"working", "icon":"🤝", "title":"Norms Book · Handoff",          "path": VAULT/"05-Projects/Norms-Book/Handoff.md",                              "tier":"P3"},
+    {"id":"handoff-sync",  "cat":"working", "icon":"🔄", "title":"Pro↔Max · HANDOFF",             "path": NC/"SYNC/HANDOFF.md",                                                   "tier":"P2"},
+
+    # ── Book content (NPC course material) ──────────────────────
+    {"id":"phase1-km",     "cat":"book",    "icon":"📘", "title":"Phase 1 Knowledge Map",         "path": VAULT/"05-Projects/Norms-Book/Phase1-Knowledge-Map.md",                 "tier":"P2"},
+    {"id":"ch-3pillar",    "cat":"book",    "icon":"🆕", "title":"Ch 1.0 · 3-Pillar Preview",     "path": KV/"Norms-Book/npc_gen1/chapters/NEW_B1_C00_3-Pillar_Preview.md",       "tier":"NEW"},
+    {"id":"ch-psy1",       "cat":"book",    "icon":"🆕", "title":"Ch 5.1 · Psy1 Intro (Day 1)",   "path": KV/"Norms-Book/npc_gen1/chapters/NEW_B5_C01_Psy1_Intro.md",             "tier":"NEW"},
+    {"id":"ch-closing",    "cat":"book",    "icon":"🆕", "title":"Ch 6.20 · Market is a Game",    "path": KV/"Norms-Book/npc_gen1/chapters/NEW_B6_C20_Market_is_a_Game.md",       "tier":"NEW"},
+    {"id":"ch-structure",  "cat":"book",    "icon":"🆕", "title":"Ch 3.7 · Structure 1-8",        "path": KV/"Norms-Book/npc_gen1/chapters/NEW_B3_C07_Structure_1-8_Framework.md","tier":"NEW"},
+    {"id":"ch-nes-wf",     "cat":"book",    "icon":"🆕", "title":"Ch 4.5 · NES Workflow",         "path": KV/"Norms-Book/npc_gen1/chapters/NEW_B4_C05_NES_Workflow.md",           "tier":"NEW"},
+    {"id":"ch-review",     "cat":"book",    "icon":"🆕", "title":"Ch 6.19 · Review System",       "path": KV/"Norms-Book/npc_gen1/chapters/NEW_B6_C19_Review_System.md",          "tier":"NEW"},
+    {"id":"ch-nes-syn",    "cat":"book",    "icon":"📕", "title":"Ch 4.1 · NES Synthesis (reshape)","path": KV/"Norms-Book/npc_gen1/chapters/B1_C11_Normie_System.md",          "tier":"BOOK"},
+    {"id":"ch-phase-b",    "cat":"book",    "icon":"📕", "title":"Ch 2.5 · Phase B (reshape)",    "path": KV/"Norms-Book/npc_gen1/chapters/B1_C18_Phase_B.md",                    "tier":"BOOK"},
+    {"id":"ch-carry",      "cat":"book",    "icon":"📕", "title":"Ch 4.4 · Carry & Focus (reshape)","path": KV/"Norms-Book/npc_gen1/chapters/B3_C14_Carry_คืออะไร.md",         "tier":"BOOK"},
+    {"id":"ch-liquidity",  "cat":"book",    "icon":"📕", "title":"Ch 3.6 · Liquidity Complex",    "path": KV/"Norms-Book/npc_gen1/chapters/B1_C13_Liquidity_4_มิติ.md",          "tier":"BOOK"},
+
+    # ── Website content (NPC landing) ───────────────────────────
+    {"id":"npc-website",   "cat":"web",     "icon":"🌐", "title":"NPC Website Content Draft",     "path": VAULT/"05-Projects/NPC/Website-Content-Draft.md",                       "tier":"WEB"},
+    {"id":"brand-ci",      "cat":"web",     "icon":"🎨", "title":"Brand CI · identity",           "path": VAULT/"00-Brand/Brand_CI.md",                                           "tier":"WEB"},
+    {"id":"chart-ci",      "cat":"web",     "icon":"📈", "title":"Chart CI · diagram standard",   "path": VAULT/"00-Brand/CHART-CI.md",                                           "tier":"WEB"},
+    {"id":"mascot",        "cat":"web",     "icon":"🦊", "title":"Mascot reference",              "path": VAULT/"00-Brand/MASCOT-REF.md",                                         "tier":"WEB"},
+    {"id":"master-plan",   "cat":"web",     "icon":"🗺️", "title":"Master Plan · brand strategy",   "path": VAULT/"00-Brand/MASTER_PLAN.md",                                        "tier":"WEB"},
+
+    # ── Audit & reference ───────────────────────────────────────
+    {"id":"audit",         "cat":"audit",   "icon":"🔍", "title":"NPC Master Audit",              "path": VAULT/"05-Projects/Norms-Book/NPC-Master-Audit-2026-05-19.md",          "tier":"P3"},
+    {"id":"evidence",      "cat":"audit",   "icon":"📑", "title":"Evidence Pack",                 "path": VAULT/"05-Projects/Norms-Book/Evidence-Pack-2026-05-19.md",             "tier":"P3"},
+    {"id":"lexicon",       "cat":"audit",   "icon":"📚", "title":"Canonical Lexicon",             "path": VAULT/"05-Projects/Norms-Book/Canonical-Lexicon-2026-05-19.md",         "tier":"P3"},
+]
+
+CATEGORIES = [
+    {"id":"working", "icon":"🏠", "label":"งานปัจจุบัน"},
+    {"id":"book",    "icon":"📚", "label":"หนังสือ NPC"},
+    {"id":"web",     "icon":"🌐", "label":"เว็บไซต์"},
+    {"id":"audit",   "icon":"🔍", "label":"Audit"},
 ]
 
 def collect_must_read():
@@ -115,6 +137,7 @@ def collect_must_read():
             mtime_ago = get_relative_time(stat.st_mtime)
             out.append({
                 "id": spec["id"],
+                "cat": spec.get("cat", "working"),
                 "icon": spec["icon"],
                 "title": spec["title"],
                 "tier": spec["tier"],
@@ -392,7 +415,7 @@ TODOS = {
 
 def build():
     ts = NOW.strftime("%Y-%m-%dT%H:%M:%S")
-    ts_thai = NOW.strftime("อัพเดท %d %b %y · %H:%M")
+    ts_thai = NOW.strftime("%d %b %y · %H:%M")
     days_left = (NPC_DEADLINE - TODAY).days
 
     pipeline = collect_pipeline()
@@ -446,6 +469,7 @@ def build():
         "phases": phases,
         "mission": mission,
         "must_read": must_read,
+        "categories": CATEGORIES,
         "projects": PROJECTS,
         "todos": TODOS,
         "stats": {
@@ -490,16 +514,18 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 <link rel="manifest" href="manifest.json">
 <style>
 :root{{
-  --bg:#050505;--base:#0A0A0B;--surface:#121214;--raised:#18181C;--overlay:#222227;
-  --amber:#D47A2A;--amber-2:#E0944A;--amber-glow:rgba(212,122,42,.45);
-  --cyan:#00D4FF;--cyan-glow:rgba(0,212,255,.4);
-  --magenta:#FF2E97;--magenta-glow:rgba(255,46,151,.4);
-  --green:#00F593;--green-glow:rgba(0,245,147,.4);
-  --red:#FF3B5C;--red-glow:rgba(255,59,92,.45);
-  --yellow:#FFC53D;--purple:#A855F7;
-  --text:#F5F2EE;--t2:#9F9B95;--muted:#5E5A55;
-  --border:rgba(255,255,255,.06);
-  --border-glow:rgba(255,255,255,.1);
+  /* Brand CI · Wyckoff Norms ─────────────────────────────── */
+  --bg:#0A0A0B;--base:#101011;--surface:#161618;--raised:#1C1C1F;--overlay:#252528;
+  --amber:#C07840;--amber-2:#E0944A;--amber-soft:#8B5E36;
+  --amber-glow:rgba(192,120,64,.4);
+  --slate:#5A5F6E;--slate-light:#7C8294;
+  --text:#F0EDE8;--t2:#A8A49E;--muted:#615D58;
+  --border:rgba(240,237,232,.06);
+  --border-glow:rgba(192,120,64,.25);
+  /* Status indicators only (small dots/badges · not card backgrounds) */
+  --green:#3BCC8B;--green-glow:rgba(59,204,139,.4);
+  --red:#E15461;--red-glow:rgba(225,84,97,.4);
+  --yellow:#E8B547;
   --r:16px;--r-sm:10px;
   --sb:env(safe-area-inset-bottom);
 }}
@@ -514,29 +540,28 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 html,body{{height:100%;background:var(--bg);color:var(--text);
   font-family:-apple-system,"SF Pro Display","Helvetica Neue",Sarabun,sans-serif;
   font-size:14px;line-height:1.4;overflow-x:hidden}}
-body{{background:radial-gradient(ellipse at top,rgba(212,122,42,.05),transparent 50%),
-                radial-gradient(ellipse at bottom right,rgba(0,212,255,.04),transparent 60%),
+body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent 55%),
                 var(--bg);min-height:100vh}}
 
 /* ── TOPBAR ────────────────────────────────────────────────────── */
 .topbar{{position:sticky;top:0;z-index:50;
-  background:rgba(10,10,11,.85);backdrop-filter:blur(20px) saturate(180%);
+  background:rgba(10,10,11,.88);backdrop-filter:blur(20px) saturate(180%);
   -webkit-backdrop-filter:blur(20px) saturate(180%);
-  border-bottom:1px solid var(--border);padding:12px 16px}}
-.topbar-row{{display:flex;align-items:center;gap:14px;max-width:1400px;margin:0 auto}}
-.logo{{font-weight:900;font-size:14px;letter-spacing:.05em;
-  background:linear-gradient(90deg,var(--amber),var(--amber-2),var(--cyan));
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  background-size:200% auto;animation:gradient-shift 6s ease infinite}}
+  border-bottom:1px solid var(--border);padding:10px 16px}}
+.topbar-row{{display:flex;align-items:center;gap:10px;max-width:1400px;margin:0 auto;flex-wrap:nowrap}}
+.logo{{font-weight:900;font-size:13px;letter-spacing:.04em;white-space:nowrap;
+  color:var(--amber-2);flex-shrink:0}}
 .logo-pulse{{display:inline-block;width:7px;height:7px;border-radius:50%;
-  background:var(--green);box-shadow:0 0 12px var(--green-glow);
+  background:var(--green);box-shadow:0 0 10px var(--green-glow);
   animation:pulse-glow 2s infinite;margin-right:6px;vertical-align:middle}}
-.update-ts{{font-size:10px;color:var(--t2);font-weight:500;letter-spacing:.02em}}
-.h-stats{{margin-left:auto;display:flex;gap:18px;align-items:center}}
+.update-ts{{margin-left:auto;font-size:11px;color:var(--t2);font-weight:600;
+  letter-spacing:.02em;font-feature-settings:"tnum";white-space:nowrap;flex-shrink:0}}
+.h-stats{{display:flex;gap:14px;align-items:center;flex-shrink:0;margin-left:8px}}
 .h-stat{{display:flex;flex-direction:column;align-items:flex-end;line-height:1}}
-.h-stat-n{{font-size:18px;font-weight:800;font-feature-settings:"tnum"}}
-.h-stat-l{{font-size:9px;color:var(--muted);font-weight:700;letter-spacing:.08em;
+.h-stat-n{{font-size:15px;font-weight:800;font-feature-settings:"tnum";color:var(--text)}}
+.h-stat-l{{font-size:8px;color:var(--muted);font-weight:700;letter-spacing:.08em;
   text-transform:uppercase;margin-top:3px}}
+@media (max-width:540px){{.h-stats{{display:none}}}}
 
 /* ── LAYOUT ────────────────────────────────────────────────────── */
 .app{{max-width:1400px;margin:0 auto;padding:16px;padding-bottom:calc(120px + var(--sb))}}
@@ -552,121 +577,111 @@ body{{background:radial-gradient(ellipse at top,rgba(212,122,42,.05),transparent
 
 /* ── RE-TRANSCRIBE MISSION ────────────────────────────────────── */
 .mission-box{{position:relative;border-radius:var(--r);overflow:hidden;
-  background:linear-gradient(135deg,#0a1a2a 0%,#1a0a2a 100%);
-  border:1px solid rgba(0,212,255,.3);
+  background:linear-gradient(135deg,#181208 0%,#101011 100%);
+  border:1px solid var(--border-glow);
   padding:20px 22px;margin-bottom:18px;
-  box-shadow:0 0 50px rgba(0,212,255,.15),inset 0 1px 0 rgba(255,255,255,.04)}}
-.mission-box::before{{content:"";position:absolute;inset:0;
-  background:radial-gradient(circle at 0% 100%,rgba(168,85,247,.15),transparent 60%);
-  pointer-events:none}}
+  box-shadow:0 0 30px var(--amber-glow),inset 0 1px 0 rgba(255,255,255,.03)}}
 .mission-box::after{{content:"";position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,var(--cyan),var(--magenta),transparent);
+  background:linear-gradient(90deg,transparent,var(--amber),transparent);
   animation:shimmer 5s linear infinite;background-size:200% 100%}}
 .mission-head{{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap;position:relative;z-index:1}}
 .mission-title-wrap{{flex:1;min-width:200px}}
 .mission-eyebrow{{font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;
-  color:var(--cyan);margin-bottom:4px}}
-.mission-title{{font-size:20px;font-weight:800;letter-spacing:-.01em}}
-.mission-sub{{font-size:12px;color:var(--t2);margin-top:2px}}
+  color:var(--amber-2);margin-bottom:4px}}
+.mission-title{{font-size:18px;font-weight:800;letter-spacing:-.01em;color:var(--text)}}
+.mission-sub{{font-size:12px;color:var(--t2);margin-top:2px;line-height:1.4}}
 .mission-eta{{text-align:right;flex-shrink:0}}
-.mission-eta-n{{font-size:32px;font-weight:900;line-height:1;letter-spacing:-.02em;
-  background:linear-gradient(135deg,var(--cyan),var(--magenta));
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  font-feature-settings:"tnum"}}
-.mission-eta-l{{font-size:10px;color:var(--t2);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-top:3px}}
-.mission-eta-date{{font-size:11px;color:var(--cyan);font-weight:700;margin-top:4px;font-feature-settings:"tnum"}}
+.mission-eta-n{{font-size:30px;font-weight:900;line-height:1;letter-spacing:-.02em;
+  color:var(--amber-2);font-feature-settings:"tnum"}}
+.mission-eta-l{{font-size:9px;color:var(--t2);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-top:3px}}
+.mission-eta-date{{font-size:10px;color:var(--amber);font-weight:700;margin-top:4px;font-feature-settings:"tnum"}}
 
 /* mega progress bar */
-.mission-mega-bar{{height:14px;background:rgba(255,255,255,.04);border-radius:7px;overflow:hidden;
-  position:relative;margin-bottom:12px;border:1px solid rgba(255,255,255,.06)}}
-.mission-mega-fill{{height:100%;border-radius:7px;position:relative;overflow:hidden;
-  background:linear-gradient(90deg,var(--cyan),var(--magenta));
-  box-shadow:0 0 12px var(--cyan-glow);
+.mission-mega-bar{{height:12px;background:rgba(255,255,255,.04);border-radius:6px;overflow:hidden;
+  position:relative;margin-bottom:12px;border:1px solid var(--border)}}
+.mission-mega-fill{{height:100%;border-radius:6px;position:relative;overflow:hidden;
+  background:linear-gradient(90deg,var(--amber),var(--amber-2));
+  box-shadow:0 0 10px var(--amber-glow);
   transition:width 1.2s cubic-bezier(.2,.8,.2,1)}}
 .mission-mega-fill::after{{content:"";position:absolute;inset:0;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);
-  background-size:200% 100%;animation:shimmer 2s linear infinite}}
-.mission-mega-pct{{position:absolute;top:50%;transform:translateY(-50%);left:50%;translate:-50% -50%;
-  font-size:10px;font-weight:800;color:#000;mix-blend-mode:overlay;font-feature-settings:"tnum"}}
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);
+  background-size:200% 100%;animation:shimmer 2.5s linear infinite}}
+.mission-mega-pct{{position:absolute;top:50%;left:50%;translate:-50% -50%;
+  font-size:10px;font-weight:800;color:var(--text);font-feature-settings:"tnum";
+  text-shadow:0 0 4px rgba(0,0,0,.8)}}
 
 /* mission stats grid */
 .mission-stats{{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}}
 @media (max-width:640px){{.mission-stats{{grid-template-columns:repeat(2,1fr)}}}}
-.ms{{padding:10px 12px;background:rgba(255,255,255,.03);border-radius:8px;
-  border:1px solid rgba(255,255,255,.05)}}
-.ms-n{{font-size:18px;font-weight:800;line-height:1;font-feature-settings:"tnum"}}
+.ms{{padding:10px 12px;background:rgba(255,255,255,.025);border-radius:8px;
+  border:1px solid var(--border)}}
+.ms-n{{font-size:18px;font-weight:800;line-height:1;font-feature-settings:"tnum";color:var(--text)}}
 .ms-l{{font-size:9px;color:var(--t2);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-top:4px}}
 
 /* per-source breakdown */
 .mission-src-grid{{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}}
 @media (max-width:520px){{.mission-src-grid{{grid-template-columns:1fr}}}}
-.msrc{{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05);
-  border-radius:8px;padding:10px 12px}}
+.msrc{{background:rgba(255,255,255,.02);border:1px solid var(--border);
+  border-radius:8px;padding:10px 12px;min-width:0}}
 .msrc-h{{display:flex;align-items:center;gap:6px;margin-bottom:6px}}
-.msrc-icon{{font-size:14px}}
-.msrc-l{{font-size:11px;font-weight:700;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
-.msrc-pct{{font-size:10px;font-weight:800;color:var(--cyan);font-feature-settings:"tnum"}}
+.msrc-icon{{font-size:14px;flex-shrink:0}}
+.msrc-l{{font-size:11px;font-weight:700;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text)}}
+.msrc-pct{{font-size:10px;font-weight:800;color:var(--amber-2);font-feature-settings:"tnum";flex-shrink:0}}
 .msrc-nums{{font-size:10px;color:var(--muted);margin-bottom:6px;font-feature-settings:"tnum"}}
-.msrc-bar{{height:5px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden}}
-.msrc-fill{{height:100%;background:linear-gradient(90deg,var(--cyan),var(--magenta));
-  transition:width 1s cubic-bezier(.2,.8,.2,1);border-radius:3px}}
-.msrc-fill.done{{background:linear-gradient(90deg,var(--green),#7CFFE0);box-shadow:0 0 6px var(--green-glow)}}
+.msrc-bar{{height:4px;background:rgba(255,255,255,.04);border-radius:2px;overflow:hidden}}
+.msrc-fill{{height:100%;background:linear-gradient(90deg,var(--amber),var(--amber-2));
+  transition:width 1s cubic-bezier(.2,.8,.2,1);border-radius:2px}}
+.msrc-fill.done{{background:var(--green);box-shadow:0 0 5px var(--green-glow)}}
 
 /* ── HERO COUNTDOWN ───────────────────────────────────────────── */
 .hero-mission{{position:relative;border-radius:var(--r);overflow:hidden;
-  background:linear-gradient(135deg,#1a0e00 0%,#0e0a1a 100%);
-  border:1px solid {deadline_color};
-  padding:24px 24px 24px 28px;margin-bottom:18px;
-  box-shadow:0 0 60px {deadline_glow},inset 0 1px 0 rgba(255,255,255,.04)}}
+  background:linear-gradient(135deg,#1a1108 0%,#101011 100%);
+  border:1px solid var(--border-glow);
+  padding:22px 22px;margin-bottom:18px;
+  box-shadow:0 0 40px var(--amber-glow),inset 0 1px 0 rgba(255,255,255,.03)}}
 .hero-mission::before{{content:"";position:absolute;inset:0;
-  background:radial-gradient(circle at 80% 50%,{deadline_glow},transparent 50%);
-  opacity:.4;pointer-events:none}}
+  background:radial-gradient(circle at 80% 50%,var(--amber-glow),transparent 55%);
+  opacity:.3;pointer-events:none}}
 .hero-mission::after{{content:"";position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,{deadline_color},transparent);
-  animation:shimmer 4s linear infinite;background-size:200% 100%}}
-.hero-row{{display:flex;align-items:center;gap:24px;position:relative;z-index:1;flex-wrap:wrap}}
-.hero-count{{font-size:88px;font-weight:900;line-height:.9;letter-spacing:-.04em;
-  font-feature-settings:"tnum";
-  background:linear-gradient(180deg,{deadline_color},{deadline_color}99);
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  text-shadow:0 0 30px {deadline_glow}}}
+  background:linear-gradient(90deg,transparent,var(--amber),transparent);
+  animation:shimmer 5s linear infinite;background-size:200% 100%}}
+.hero-row{{display:flex;align-items:center;gap:20px;position:relative;z-index:1;flex-wrap:wrap}}
+.hero-count{{font-size:80px;font-weight:900;line-height:.9;letter-spacing:-.04em;
+  font-feature-settings:"tnum";color:{deadline_color};
+  text-shadow:0 0 24px {deadline_glow}}}
 .hero-text{{flex:1;min-width:200px}}
 .hero-eyebrow{{font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;
-  color:var(--amber);margin-bottom:6px}}
-.hero-title{{font-size:22px;font-weight:800;letter-spacing:-.01em;margin-bottom:4px}}
-.hero-sub{{font-size:13px;color:var(--t2);margin-bottom:10px}}
+  color:var(--amber-2);margin-bottom:6px}}
+.hero-title{{font-size:22px;font-weight:800;letter-spacing:-.01em;margin-bottom:4px;color:var(--text)}}
+.hero-sub{{font-size:12.5px;color:var(--t2);margin-bottom:10px;line-height:1.4}}
 .hero-phase-strip{{display:flex;gap:4px;margin-top:8px}}
-.phase-pill{{flex:1;height:6px;border-radius:3px;background:var(--surface);overflow:hidden;position:relative}}
+.phase-pill{{flex:1;height:5px;border-radius:3px;background:var(--surface);overflow:hidden;position:relative}}
 .phase-pill .fill{{position:absolute;inset:0;border-radius:3px;
   transition:transform .8s cubic-bezier(.2,.8,.2,1)}}
-.phase-pill.done .fill{{background:linear-gradient(90deg,var(--green),var(--cyan));
-  box-shadow:0 0 10px var(--green-glow)}}
+.phase-pill.done .fill{{background:var(--green);box-shadow:0 0 6px var(--green-glow)}}
 .phase-pill.active .fill{{background:linear-gradient(90deg,var(--amber),var(--amber-2));
-  box-shadow:0 0 10px var(--amber-glow)}}
-.phase-pill.pending{{opacity:.3}}
+  box-shadow:0 0 8px var(--amber-glow)}}
+.phase-pill.pending{{opacity:.2}}
 
-/* ── HERO KPI CARDS ───────────────────────────────────────────── */
+/* ── KPI CARDS · brand-only palette ───────────────────────────── */
 .kpi-row{{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}}
 @media (max-width:760px){{.kpi-row{{grid-template-columns:repeat(2,1fr)}}}}
 .kpi{{position:relative;border:1px solid var(--border);border-radius:var(--r);
   padding:14px 14px 12px;overflow:hidden;background:var(--raised);
   transition:transform .15s,border-color .2s}}
 .kpi:hover{{transform:translateY(-2px);border-color:var(--border-glow)}}
-.kpi::before{{content:"";position:absolute;top:0;left:0;right:0;height:2px}}
-.kpi.k-amber::before{{background:linear-gradient(90deg,var(--amber),var(--amber-2))}}
-.kpi.k-cyan::before{{background:linear-gradient(90deg,var(--cyan),#7CECFF)}}
-.kpi.k-magenta::before{{background:linear-gradient(90deg,var(--magenta),#FF7AC8)}}
-.kpi.k-green::before{{background:linear-gradient(90deg,var(--green),#7CFFE0)}}
+.kpi::before{{content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--amber),var(--amber-2))}}
+.kpi.k-done::before{{background:var(--green);opacity:.7}}
+.kpi.k-warn::before{{background:var(--red);opacity:.8}}
 .kpi-l{{font-size:10px;font-weight:700;color:var(--t2);letter-spacing:.1em;
   text-transform:uppercase;margin-bottom:8px}}
-.kpi-n{{font-size:36px;font-weight:900;line-height:1;letter-spacing:-.02em;
-  font-feature-settings:"tnum";margin-bottom:4px}}
-.kpi.k-amber .kpi-n{{color:var(--amber-2)}}
-.kpi.k-cyan .kpi-n{{color:var(--cyan)}}
-.kpi.k-magenta .kpi-n{{color:var(--magenta)}}
-.kpi.k-green .kpi-n{{color:var(--green)}}
+.kpi-n{{font-size:34px;font-weight:900;line-height:1;letter-spacing:-.02em;
+  font-feature-settings:"tnum";margin-bottom:4px;color:var(--amber-2)}}
+.kpi.k-done .kpi-n{{color:var(--green)}}
+.kpi.k-warn .kpi-n{{color:var(--red)}}
+.kpi.k-text .kpi-n{{color:var(--text)}}
 .kpi-sub{{font-size:11px;color:var(--muted);font-weight:500}}
-.kpi-spark{{position:absolute;bottom:0;left:0;right:0;height:32px;opacity:.5}}
 
 /* ── SECTION HEADER ───────────────────────────────────────────── */
 .section-h{{display:flex;align-items:center;gap:10px;margin:24px 0 12px}}
@@ -684,28 +699,21 @@ body{{background:radial-gradient(ellipse at top,rgba(212,122,42,.05),transparent
 .card-sub{{font-size:10px;color:var(--t2);font-weight:500}}
 .card-tier{{font-size:9px;font-weight:800;letter-spacing:.08em;padding:2px 6px;
   border-radius:4px;background:var(--surface);color:var(--t2);flex-shrink:0;margin-left:auto}}
-.card-tier.p1{{background:rgba(255,46,151,.15);color:var(--magenta)}}
-.card-tier.p2{{background:rgba(212,122,42,.15);color:var(--amber-2)}}
-.card-tier.p3{{background:rgba(0,212,255,.15);color:var(--cyan)}}
-.card-tier.done{{background:rgba(0,245,147,.15);color:var(--green)}}
-.card-tier.blocked{{background:rgba(255,59,92,.15);color:var(--red)}}
-.card-tier.backlog{{background:rgba(168,85,247,.15);color:var(--purple)}}
-
-/* progress ring */
-.ring{{position:relative;width:48px;height:48px;flex-shrink:0}}
-.ring svg{{width:100%;height:100%;transform:rotate(-90deg)}}
-.ring-track{{stroke:var(--surface);stroke-width:4;fill:none}}
-.ring-fill{{stroke-width:4;fill:none;stroke-linecap:round;transition:stroke-dashoffset 1s}}
-.ring-n{{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  font-size:11px;font-weight:800;font-feature-settings:"tnum"}}
+.card-tier.p1{{background:rgba(192,120,64,.2);color:var(--amber-2)}}
+.card-tier.p2{{background:rgba(192,120,64,.12);color:var(--amber)}}
+.card-tier.p3{{background:rgba(168,164,158,.12);color:var(--t2)}}
+.card-tier.done{{background:rgba(59,204,139,.15);color:var(--green)}}
+.card-tier.blocked{{background:rgba(225,84,97,.15);color:var(--red)}}
+.card-tier.backlog{{background:rgba(168,164,158,.1);color:var(--muted)}}
 
 /* progress bar */
 .pbar{{height:6px;background:var(--surface);border-radius:3px;overflow:hidden;position:relative}}
 .pbar-fill{{height:100%;border-radius:3px;transition:width 1s cubic-bezier(.2,.8,.2,1);
   background:linear-gradient(90deg,var(--amber),var(--amber-2))}}
-.pbar-fill.done{{background:linear-gradient(90deg,var(--green),#7CFFE0);box-shadow:0 0 8px var(--green-glow)}}
-.pbar-fill.warn{{background:linear-gradient(90deg,var(--red),#FF7C92)}}
-.pbar-fill.active{{background:linear-gradient(90deg,var(--cyan),#7CECFF);box-shadow:0 0 8px var(--cyan-glow)}}
+.pbar-fill.done{{background:var(--green);box-shadow:0 0 6px var(--green-glow)}}
+.pbar-fill.warn{{background:var(--red);box-shadow:0 0 6px var(--red-glow)}}
+.pbar-fill.active{{background:linear-gradient(90deg,var(--amber),var(--amber-2));
+  box-shadow:0 0 6px var(--amber-glow)}}
 
 /* ── PROJECT GRID ─────────────────────────────────────────────── */
 .proj-grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}}
@@ -715,14 +723,13 @@ body{{background:radial-gradient(ellipse at top,rgba(212,122,42,.05),transparent
   box-shadow:0 8px 24px rgba(0,0,0,.4)}}
 .proj::before{{content:"";position:absolute;top:0;left:0;bottom:0;width:3px;
   background:var(--surface);transition:background .3s}}
-.proj.s-done::before{{background:linear-gradient(180deg,var(--green),#7CFFE0);
-  box-shadow:0 0 8px var(--green-glow)}}
+.proj.s-done::before{{background:var(--green);box-shadow:0 0 6px var(--green-glow)}}
 .proj.s-phase1::before{{background:linear-gradient(180deg,var(--amber),var(--amber-2));
-  box-shadow:0 0 8px var(--amber-glow)}}
-.proj.s-running::before{{background:linear-gradient(180deg,var(--cyan),#7CECFF);
-  box-shadow:0 0 8px var(--cyan-glow);animation:pulse-dot 2s infinite}}
-.proj.s-blocked::before{{background:linear-gradient(180deg,var(--red),#FF7C92)}}
-.proj.s-research::before{{background:linear-gradient(180deg,var(--purple),#C8A8FF)}}
+  box-shadow:0 0 6px var(--amber-glow)}}
+.proj.s-running::before{{background:var(--amber-2);
+  box-shadow:0 0 6px var(--amber-glow);animation:pulse-dot 2s infinite}}
+.proj.s-blocked::before{{background:var(--red)}}
+.proj.s-research::before{{background:var(--slate-light)}}
 .proj-h{{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start}}
 .proj-icon{{font-size:22px;flex-shrink:0}}
 .proj-title{{font-size:14px;font-weight:800;line-height:1.3;letter-spacing:-.01em}}
@@ -768,17 +775,20 @@ body{{background:radial-gradient(ellipse at top,rgba(212,122,42,.05),transparent
 
 /* ── CLAUDE SESSIONS ──────────────────────────────────────────── */
 .cl-card{{background:var(--raised);border:1px solid var(--border);border-radius:var(--r-sm);
-  padding:12px;position:relative}}
-.cl-card.warn{{border-color:rgba(255,59,92,.3);background:linear-gradient(135deg,rgba(255,59,92,.05),var(--raised) 50%)}}
-.cl-head{{display:flex;align-items:center;gap:8px;margin-bottom:8px}}
-.cl-name{{font-size:12px;font-weight:700;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
-.cl-badge{{font-size:9px;font-weight:800;padding:2px 6px;border-radius:4px;letter-spacing:.05em}}
-.cl-badge.live{{background:rgba(0,245,147,.15);color:var(--green)}}
-.cl-badge.off{{background:rgba(94,90,85,.2);color:var(--muted)}}
-.cl-meta{{font-size:9px;color:var(--muted);margin-bottom:8px}}
-.cl-tokens{{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:6px}}
-.cl-tok{{text-align:center;padding:6px 4px;background:var(--surface);border-radius:6px}}
-.cl-tok-n{{font-size:13px;font-weight:800;font-feature-settings:"tnum"}}
+  padding:12px;position:relative;min-width:0;overflow:hidden}}
+.cl-card.warn{{border-color:rgba(225,84,97,.3);background:linear-gradient(135deg,rgba(225,84,97,.04),var(--raised) 50%)}}
+.cl-head{{display:flex;align-items:center;gap:8px;margin-bottom:8px;min-width:0}}
+.cl-name{{font-size:12px;font-weight:700;flex:1;min-width:0;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text)}}
+.cl-badge{{font-size:9px;font-weight:800;padding:2px 6px;border-radius:4px;letter-spacing:.05em;flex-shrink:0}}
+.cl-badge.live{{background:rgba(59,204,139,.15);color:var(--green)}}
+.cl-badge.off{{background:rgba(97,93,88,.2);color:var(--muted)}}
+.cl-meta{{font-size:9px;color:var(--muted);margin-bottom:8px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
+.cl-tokens{{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:6px}}
+.cl-tok{{text-align:center;padding:6px 4px;background:var(--surface);border-radius:6px;min-width:0;overflow:hidden}}
+.cl-tok-n{{font-size:13px;font-weight:800;font-feature-settings:"tnum";color:var(--amber-2);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
 .cl-tok-l{{font-size:9px;color:var(--muted)}}
 
 /* ── TODOS ────────────────────────────────────────────────────── */
@@ -808,15 +818,16 @@ body{{background:radial-gradient(ellipse at top,rgba(212,122,42,.05),transparent
 
 /* ── GIT / SYSTEM ─────────────────────────────────────────────── */
 .mini-card{{background:var(--raised);border:1px solid var(--border);border-radius:var(--r-sm);
-  padding:10px 12px;display:flex;align-items:center;gap:10px}}
+  padding:10px 12px;display:flex;align-items:center;gap:10px;min-width:0;overflow:hidden}}
 .mini-icon{{font-size:14px;flex-shrink:0}}
-.mini-body{{flex:1;min-width:0}}
-.mini-l{{font-size:11px;font-weight:700;line-height:1.3}}
+.mini-body{{flex:1;min-width:0;overflow:hidden}}
+.mini-l{{font-size:12px;font-weight:700;line-height:1.3;color:var(--text);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
 .mini-s{{font-size:10px;color:var(--muted);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
-.mini-badge{{font-size:9px;font-weight:800;padding:3px 6px;border-radius:4px;letter-spacing:.04em;flex-shrink:0}}
-.mini-badge.clean{{background:rgba(0,245,147,.12);color:var(--green)}}
-.mini-badge.dirty{{background:rgba(212,122,42,.12);color:var(--amber-2)}}
-.mini-badge.warn{{background:rgba(255,59,92,.12);color:var(--red)}}
+.mini-badge{{font-size:9px;font-weight:800;padding:3px 6px;border-radius:4px;letter-spacing:.04em;flex-shrink:0;white-space:nowrap}}
+.mini-badge.clean{{background:rgba(59,204,139,.12);color:var(--green)}}
+.mini-badge.dirty{{background:rgba(192,120,64,.15);color:var(--amber-2)}}
+.mini-badge.warn{{background:rgba(225,84,97,.12);color:var(--red)}}
 
 /* ── VAULT / MEMORY STATS ─────────────────────────────────────── */
 .stat-grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}}
@@ -837,22 +848,39 @@ body{{background:radial-gradient(ellipse at top,rgba(212,122,42,.05),transparent
   border-radius:50%;cursor:pointer;font-size:18px;line-height:1;border:none;color:var(--text)}}
 
 /* ── BOTTOM NAV (Mission control bar) ─────────────────────────── */
-.bnav{{position:fixed;bottom:calc(var(--sb) + 12px);left:50%;transform:translateX(-50%);
-  background:rgba(18,18,20,.95);border:1px solid var(--border-glow);
-  border-radius:50px;padding:6px 8px;display:flex;gap:2px;
-  backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);
-  box-shadow:0 12px 36px rgba(0,0,0,.7);z-index:100}}
-.nb{{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 13px;
-  border:none;background:none;color:var(--muted);font-size:9px;font-weight:700;
-  cursor:pointer;border-radius:40px;letter-spacing:.04em;transition:all .2s;white-space:nowrap}}
-.nb .ic{{font-size:18px;line-height:1;transition:transform .2s}}
-.nb.on{{background:linear-gradient(135deg,rgba(212,122,42,.25),rgba(0,212,255,.15));color:#fff;
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}}
-.nb.on .ic{{transform:scale(1.1)}}
-.nb-badge{{position:absolute;top:2px;right:6px;min-width:14px;height:14px;padding:0 4px;
-  background:var(--red);color:#fff;font-size:8px;font-weight:800;border-radius:7px;
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 0 8px var(--red-glow)}}
+.bnav{{position:fixed;bottom:calc(var(--sb) + 14px);left:50%;transform:translateX(-50%);
+  background:rgba(28,28,31,.97);border:1px solid rgba(240,237,232,.1);
+  border-radius:64px;padding:8px 10px;display:flex;gap:4px;
+  backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);
+  box-shadow:0 16px 40px rgba(0,0,0,.6),0 0 0 1px rgba(0,0,0,.4);z-index:100}}
+.nb{{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 18px;
+  border:none;background:none;color:var(--text);font-size:11px;font-weight:700;
+  cursor:pointer;border-radius:48px;letter-spacing:.02em;transition:all .2s;white-space:nowrap;
+  opacity:.55;min-width:62px}}
+.nb .ic{{font-size:22px;line-height:1;transition:transform .2s}}
+.nb:hover{{opacity:.85}}
+.nb.on{{background:linear-gradient(135deg,rgba(192,120,64,.28),rgba(192,120,64,.12));
+  color:var(--amber-2);opacity:1;
+  box-shadow:inset 0 0 0 1px rgba(192,120,64,.35),0 4px 12px rgba(192,120,64,.2)}}
+.nb.on .ic{{transform:scale(1.05)}}
+@media (max-width:520px){{
+  .nb{{padding:9px 14px;min-width:54px;font-size:10px}}
+  .nb .ic{{font-size:20px}}
+}}
+
+/* ── READ PANEL · sub-tabs ───────────────────────────────────── */
+.read-tabs{{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px;
+  scrollbar-width:none;-webkit-overflow-scrolling:touch}}
+.read-tabs::-webkit-scrollbar{{display:none}}
+.read-tab{{display:flex;align-items:center;gap:6px;padding:8px 14px;
+  background:var(--raised);border:1px solid var(--border);border-radius:50px;
+  color:var(--t2);font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;
+  transition:all .15s;flex-shrink:0}}
+.read-tab:hover{{border-color:var(--border-glow)}}
+.read-tab.on{{background:linear-gradient(135deg,rgba(192,120,64,.2),rgba(192,120,64,.08));
+  border-color:rgba(192,120,64,.4);color:var(--amber-2)}}
+.read-tab-ic{{font-size:14px}}
+.read-tab-count{{font-size:9px;opacity:.7;font-weight:600}}
 
 /* ── READ PANEL ────────────────────────────────────────────────── */
 .read-search{{position:sticky;top:62px;z-index:10;
@@ -873,34 +901,44 @@ body{{background:radial-gradient(ellipse at top,rgba(212,122,42,.05),transparent
 .read-title{{font-size:13px;font-weight:700;line-height:1.3}}
 .read-meta{{font-size:10px;color:var(--muted);margin-top:2px;font-feature-settings:"tnum"}}
 .read-tier{{font-size:9px;font-weight:800;padding:3px 7px;border-radius:4px;letter-spacing:.06em;flex-shrink:0}}
-.read-tier.p1{{background:rgba(255,46,151,.15);color:var(--magenta)}}
-.read-tier.p2{{background:rgba(212,122,42,.15);color:var(--amber-2)}}
-.read-tier.p3{{background:rgba(0,212,255,.15);color:var(--cyan)}}
-.read-tier.new{{background:rgba(0,245,147,.15);color:var(--green)}}
+.read-tier.p1{{background:rgba(192,120,64,.22);color:var(--amber-2)}}
+.read-tier.p2{{background:rgba(192,120,64,.12);color:var(--amber)}}
+.read-tier.p3{{background:rgba(168,164,158,.1);color:var(--t2)}}
+.read-tier.new{{background:rgba(59,204,139,.15);color:var(--green)}}
+.read-tier.book{{background:rgba(192,120,64,.18);color:var(--amber-2)}}
+.read-tier.web{{background:rgba(124,140,148,.15);color:var(--slate-light)}}
 .read-chevron{{color:var(--muted);transition:transform .25s;font-size:14px;flex-shrink:0}}
-.read-card.open .read-chevron{{transform:rotate(90deg);color:var(--cyan)}}
-.read-content{{display:none;padding:0 16px 16px;border-top:1px solid var(--border);
-  font-size:13px;line-height:1.6;color:var(--t2);max-height:60vh;overflow-y:auto}}
+.read-card.open .read-chevron{{transform:rotate(90deg);color:var(--amber-2)}}
+.read-content{{display:none;padding:0 14px 14px;border-top:1px solid var(--border);
+  font-size:13px;line-height:1.6;color:var(--t2);max-height:65vh;overflow-y:auto;
+  word-break:break-word;overflow-wrap:break-word}}
 .read-card.open .read-content{{display:block}}
 .read-content h1,.read-content h2,.read-content h3{{color:var(--text);margin:14px 0 8px;font-weight:800;letter-spacing:-.01em}}
-.read-content h1{{font-size:18px}}.read-content h2{{font-size:15px;color:var(--amber-2)}}
-.read-content h3{{font-size:13px;color:var(--cyan)}}
+.read-content h1{{font-size:17px}}.read-content h2{{font-size:14px;color:var(--amber-2)}}
+.read-content h3{{font-size:13px;color:var(--amber)}}
 .read-content p{{margin:8px 0;color:var(--t2)}}
-.read-content ul,.read-content ol{{margin:8px 0;padding-left:22px}}
+.read-content ul,.read-content ol{{margin:8px 0;padding-left:20px}}
 .read-content li{{margin:3px 0}}
-.read-content code{{background:var(--surface);padding:1px 6px;border-radius:4px;
-  font-family:"SF Mono",Menlo,monospace;font-size:11px;color:var(--amber-2)}}
-.read-content pre{{background:var(--surface);padding:10px;border-radius:6px;overflow-x:auto;
-  font-size:11px;line-height:1.5;margin:8px 0;border:1px solid var(--border)}}
-.read-content pre code{{background:none;padding:0;color:var(--text)}}
+.read-content code{{background:var(--surface);padding:1px 5px;border-radius:4px;
+  font-family:"SF Mono",Menlo,monospace;font-size:11px;color:var(--amber-2);
+  word-break:break-all}}
+.read-content pre{{background:var(--surface);padding:10px;border-radius:6px;
+  font-size:10.5px;line-height:1.5;margin:8px 0;border:1px solid var(--border);
+  white-space:pre-wrap;word-break:break-word;overflow-x:auto}}
+.read-content pre code{{background:none;padding:0;color:var(--text);word-break:normal}}
 .read-content blockquote{{border-left:3px solid var(--amber);padding:6px 12px;margin:8px 0;
-  background:rgba(212,122,42,.04);color:var(--t2);font-style:italic}}
-.read-content table{{width:100%;border-collapse:collapse;margin:8px 0;font-size:11px}}
-.read-content th,.read-content td{{padding:6px 10px;border:1px solid var(--border);text-align:left}}
-.read-content th{{background:var(--surface);color:var(--amber-2);font-weight:700}}
-.read-content a{{color:var(--cyan)}}
+  background:rgba(192,120,64,.05);color:var(--t2);font-style:italic}}
+/* Tables · constrained · scroll inside */
+.read-content table{{width:100%;border-collapse:collapse;margin:8px 0;font-size:11px;
+  table-layout:fixed;word-break:break-word}}
+.read-content th,.read-content td{{padding:6px 8px;border:1px solid var(--border);text-align:left;
+  vertical-align:top;overflow-wrap:break-word}}
+.read-content th{{background:var(--surface);color:var(--amber-2);font-weight:700;font-size:10px}}
+.read-content td{{font-size:11px}}
+.read-content a{{color:var(--amber-2);text-decoration:none;border-bottom:1px dotted var(--amber)}}
 .read-content hr{{border:none;border-top:1px solid var(--border);margin:14px 0}}
 .read-content strong{{color:var(--text)}}
+.read-content img{{max-width:100%;height:auto}}
 
 /* must-read shortcuts (overview panel) */
 .shortcut-grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}}
@@ -926,13 +964,13 @@ body{{background:radial-gradient(ellipse at top,rgba(212,122,42,.05),transparent
 <div class="topbar">
   <div class="topbar-row">
     <div class="logo"><span class="logo-pulse"></span>NORMS · MISSION CONTROL</div>
-    <span class="update-ts">{ts_thai}</span>
     <div class="h-stats">
       <div class="h-stat"><span class="h-stat-n" style="color:var(--green)">{alive_count}</span><span class="h-stat-l">Live</span></div>
-      <div class="h-stat"><span class="h-stat-n" style="color:var(--amber-2)">{accurate_done}/25</span><span class="h-stat-l">Acc.</span></div>
-      <div class="h-stat"><span class="h-stat-n" style="color:var(--cyan)">{chapters_new}</span><span class="h-stat-l">New Ch.</span></div>
+      <div class="h-stat"><span class="h-stat-n">{accurate_done}/25</span><span class="h-stat-l">Acc.</span></div>
+      <div class="h-stat"><span class="h-stat-n">{chapters_new}</span><span class="h-stat-l">New</span></div>
       <div class="h-stat"><span class="h-stat-n" style="color:{drive_color}">{drive_ok}</span><span class="h-stat-l">Drive</span></div>
     </div>
+    <span class="update-ts">{ts_thai}</span>
   </div>
 </div>
 
@@ -957,22 +995,22 @@ body{{background:radial-gradient(ellipse at top,rgba(212,122,42,.05),transparent
 
     <!-- KPI cards -->
     <div class="kpi-row">
-      <div class="kpi k-amber">
+      <div class="kpi">
         <div class="kpi-l">Accurate Batch</div>
         <div class="kpi-n">{accurate_pct}%</div>
-        <div class="kpi-sub">{accurate_done}/25 EP · background</div>
+        <div class="kpi-sub">{accurate_done}/25 EP · bg</div>
       </div>
-      <div class="kpi k-cyan">
+      <div class="kpi k-text">
         <div class="kpi-l">Chapters · New</div>
         <div class="kpi-n">{chapters_new}/{chapters_total}</div>
         <div class="kpi-sub">drafted Phase 3</div>
       </div>
-      <div class="kpi k-magenta">
+      <div class="kpi k-text">
         <div class="kpi-l">Memory</div>
         <div class="kpi-n">{memory_total}</div>
         <div class="kpi-sub">items active</div>
       </div>
-      <div class="kpi k-green">
+      <div class="kpi k-done">
         <div class="kpi-l">Disk</div>
         <div class="kpi-n">{disk_pct}%</div>
         <div class="kpi-sub">{disk_used} used</div>
@@ -1023,6 +1061,7 @@ body{{background:radial-gradient(ellipse at top,rgba(212,122,42,.05),transparent
     <div class="read-search">
       <input type="text" id="read-search-input" placeholder="🔍 ค้นหาในไฟล์ทั้งหมด..." autocomplete="off">
     </div>
+    <div class="read-tabs" id="read-tabs"></div>
     <div class="read-list" id="read-list"></div>
   </div>
 
@@ -1349,11 +1388,39 @@ function md2html(md){{
 
 // ─── READ PANEL ─────────────────────────────────────────────
 let readSearchQuery = '';
+let readActiveCat = 'working';
+
+function renderReadTabs(){{
+  const el = document.getElementById('read-tabs');
+  // Add "All" tab + each category
+  const allCount = D.must_read.length;
+  const tabs = [{{ id: 'all', icon: '📂', label: 'ทั้งหมด' }}].concat(D.categories);
+  el.innerHTML = tabs.map(c => {{
+    const count = c.id === 'all' ? allCount : D.must_read.filter(f => f.cat === c.id).length;
+    const cls = c.id === readActiveCat ? 'on' : '';
+    return `<button class="read-tab ${{cls}}" data-cat="${{c.id}}">
+      <span class="read-tab-ic">${{c.icon}}</span>
+      <span>${{c.label}}</span>
+      <span class="read-tab-count">${{count}}</span>
+    </button>`;
+  }}).join('');
+  el.querySelectorAll('.read-tab').forEach(btn => {{
+    btn.addEventListener('click', () => {{
+      readActiveCat = btn.dataset.cat;
+      renderReadTabs();
+      renderRead();
+    }});
+  }});
+}}
+
 function renderRead(){{
   const list = document.getElementById('read-list');
   const q = readSearchQuery.toLowerCase().trim();
-  const filtered = D.must_read.filter(f => !q ||
-    f.title.toLowerCase().includes(q) || f.content.toLowerCase().includes(q));
+  const filtered = D.must_read.filter(f => {{
+    if (readActiveCat !== 'all' && f.cat !== readActiveCat) return false;
+    if (q && !f.title.toLowerCase().includes(q) && !f.content.toLowerCase().includes(q)) return false;
+    return true;
+  }});
   list.innerHTML = filtered.map(f => {{
     const sizeKb = (f.size / 1024).toFixed(1);
     return `<div class="read-card" id="rc-${{f.id}}">
@@ -1368,7 +1435,7 @@ function renderRead(){{
       </div>
       <div class="read-content" id="rcc-${{f.id}}"></div>
     </div>`;
-  }}).join('') || '<div style="text-align:center;color:var(--muted);padding:30px;font-size:13px">No files match "' + q + '"</div>';
+  }}).join('') || '<div style="text-align:center;color:var(--muted);padding:30px;font-size:13px">ไม่พบไฟล์ที่ตรงกับ "' + q + '"</div>';
 }}
 function toggleRead(id){{
   const card = document.getElementById('rc-' + id);
@@ -1393,12 +1460,20 @@ function renderShortcuts(){{
   const priority = ['status','phase2','phase1-km','worklog-book','handoff-sync','npc-website','ch-3pillar','ch-psy1'];
   const items = priority.map(id => D.must_read.find(f => f.id === id)).filter(Boolean);
   el.innerHTML = items.map(f => `
-    <div class="shortcut" onclick="switchPanel('p-read');setTimeout(()=>toggleRead('${{f.id}}'),100)">
+    <div class="shortcut" onclick="jumpToFile('${{f.id}}','${{f.cat}}')">
       <div class="shortcut-icon">${{f.icon}}</div>
       <div class="shortcut-l">${{f.title}}</div>
       <div class="shortcut-s">${{f.mtime_ago}}</div>
     </div>
   `).join('');
+}}
+
+function jumpToFile(id, cat){{
+  switchPanel('p-read');
+  readActiveCat = cat || 'all';
+  renderReadTabs();
+  renderRead();
+  setTimeout(() => toggleRead(id), 120);
 }}
 
 // ─── TAB SWITCHING ──────────────────────────────────────────
@@ -1428,6 +1503,7 @@ renderPhases();
 renderMission();
 renderLive();
 renderShortcuts();
+renderReadTabs();
 renderRead();
 // Search bar listener
 const searchInput = document.getElementById('read-search-input');
