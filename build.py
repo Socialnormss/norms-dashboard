@@ -797,6 +797,22 @@ body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent
 .pipe-pct.done{{background:rgba(0,245,147,.12);color:var(--green)}}
 .pipe-pct.active{{background:rgba(192,120,64,.12);color:var(--amber-2)}}
 .pipe-pct.zero{{background:var(--surface);color:var(--muted)}}
+.pipe-done-group{{margin-top:12px;background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r-sm);overflow:hidden}}
+.pipe-done-head{{display:flex;align-items:center;gap:8px;padding:10px 14px;cursor:pointer;
+  user-select:none;font-size:11px;font-weight:700;color:var(--t2);letter-spacing:.04em}}
+.pipe-done-head:hover{{background:rgba(255,255,255,.02)}}
+.pipe-done-count{{background:rgba(0,245,147,.12);color:var(--green);
+  padding:2px 7px;border-radius:4px;font-size:10px;font-weight:800}}
+.pipe-done-chev{{margin-left:auto;color:var(--muted);transition:transform .25s}}
+.pipe-done-group.open .pipe-done-chev{{transform:rotate(90deg);color:var(--green)}}
+.pipe-done-body{{display:none;padding:0 14px 12px;border-top:1px solid var(--border)}}
+.pipe-done-group.open .pipe-done-body{{display:block}}
+.pipe-done-item{{display:flex;align-items:center;gap:8px;padding:8px 0;font-size:11px;
+  border-bottom:1px solid rgba(255,255,255,.04)}}
+.pipe-done-item:last-child{{border-bottom:none}}
+.pipe-done-item-l{{color:var(--t2);flex:1}}
+.pipe-done-item-n{{color:var(--green);font-weight:800;font-feature-settings:"tnum"}}
 
 /* ── RUNNING / LIVE ───────────────────────────────────────────── */
 .running-row{{display:flex;align-items:center;gap:10px;padding:10px 12px 10px 26px;
@@ -819,6 +835,14 @@ body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent
 .cl-badge{{font-size:9px;font-weight:800;padding:2px 6px;border-radius:4px;letter-spacing:.05em;flex-shrink:0}}
 .cl-badge.live{{background:rgba(59,204,139,.15);color:var(--green)}}
 .cl-badge.off{{background:rgba(97,93,88,.2);color:var(--muted)}}
+.cl-bell{{background:transparent;border:1px solid var(--border);border-radius:6px;
+  width:28px;height:24px;font-size:12px;cursor:pointer;color:var(--t2);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:all .15s;padding:0;line-height:1}}
+.cl-bell:hover{{border-color:var(--amber-2);color:var(--amber-2);background:rgba(192,120,64,.08)}}
+.cl-bell:active{{transform:scale(.92)}}
+.cl-bell.sent{{border-color:var(--green);color:var(--green);background:rgba(59,204,139,.12)}}
+.cl-bell.error{{border-color:var(--red);color:var(--red);background:rgba(225,84,97,.12)}}
 .cl-meta{{font-size:9px;color:var(--muted);margin-bottom:8px;
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
 .cl-tokens{{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:6px}}
@@ -1129,6 +1153,36 @@ body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent
 <script>
 const D = {payload_json};
 const BUILD_TIME = D.ts;
+const NTFY_TOPIC = 'norms-mc-5d1a901f06cf';
+const NTFY_URL = `https://ntfy.sh/${{NTFY_TOPIC}}`;
+
+async function notifyRetire(btn){{
+  const pid  = btn.dataset.pid;
+  const name = btn.dataset.name;
+  const pct  = btn.dataset.pct;
+  const orig = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = '⏳';
+  try {{
+    const res = await fetch(NTFY_URL, {{
+      method: 'POST',
+      headers: {{
+        'Title': `Norms · session ใกล้เต็ม (${{pct}}%)`,
+        'Tags': 'warning,bell',
+        'Priority': '4'
+      }},
+      body: `${{name}} · PID ${{pid}} · ขึ้น session ใหม่`
+    }});
+    if (!res.ok) throw new Error(res.status);
+    btn.textContent = '✓';
+    btn.classList.add('sent');
+    setTimeout(() => {{ btn.textContent = orig; btn.classList.remove('sent'); btn.disabled = false; }}, 4000);
+  }} catch (e) {{
+    btn.textContent = '✗';
+    btn.classList.add('error');
+    setTimeout(() => {{ btn.textContent = orig; btn.classList.remove('error'); btn.disabled = false; }}, 4000);
+  }}
+}}
 
 // ─── RE-TRANSCRIBE MISSION ───────────────────────────────────
 function renderMission(){{
@@ -1260,8 +1314,14 @@ function closeModal(){{ document.getElementById('modal-bg').classList.remove('op
 // ─── PIPELINE ────────────────────────────────────────────────
 function renderPipeline(){{
   const el = document.getElementById('pipe-grid');
-  el.innerHTML = Object.entries(D.pipeline).map(([k, v]) => {{
+  const entries = Object.entries(D.pipeline).map(([k, v]) => {{
     const pct = Math.round(v.done / v.total * 100) || 0;
+    return [k, v, pct];
+  }});
+  const active = entries.filter(([,,pct]) => pct < 100);
+  const done = entries.filter(([,,pct]) => pct === 100);
+
+  const renderCard = ([k, v, pct]) => {{
     const cls = pct === 100 ? 'done' : pct > 0 ? 'active' : 'zero';
     return `<div class="pipe ${{v.priority ? 'priority' : ''}}">
       <div class="pipe-h"><span class="pipe-icon">${{v.icon}}</span><span class="pipe-l">${{v.label}}</span></div>
@@ -1273,7 +1333,28 @@ function renderPipeline(){{
       </div>
       <div class="pbar"><div class="pbar-fill ${{cls}}" style="width:${{pct}}%"></div></div>
     </div>`;
-  }}).join('');
+  }};
+
+  let html = active.map(renderCard).join('');
+  if (done.length) {{
+    html += `<div class="pipe-done-group" style="grid-column:1/-1" onclick="this.classList.toggle('open')">
+      <div class="pipe-done-head">
+        <span>✅</span><span>Completed</span>
+        <span class="pipe-done-count">${{done.length}}</span>
+        <span class="pipe-done-chev">›</span>
+      </div>
+      <div class="pipe-done-body">
+        ${{done.map(([k, v]) => `
+          <div class="pipe-done-item">
+            <span>${{v.icon}}</span>
+            <span class="pipe-done-item-l">${{v.label}}</span>
+            <span class="pipe-done-item-n">${{v.done}} / ${{v.total}}</span>
+          </div>
+        `).join('')}}
+      </div>
+    </div>`;
+  }}
+  el.innerHTML = html;
 }}
 
 // ─── CLAUDE ─────────────────────────────────────────────────
@@ -1291,6 +1372,7 @@ function renderClaude(){{
       <div class="cl-head">
         <span style="font-size:14px">${{s.alive ? '⚡' : '○'}}</span>
         <div class="cl-name">${{s.name || s.cwd}}</div>
+        <button class="cl-bell" data-pid="${{s.pid}}" data-name="${{(s.name || s.cwd).replace(/"/g,'&quot;')}}" data-pct="${{pct}}" onclick="notifyRetire(this)" title="แจ้งเตือนให้ขึ้น session ใหม่">🔔</button>
         <span class="cl-badge ${{s.alive ? 'live' : 'off'}}">${{s.alive ? 'LIVE' : 'OFF'}}</span>
       </div>
       <div class="cl-meta">PID ${{s.pid}} · ${{s.runtime_min}}m · #${{s.session_id}} · ${{s.cwd}}</div>
