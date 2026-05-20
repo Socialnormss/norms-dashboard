@@ -179,9 +179,10 @@ def collect_retranscribe_mission():
     hours_total = round(total_target * AVG_HOURS_PER_EP, 1)
     overall_pct = round(total_done / total_target * 100) if total_target else 0
 
-    # ETA assuming 8h/day compute (overnight + bg)
-    HOURS_PER_DAY = 8
-    days_remaining = round(hours_remaining / HOURS_PER_DAY)
+    # ETA assuming 24/7 compute with 2 parallel tracks
+    HOURS_PER_DAY = 24
+    PARALLEL_TRACKS = 2
+    days_remaining = round(hours_remaining / (HOURS_PER_DAY * PARALLEL_TRACKS))
     eta_date = (TODAY + datetime.timedelta(days=days_remaining)).isoformat() if days_remaining else TODAY.isoformat()
 
     return {
@@ -893,10 +894,11 @@ body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent
 /* Sticky composite: search + tabs in one solid container.
    No backdrop-filter — solid bg already opaque + filter causes iOS Safari
    sticky layer bug where text bleeds through when scrolled. */
-.read-sticky{{position:sticky;top:60px;z-index:40;
+.read-sticky{{position:sticky;top:40px;z-index:40;
   background:var(--bg);
   margin:-16px -16px 14px;padding:12px 16px 6px;
-  border-bottom:1px solid var(--border)}}
+  border-bottom:1px solid var(--border);
+  box-shadow:0 -40px 0 var(--bg)}}
 .read-search{{margin:0 0 10px}}
 .read-search input{{width:100%;background:var(--raised);border:1px solid var(--border);
   border-radius:50px;padding:11px 16px;color:var(--text);font-size:14px;font-family:inherit;
@@ -1113,7 +1115,7 @@ function renderMission(){{
       </div>
       <div class="mission-eta">
         <div class="mission-eta-n">${{m.days_remaining}}</div>
-        <div class="mission-eta-l">days @ 8h/day</div>
+        <div class="mission-eta-l">days @ 24/7 · 2x</div>
         <div class="mission-eta-date">ETA ${{m.eta_date}}</div>
       </div>
     </div>
