@@ -174,15 +174,42 @@ def collect_retranscribe_mission():
         del s["path"]  # don't serialize Path
 
     total_remaining = total_target - total_done
+
+    # Read real avg min/EP from accurate_queue.py log (single source of truth)
+    real_avg_min = None
+    queue_log = Path("/tmp/accurate_queue.log")
+    if queue_log.exists():
+        try:
+            for line in reversed(queue_log.read_text().splitlines()):
+                m = re.search(r"avg\s+([\d.]+)\s*min", line)
+                if m:
+                    real_avg_min = float(m.group(1))
+                    break
+        except Exception:
+            pass
+
+    # Count live parallel transcribe workers (transcribe.py with --accurate)
+    try:
+        ps_out = subprocess.run(
+            ["pgrep", "-f", "transcribe.py.*--accurate"],
+            capture_output=True, text=True, timeout=3
+        ).stdout
+        live_workers = max(1, len([p for p in ps_out.split() if p.strip()]))
+    except Exception:
+        live_workers = 2
+
+    if real_avg_min:
+        AVG_HOURS_PER_EP = round(real_avg_min / 60, 2)
+
     hours_done = round(total_done * AVG_HOURS_PER_EP, 1)
     hours_remaining = round(total_remaining * AVG_HOURS_PER_EP, 1)
     hours_total = round(total_target * AVG_HOURS_PER_EP, 1)
     overall_pct = round(total_done / total_target * 100) if total_target else 0
 
-    # ETA assuming 24/7 compute with 2 parallel tracks
+    # ETA from real throughput: 24h/day × live_workers
     HOURS_PER_DAY = 24
-    PARALLEL_TRACKS = 2
-    days_remaining = round(hours_remaining / (HOURS_PER_DAY * PARALLEL_TRACKS))
+    daily_capacity = HOURS_PER_DAY * live_workers
+    days_remaining = max(1, round(hours_remaining / daily_capacity)) if hours_remaining else 0
     eta_date = (TODAY + datetime.timedelta(days=days_remaining)).isoformat() if days_remaining else TODAY.isoformat()
 
     return {
@@ -197,6 +224,7 @@ def collect_retranscribe_mission():
         "days_remaining": days_remaining,
         "eta_date": eta_date,
         "avg_h_per_ep": AVG_HOURS_PER_EP,
+        "live_workers": live_workers,
     }
 
 def collect_claude_sessions():
@@ -1115,7 +1143,7 @@ function renderMission(){{
       </div>
       <div class="mission-eta">
         <div class="mission-eta-n">${{m.days_remaining}}</div>
-        <div class="mission-eta-l">days @ 24/7 · 2x</div>
+        <div class="mission-eta-l">days @ 24/7 · ${{m.live_workers}}x live</div>
         <div class="mission-eta-date">ETA ${{m.eta_date}}</div>
       </div>
     </div>
