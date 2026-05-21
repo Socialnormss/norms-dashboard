@@ -631,6 +631,20 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{{width:0;he
 body{{background:radial-gradient(ellipse at top,rgba(242,126,83,.04),transparent 55%),
                 var(--bg);min-height:100vh}}
 
+/* ── PULL-TO-REFRESH (content shifts + flat arrow/text indicator) ────── */
+.ptr{{position:fixed;top:0;left:0;right:0;height:60px;z-index:99;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  pointer-events:none;opacity:0;transition:opacity .2s ease;
+  font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--amber-2)}}
+.ptr-arrow{{display:inline-block;font-size:16px;
+  transition:transform .2s ease;will-change:transform}}
+.ptr.ready .ptr-arrow{{transform:rotate(180deg)}}
+.ptr.refreshing .ptr-arrow{{animation:ptr-spin .8s linear infinite}}
+@keyframes ptr-spin{{from{{transform:rotate(0)}}to{{transform:rotate(360deg)}}}}
+#ptr-wrap{{background:var(--bg);position:relative;z-index:1;
+  transition:transform .28s cubic-bezier(.2,.85,.25,1);will-change:transform}}
+#ptr-wrap.pulling{{transition:none}}
+
 /* ── TOPBAR ────────────────────────────────────────────────────── */
 .topbar{{position:sticky;top:0;z-index:50;
   background:rgba(10,10,11,.96);backdrop-filter:blur(24px) saturate(180%);
@@ -638,11 +652,7 @@ body{{background:radial-gradient(ellipse at top,rgba(242,126,83,.04),transparent
   border-bottom:1px solid var(--border);padding:10px 16px}}
 .topbar-row{{display:flex;align-items:center;gap:10px;max-width:1400px;margin:0 auto;flex-wrap:nowrap}}
 .logo{{font-weight:900;font-size:13px;letter-spacing:.04em;white-space:nowrap;
-  color:var(--amber-2);flex-shrink:0;cursor:pointer;
-  transition:opacity .15s ease,transform .15s ease;user-select:none}}
-.logo:active{{opacity:.5;transform:scale(.96)}}
-.logo.refreshing{{opacity:.5;pointer-events:none}}
-.logo.refreshing .logo-pulse{{animation:pulse-dot .4s infinite}}
+  color:var(--amber-2);flex-shrink:0}}
 .logo-pulse{{display:inline-block;width:7px;height:7px;border-radius:50%;
   background:var(--green);box-shadow:0 0 10px var(--green-glow);
   animation:pulse-glow 2s infinite;margin-right:6px;vertical-align:middle}}
@@ -1082,9 +1092,16 @@ body{{background:radial-gradient(ellipse at top,rgba(242,126,83,.04),transparent
 </head>
 <body>
 
+<div class="ptr" id="ptr">
+  <span class="ptr-arrow">↓</span>
+  <span class="ptr-label" id="ptr-label">ดึงเพื่อ refresh</span>
+</div>
+
+<div id="ptr-wrap">
+
 <div class="topbar">
   <div class="topbar-row">
-    <div class="logo" id="logo-refresh" onclick="doRefresh(this)" title="แตะเพื่อ refresh"><span class="logo-pulse"></span>NORMS · MISSION CONTROL</div>
+    <div class="logo"><span class="logo-pulse"></span>NORMS · MISSION CONTROL</div>
     <div class="h-stats">
       <div class="h-stat"><span class="h-stat-n" style="color:var(--green)">{alive_count}</span><span class="h-stat-l">Live</span></div>
       <div class="h-stat"><span class="h-stat-n">{accurate_done}/25</span><span class="h-stat-l">Acc.</span></div>
@@ -1189,6 +1206,8 @@ body{{background:radial-gradient(ellipse at top,rgba(242,126,83,.04),transparent
   </div>
 
 </div>
+
+</div><!-- /#ptr-wrap -->
 
 <!-- Bottom nav bar -->
 <nav class="bnav">
@@ -1697,11 +1716,94 @@ function onReturn(){{
 document.addEventListener('visibilitychange', () => {{ if (!document.hidden) onReturn(); }});
 window.addEventListener('focus', onReturn);
 
-// ─── TAP-TO-REFRESH (กดที่ NORMS · MISSION CONTROL) ───────────
-function doRefresh(el){{
-  el.classList.add('refreshing');
-  setTimeout(() => location.reload(), 150);
-}}
+// ─── PULL-TO-REFRESH (content shifts + flat arrow/text · strict trigger) ──
+(() => {{
+  const ptr = document.getElementById('ptr');
+  const wrap = document.getElementById('ptr-wrap');
+  const label = document.getElementById('ptr-label');
+  const THRESHOLD = 100;         // px to trigger (เข้มขึ้น · ป้องกัน accidental)
+  const MAX = 160;               // px max pull (resistance cap)
+  const DAMP = 0.42;             // resistance factor (ดึงหนักขึ้น)
+  const REST = 60;               // px content stays down while loading
+  const SETTLE_MS = 250;         // wait after scroll stops before allowing pull
+  let startY = 0, startX = 0, pulling = false, armed = false;
+  let distance = 0, active = false, lastScroll = 0;
+
+  // Track scroll → block pull-to-refresh briefly after any scroll (debounce momentum bounces)
+  window.addEventListener('scroll', () => {{ lastScroll = Date.now(); }}, {{passive: true}});
+
+  function setPull(dy){{
+    distance = dy;
+    wrap.style.transform = `translateY(${{dy}}px)`;
+    const p = Math.min(1, dy / THRESHOLD);
+    ptr.style.opacity = p;
+    if (dy >= THRESHOLD){{
+      ptr.classList.add('ready');
+      label.textContent = 'ปล่อยเพื่อ refresh';
+    }} else {{
+      ptr.classList.remove('ready');
+      label.textContent = 'ดึงเพื่อ refresh';
+    }}
+  }}
+  function reset(){{
+    wrap.style.transform = '';
+    ptr.style.opacity = '';
+    ptr.classList.remove('ready');
+  }}
+  function onStart(e){{
+    if (active) return;
+    if (window.scrollY > 0) return;
+    if (Date.now() - lastScroll < SETTLE_MS) return;  // ป้องกัน momentum bounce
+    startY = e.touches[0].clientY;
+    startX = e.touches[0].clientX;
+    armed = true;       // armed = waiting to confirm intent on first move
+    pulling = false;
+  }}
+  function onMove(e){{
+    if (active) return;
+    if (armed && !pulling){{
+      // Confirm intent: dy must be > 12px AND clearly more vertical than horizontal
+      const dy = e.touches[0].clientY - startY;
+      const dx = Math.abs(e.touches[0].clientX - startX);
+      if (dy < 12) return;
+      if (dx > dy * 0.7){{ armed = false; return; }}  // sideways/diagonal = abort
+      pulling = true;
+      wrap.classList.add('pulling');
+    }}
+    if (!pulling) return;
+    const raw = e.touches[0].clientY - startY;
+    if (raw <= 0){{
+      pulling = false; armed = false;
+      wrap.classList.remove('pulling');
+      reset();
+      return;
+    }}
+    e.preventDefault();
+    const dy = Math.min(raw * DAMP, MAX);
+    setPull(dy);
+  }}
+  function onEnd(){{
+    armed = false;
+    if (!pulling) return;
+    pulling = false;
+    wrap.classList.remove('pulling');
+    if (distance >= THRESHOLD){{
+      active = true;
+      wrap.style.transform = `translateY(${{REST}}px)`;
+      ptr.style.opacity = '1';
+      ptr.classList.add('refreshing');
+      label.textContent = 'กำลังโหลด...';
+      setTimeout(() => location.reload(), 300);
+    }} else {{
+      reset();
+    }}
+    distance = 0;
+  }}
+  document.addEventListener('touchstart', onStart, {{passive: true}});
+  document.addEventListener('touchmove', onMove, {{passive: false}});
+  document.addEventListener('touchend', onEnd, {{passive: true}});
+  document.addEventListener('touchcancel', onEnd, {{passive: true}});
+}})();
 
 // ─── INIT ───────────────────────────────────────────────────
 renderPhases();
