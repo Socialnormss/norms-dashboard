@@ -631,20 +631,26 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{{width:0;he
 body{{background:radial-gradient(ellipse at top,rgba(242,126,83,.04),transparent 55%),
                 var(--bg);min-height:100vh}}
 
-/* ── PULL-TO-REFRESH ──────────────────────────────────────────── */
-.ptr{{position:fixed;top:0;left:0;right:0;z-index:100;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  height:60px;pointer-events:none;
-  background:linear-gradient(180deg,rgba(10,10,11,.95) 0%,rgba(10,10,11,0) 100%);
-  transform:translateY(-100%);transition:transform .2s cubic-bezier(.2,.8,.2,1);
-  font-size:12px;font-weight:700;letter-spacing:.05em;color:var(--amber-2)}}
-.ptr.pulling{{transition:none}}
-.ptr.refreshing{{transform:translateY(0)!important}}
-.ptr-arrow{{display:inline-block;font-size:18px;
-  transition:transform .2s ease;will-change:transform}}
-.ptr.ready .ptr-arrow{{transform:rotate(180deg)}}
-.ptr.refreshing .ptr-arrow{{animation:ptr-spin .8s linear infinite}}
-@keyframes ptr-spin{{from{{transform:rotate(0)}}to{{transform:rotate(360deg)}}}}
+/* ── PULL-TO-REFRESH (Facebook-style · content shifts + circular ring) ─ */
+.ptr{{position:fixed;top:14px;left:50%;width:36px;height:36px;
+  z-index:100;pointer-events:none;
+  transform:translate(-50%,-60px) scale(.7);opacity:0;
+  transition:transform .25s cubic-bezier(.2,.8,.2,1),opacity .2s ease;
+  background:var(--surface);border-radius:50%;
+  box-shadow:0 4px 16px rgba(0,0,0,.4),inset 0 0 0 1px var(--border);
+  display:flex;align-items:center;justify-content:center}}
+.ptr.pulling{{transition:opacity .15s ease}}
+.ptr-ring{{width:22px;height:22px;transform:rotate(-90deg);overflow:visible}}
+.ptr-ring circle{{fill:none;stroke-linecap:round;cx:11;cy:11;r:9}}
+.ptr-track{{stroke:rgba(255,255,255,.08);stroke-width:2.5}}
+.ptr-fill{{stroke:var(--amber);stroke-width:2.5;
+  stroke-dasharray:56.55;stroke-dashoffset:56.55;
+  transition:stroke-dashoffset .08s linear}}
+.ptr.refreshing .ptr-ring{{animation:ptr-spin .8s linear infinite}}
+.ptr.refreshing .ptr-fill{{stroke-dasharray:14 42;stroke-dashoffset:0;transition:none}}
+@keyframes ptr-spin{{from{{transform:rotate(-90deg)}}to{{transform:rotate(270deg)}}}}
+#ptr-wrap{{transition:transform .28s cubic-bezier(.2,.85,.25,1);will-change:transform}}
+#ptr-wrap.pulling{{transition:none}}
 
 /* ── TOPBAR ────────────────────────────────────────────────────── */
 .topbar{{position:sticky;top:0;z-index:50;
@@ -1094,9 +1100,13 @@ body{{background:radial-gradient(ellipse at top,rgba(242,126,83,.04),transparent
 <body>
 
 <div class="ptr" id="ptr">
-  <span class="ptr-arrow">↓</span>
-  <span class="ptr-label">ดึงเพื่อ refresh</span>
+  <svg class="ptr-ring" viewBox="0 0 22 22">
+    <circle class="ptr-track"/>
+    <circle class="ptr-fill" id="ptr-fill"/>
+  </svg>
 </div>
+
+<div id="ptr-wrap">
 
 <div class="topbar">
   <div class="topbar-row">
@@ -1205,6 +1215,8 @@ body{{background:radial-gradient(ellipse at top,rgba(242,126,83,.04),transparent
   </div>
 
 </div>
+
+</div><!-- /#ptr-wrap -->
 
 <!-- Bottom nav bar -->
 <nav class="bnav">
@@ -1713,48 +1725,73 @@ function onReturn(){{
 document.addEventListener('visibilitychange', () => {{ if (!document.hidden) onReturn(); }});
 window.addEventListener('focus', onReturn);
 
-// ─── PULL-TO-REFRESH (mobile · drag down on top of page) ────
+// ─── PULL-TO-REFRESH (Facebook-style: content shifts + ring progress) ──
 (() => {{
   const ptr = document.getElementById('ptr');
-  const label = ptr.querySelector('.ptr-label');
-  const THRESHOLD = 80;     // px to trigger refresh
-  const MAX = 140;          // px max pull distance
-  const DAMP = 0.55;        // resistance factor
-  let startY = 0, pulling = false, distance = 0;
+  const wrap = document.getElementById('ptr-wrap');
+  const fill = document.getElementById('ptr-fill');
+  const CIRC = 56.55;            // 2π × r(9)
+  const THRESHOLD = 70;          // px to trigger refresh
+  const MAX = 130;               // px max pull (resistance cap)
+  const DAMP = 0.5;              // resistance factor
+  const SPINNER_REST = 60;       // px content stays down while loading
+  let startY = 0, pulling = false, distance = 0, active = false;
 
+  function setPull(dy){{
+    distance = dy;
+    wrap.style.transform = `translateY(${{dy}}px)`;
+    // Ring appears from 10px pull, scales to 1 + opacity 1 at THRESHOLD
+    const ringP = Math.min(1, Math.max(0, (dy - 10) / (THRESHOLD - 10)));
+    const scale = 0.7 + ringP * 0.3;
+    ptr.style.opacity = ringP;
+    ptr.style.transform = `translate(-50%, ${{Math.min(dy * 0.5, 30)}}px) scale(${{scale}})`;
+    fill.style.strokeDashoffset = CIRC * (1 - ringP);
+  }}
+  function reset(){{
+    wrap.style.transform = '';
+    ptr.style.opacity = '';
+    ptr.style.transform = '';
+    fill.style.strokeDashoffset = CIRC;
+  }}
   function onStart(e){{
-    if (window.scrollY > 0) return;
+    if (window.scrollY > 0 || active) return;
     startY = e.touches[0].clientY;
     pulling = true;
-    ptr.classList.add('pulling');
   }}
   function onMove(e){{
-    if (!pulling) return;
-    const dy = (e.touches[0].clientY - startY) * DAMP;
-    if (dy <= 0){{ pulling = false; ptr.style.transform = ''; return; }}
-    distance = Math.min(dy, MAX);
-    e.preventDefault();
-    ptr.style.transform = `translateY(${{distance - 60}}px)`;
-    if (distance >= THRESHOLD){{
-      ptr.classList.add('ready');
-      label.textContent = 'ปล่อยเพื่อ refresh';
-    }} else {{
-      ptr.classList.remove('ready');
-      label.textContent = 'ดึงเพื่อ refresh';
+    if (!pulling || active) return;
+    const raw = e.touches[0].clientY - startY;
+    if (raw <= 0){{
+      pulling = false;
+      wrap.classList.remove('pulling');
+      ptr.classList.remove('pulling');
+      reset();
+      return;
     }}
+    if (!wrap.classList.contains('pulling')){{
+      wrap.classList.add('pulling');
+      ptr.classList.add('pulling');
+    }}
+    e.preventDefault();
+    // Apply easing — resistance grows as you pull further
+    const dy = Math.min(raw * DAMP, MAX);
+    setPull(dy);
   }}
   function onEnd(){{
     if (!pulling) return;
     pulling = false;
+    wrap.classList.remove('pulling');
     ptr.classList.remove('pulling');
     if (distance >= THRESHOLD){{
+      // Snap to "loading" position
+      active = true;
+      wrap.style.transform = `translateY(${{SPINNER_REST}}px)`;
+      ptr.style.transform = `translate(-50%, ${{SPINNER_REST - 14}}px) scale(1)`;
+      ptr.style.opacity = '1';
       ptr.classList.add('refreshing');
-      label.textContent = 'กำลังโหลด...';
-      ptr.style.transform = '';
-      setTimeout(() => location.reload(), 250);
+      setTimeout(() => location.reload(), 350);
     }} else {{
-      ptr.style.transform = '';
-      ptr.classList.remove('ready');
+      reset();
     }}
     distance = 0;
   }}
