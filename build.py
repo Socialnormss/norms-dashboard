@@ -135,6 +135,7 @@ MUST_READ_FILES = [
     {"id":"compliance-2026-05-21", "cat":"book", "icon":"🔍", "title":"Compliance Report · Ch 6/12/13/14", "path": KV/"Norms-Book/atoms/chapters/_COMPLIANCE-REPORT-2026-05-21.md", "tier":"P1"},
     {"id":"summary-deck-2026-05-21", "cat":"book", "icon":"📖", "title":"Chapter Summary Deck · 18 chapters (mobile spot-check)", "path": KV/"Norms-Book/atoms/chapters/_SUMMARY-DECK-2026-05-21.md", "tier":"P1"},
     {"id":"edits-applied-2026-05-21", "cat":"book", "icon":"🛠️", "title":"Edits Applied · Ch 14/13/6 (6 brand edits)", "path": KV/"Norms-Book/atoms/chapters/_EDITS-APPLIED-2026-05-21.md", "tier":"P1"},
+    {"id":"atom-index-v2", "cat":"book", "icon":"⚛️", "title":"Atoms INDEX v2 · 246 atoms · 12 EPs", "path": KV/"Norms-Book/atoms/INDEX.md", "tier":"P2"},
 ]
 
 CATEGORIES = [
