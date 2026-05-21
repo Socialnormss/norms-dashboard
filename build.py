@@ -119,12 +119,17 @@ MUST_READ_FILES = [
     {"id":"lexicon",       "cat":"audit",   "icon":"📚", "title":"Canonical Lexicon",             "path": VAULT/"05-Projects/Norms-Book/Canonical-Lexicon-2026-05-19.md",         "tier":"P3"},
 
     # ── NPC Gen2 Lesson Notes (EP 5-9 · 2026-05-21) ────────────
-    {"id":"npc-g2-index",  "cat":"lessons", "icon":"📚", "title":"NPC Gen2 EP 5-9 · INDEX",       "path": KV/"npc_gen2_lessons_ep5-9/INDEX.md",                                   "tier":"P1"},
+    {"id":"npc-g2-index",  "cat":"lessons", "icon":"📚", "title":"NPC Gen2 EP 5-14 · INDEX",      "path": KV/"npc_gen2_lessons_ep5-9/INDEX.md",                                   "tier":"P1"},
     {"id":"npc-g2-ep05",   "cat":"lessons", "icon":"🎙️", "title":"EP 5 · Markets Discount as Trap · Quad Dance", "path": KV/"npc_gen2_lessons_ep5-9/EP-05.md",                  "tier":"P2"},
     {"id":"npc-g2-ep06",   "cat":"lessons", "icon":"🎙️", "title":"EP 6 · Top Down · Multiple TF · Flow",        "path": KV/"npc_gen2_lessons_ep5-9/EP-06.md",                  "tier":"P2"},
     {"id":"npc-g2-ep07",   "cat":"lessons", "icon":"🎙️", "title":"EP 7 · POI = Liquidity · นอก Flow ไม่เทรด",   "path": KV/"npc_gen2_lessons_ep5-9/EP-07.md",                  "tier":"P2"},
     {"id":"npc-g2-ep08",   "cat":"lessons", "icon":"🎙️", "title":"EP 8 · Flip (SRF) · ครึ่งแท่ง 50% · Mother Bar","path": KV/"npc_gen2_lessons_ep5-9/EP-08.md",                  "tier":"P2"},
     {"id":"npc-g2-ep09",   "cat":"lessons", "icon":"🎙️", "title":"EP 9 · TP 1,000 · Fibo 1.618 · Part-1 Recap",  "path": KV/"npc_gen2_lessons_ep5-9/EP-09.md",                  "tier":"P2"},
+    {"id":"npc-g2-ep10",   "cat":"lessons", "icon":"🎙️", "title":"EP 10 · Liquidity intro · วิธีคิด vs วิธีการ · Dow", "path": KV/"npc_gen2_lessons_ep5-9/EP-10.md",            "tier":"P2"},
+    {"id":"npc-g2-ep11",   "cat":"lessons", "icon":"🎙️", "title":"EP 11 · POI 3 ประเภท · Norm System · ทุกอย่าง=Wyckoff", "path": KV/"npc_gen2_lessons_ep5-9/EP-11.md",       "tier":"P2"},
+    {"id":"npc-g2-ep12",   "cat":"lessons", "icon":"🎙️", "title":"EP 12 · Price/Time Zone · Session 5 ช่วง · Outsection", "path": KV/"npc_gen2_lessons_ep5-9/EP-12.md",       "tier":"P2"},
+    {"id":"npc-g2-ep13",   "cat":"lessons", "icon":"🎙️", "title":"EP 13 · Session Theory · Q-Zone · Flip 3 แบบ", "path": KV/"npc_gen2_lessons_ep5-9/EP-13.md",                 "tier":"P2"},
+    {"id":"npc-g2-ep14",   "cat":"lessons", "icon":"🎙️", "title":"EP 14 · Before Norm NT · 4-step · NE vs NE2",  "path": KV/"npc_gen2_lessons_ep5-9/EP-14.md",                 "tier":"P2"},
 
     # ── Norms Book Compliance Report (2026-05-21) ──────────────
     {"id":"compliance-2026-05-21", "cat":"book", "icon":"🔍", "title":"Compliance Report · Ch 6/12/13/14", "path": KV/"Norms-Book/atoms/chapters/_COMPLIANCE-REPORT-2026-05-21.md", "tier":"P1"},
