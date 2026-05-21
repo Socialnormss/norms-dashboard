@@ -125,6 +125,9 @@ MUST_READ_FILES = [
     {"id":"npc-g2-ep07",   "cat":"lessons", "icon":"🎙️", "title":"EP 7 · POI = Liquidity · นอก Flow ไม่เทรด",   "path": KV/"npc_gen2_lessons_ep5-9/EP-07.md",                  "tier":"P2"},
     {"id":"npc-g2-ep08",   "cat":"lessons", "icon":"🎙️", "title":"EP 8 · Flip (SRF) · ครึ่งแท่ง 50% · Mother Bar","path": KV/"npc_gen2_lessons_ep5-9/EP-08.md",                  "tier":"P2"},
     {"id":"npc-g2-ep09",   "cat":"lessons", "icon":"🎙️", "title":"EP 9 · TP 1,000 · Fibo 1.618 · Part-1 Recap",  "path": KV/"npc_gen2_lessons_ep5-9/EP-09.md",                  "tier":"P2"},
+
+    # ── Norms Book Compliance Report (2026-05-21) ──────────────
+    {"id":"compliance-2026-05-21", "cat":"book", "icon":"🔍", "title":"Compliance Report · Ch 6/12/13/14", "path": KV/"Norms-Book/atoms/chapters/_COMPLIANCE-REPORT-2026-05-21.md", "tier":"P1"},
 ]
 
 CATEGORIES = [
