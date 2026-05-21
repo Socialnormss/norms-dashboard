@@ -12,7 +12,7 @@ TRANS   = Path.home() / "Documents/Norms-Corp/Social-Norms/03-Knowledge/transcri
 DRAFTS  = Path.home() / "Documents/Norms-Corp/Social-Norms/02-Content/content_pipeline/drafts"
 BUILD   = ROOT / "build.py"
 INDEX   = ROOT / "index.html"
-INTERVAL = 60  # วินาที (1 นาที — ให้ Claude session/git status fresh)
+INTERVAL = 900  # วินาที (15 นาที · ลด git noise · pull-to-refresh ทดแทน manual)
 
 def run(cmd, **kw):
     return subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, **kw)

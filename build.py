@@ -136,14 +136,42 @@ MUST_READ_FILES = [
     {"id":"summary-deck-2026-05-21", "cat":"book", "icon":"📖", "title":"Chapter Summary Deck · 18 chapters (mobile spot-check)", "path": KV/"Norms-Book/atoms/chapters/_SUMMARY-DECK-2026-05-21.md", "tier":"P1"},
     {"id":"edits-applied-2026-05-21", "cat":"book", "icon":"🛠️", "title":"Edits Applied · Ch 14/13/6 (6 brand edits)", "path": KV/"Norms-Book/atoms/chapters/_EDITS-APPLIED-2026-05-21.md", "tier":"P1"},
     {"id":"atom-index-v2", "cat":"book", "icon":"⚛️", "title":"Atoms INDEX v2 · 246 atoms · 12 EPs", "path": KV/"Norms-Book/atoms/INDEX.md", "tier":"P2"},
+    {"id":"overnight-progress", "cat":"book", "icon":"🌙", "title":"Overnight Progress · 18 chapters assembled", "path": KV/"Norms-Book/atoms/chapters/_OVERNIGHT-PROGRESS.md", "tier":"P2"},
+
+    # ── Sub-active Projects (Tier 0 + Tier 1) · 2026-05-21 ──────
+    {"id":"twin-test",     "cat":"projects", "icon":"🤖", "title":"Twin v0.1 · QA Test Results (5/5 PASS)", "path": KV/"Digital-Twin/v0.1/test-results-max-2026-05-21.md", "tier":"P1"},
+    {"id":"nes-poi-spec",  "cat":"projects", "icon":"📍", "title":"NES POI Spec v0.1 · 38 claims · 16 gaps",  "path": VAULT/"05-Projects/NES-Indicator/NES-POI-SPEC-v0.1.md", "tier":"P2"},
+    {"id":"nes-qa-pack",   "cat":"projects", "icon":"❓", "title":"NES Q&A Interview Pack v0.1 · 30Q",        "path": VAULT/"05-Projects/NES-Indicator/Q&A-INTERVIEW-PACK-v0.1.md", "tier":"P1"},
+    {"id":"wwmi-ep1-wf",   "cat":"projects", "icon":"🎬", "title":"WWMI EP1 · Production Workflow v0.1",      "path": VAULT/"05-Projects/WWMI/EP1-PRODUCTION-WORKFLOW-v0.1.md", "tier":"P1"},
+    {"id":"mp-audit",      "cat":"projects", "icon":"📡", "title":"Multi-Platform Audit · 520 lines + 30d map", "path": VAULT/"05-Projects/Multi-Platform/PLATFORM-EXPANSION-AUDIT-2026-05-21.md", "tier":"P1"},
+    {"id":"mp-briefing",   "cat":"projects", "icon":"📋", "title":"Multi-Platform · 3 Y/N Briefing (5-min)",    "path": VAULT/"05-Projects/Multi-Platform/BRIEFING-3-DECISIONS-2026-05-21.md", "tier":"P1"},
+    {"id":"mp-decisions",  "cat":"projects", "icon":"✅", "title":"Multi-Platform · 20 Y/N Decisions",          "path": VAULT/"05-Projects/Multi-Platform/DECISIONS-2026-05-21.md", "tier":"P2"},
+    {"id":"moat-blueprint","cat":"projects", "icon":"🏰", "title":"Moat Blueprint v0.1 · distribution strategy","path": NC/"Norms-Master/MOAT-BLUEPRINT-v0.1.md", "tier":"P1"},
+    {"id":"profile-v2",    "cat":"projects", "icon":"👤", "title":"Norms-Master · PROFILE v2 Audit",            "path": NC/"Norms-Master/PROFILE-v2-AUDIT-2026-05-21.md", "tier":"P2"},
+
+    # ── Bell-Hero (client) · 2026-05-21 ────────────────────────
+    {"id":"hero-agenda",   "cat":"client", "icon":"📑", "title":"Hero Pipeline · Master Agenda (V1/V2/V3)", "path": VAULT/"05-Projects/Bell/Hero-Pipeline-Agenda.md", "tier":"P1"},
+    {"id":"bell-handoff",  "cat":"client", "icon":"🤝", "title":"Bell Hero V2 · Handoff (เบล-facing)",       "path": NC/"Bell/Hero/v2/BELL-HANDOFF.md", "tier":"P2"},
+    {"id":"hero-worklog",  "cat":"client", "icon":"📝", "title":"Hero · WORKLOG (phase milestones)",          "path": VAULT/"05-Projects/Bell/Hero-WORKLOG.md", "tier":"P3"},
+
+    # ── Sponsor (Eightcap TFC 2026-07-05) ───────────────────────
+    {"id":"eightcap-v5",   "cat":"sponsor", "icon":"⚽", "title":"Eightcap TFC · PROMO MATRIX V5 (CURRENT)",   "path": NC/"Sponsors/Eightcap/TradersFootballCup-2026-07-05/PROMO-MATRIX-9-V5.md", "tier":"P1"},
+    {"id":"eightcap-hand", "cat":"sponsor", "icon":"🗂️", "title":"Eightcap TFC · Session Handoff",             "path": NC/"Sponsors/Eightcap/TradersFootballCup-2026-07-05/SESSION-HANDOFF-2026-05-21.md", "tier":"P2"},
+
+    # ── Brand workflow ──────────────────────────────────────────
+    {"id":"scn-img-v3",    "cat":"brand", "icon":"🎨", "title":"SCN IMG Workflow v3 (Norm Prime · WIP)",      "path": NC/"Brand/Assets/Workflow/SCN_IMG_v3_WIP.md", "tier":"P1"},
 ]
 
 CATEGORIES = [
-    {"id":"working", "icon":"🏠", "label":"งานปัจจุบัน"},
-    {"id":"book",    "icon":"📚", "label":"หนังสือ NPC"},
-    {"id":"lessons", "icon":"🎙️", "label":"NPC Gen2 EP 5-9"},
-    {"id":"web",     "icon":"🌐", "label":"เว็บไซต์"},
-    {"id":"audit",   "icon":"🔍", "label":"Audit"},
+    {"id":"working",  "icon":"🏠", "label":"งานปัจจุบัน"},
+    {"id":"projects", "icon":"🚀", "label":"Projects (Twin · NES · WWMI · MP)"},
+    {"id":"book",     "icon":"📚", "label":"หนังสือ NPC"},
+    {"id":"lessons",  "icon":"🎙️", "label":"NPC Gen2 EP 5-14"},
+    {"id":"client",   "icon":"🦸", "label":"Bell-Hero"},
+    {"id":"sponsor",  "icon":"💼", "label":"Sponsor"},
+    {"id":"brand",    "icon":"🎨", "label":"Brand"},
+    {"id":"web",      "icon":"🌐", "label":"เว็บไซต์"},
+    {"id":"audit",    "icon":"🔍", "label":"Audit"},
 ]
 
 def collect_must_read():
@@ -446,26 +474,28 @@ PROJECTS = [
 
 TODOS = {
     "urgent":[
-        {"text":"หลิว review Phase 2 doc → sign-off C1-C10","due":"ASAP","tag":"book","emoji":"🥇"},
-        {"text":"หลิว review 6 NEW chapters (Norms-Corp/.../NEW_*.md)","due":"ASAP","tag":"book","emoji":"📕"},
-        {"text":"Dog Feeder v4 rebuild (cozy-reference blueprint · 2-3h)","due":"next session","tag":"app","emoji":"🐕"},
-        {"text":"Hero V2: Drive folder share + Desktop install + launchd load","due":"รอเบล","tag":"client","emoji":"🦸"},
+        {"text":"Norms Book · 4 Phase 2 decisions (Ch 16 ดวงดี · Ch 12 Wyckoff Institute · Ch 5 reveal · voice convention)","due":"next session","tag":"book","emoji":"🥇"},
+        {"text":"Norms Book · spot-check 2-3 chapters (เปิดใน Vault → feel voice + structure)","due":"morning","tag":"book","emoji":"📖"},
+        {"text":"Bell-Hero · redesign BELL-GUIDE ให้ simple (1 หน้าจอ · ตัด table/code)","due":"next session","tag":"client","emoji":"🦸"},
+        {"text":"Bell-Hero · share Drive folder Hero-Bell ให้เบล (Editor)","due":"ASAP","tag":"client","emoji":"📁"},
+        {"text":"Twin v0.1 · test `/twin` 1 prompt → ปิด D2 100%","due":"5 นาที","tag":"twin","emoji":"🤖"},
     ],
     "soon":[
-        {"text":"Phase 3 production round 2: rewrite per locked decisions","due":"after sign-off","tag":"book","emoji":"📚"},
-        {"text":"File rename: B1_C11 NES_Synthesis · B1_C13 Liquidity_Complex","due":"after sign-off","tag":"book","emoji":"📝"},
-        {"text":"Tier 1 packaging: Prop Firm Challenge (4 chapters ready)","due":"after sign-off","tag":"book","emoji":"📦"},
-        {"text":"Pro Hero visual session — NPC Website cinematic","due":"parallel · ไม่ block","tag":"website","emoji":"🎨"},
-        {"text":"Eightcap June brief · World Cup + event","due":"June","tag":"sponsor","emoji":"📰"},
-        {"text":"NotebookLM bulk upload NPC transcripts (manual)","due":"this week","tag":"knowledge","emoji":"📒"},
+        {"text":"Multi-Platform · sign-off 3 Y/N (Mascot · Podcast music · Week 4 criterion)","due":"this week","tag":"projects","emoji":"📡"},
+        {"text":"Multi-Platform · podcast-first vs YT-first decision","due":"this week","tag":"projects","emoji":"🎙️"},
+        {"text":"Norms Book · Stage 4 PDF generation (compliance ผ่านแล้ว)","due":"after spot-check","tag":"book","emoji":"📄"},
+        {"text":"Eightcap TFC · gen base images (3 prompt packs ready · MATRIX V5)","due":"before 2026-07-05","tag":"sponsor","emoji":"⚽"},
+        {"text":"Socialnorms Mega-Website · ชี้ Top 5 จาก grid 36 → Stage 2","due":"this week","tag":"web","emoji":"🌐"},
+        {"text":"Norms-Master · approve PROFILE v2 audit → fresh session draft v2","due":"this week","tag":"projects","emoji":"👤"},
+        {"text":"Image Gen v3 · PNG cutout workflow (Magnific BG remove + Photoshop)","due":"next session","tag":"brand","emoji":"🎨"},
     ],
     "backlog":[
-        {"text":"Wyckoff Norms 3D / cinematic visual","due":"ongoing","tag":"brand","emoji":"📈"},
-        {"text":"AI Vocab (125 fields)","due":"after Book","tag":"book","emoji":"📒"},
-        {"text":"Tickmill / FocusTrade sponsor","due":"TBD","tag":"sponsor","emoji":"💼"},
-        {"text":"NPC Gen2 + NMSPC + FBLive books","due":"after transcript","tag":"book","emoji":"📚"},
-        {"text":"Digital Twin: ThinkAloud Pass 2","due":"after transcript","tag":"knowledge","emoji":"🤖"},
-        {"text":"Norms Corp Phase 2 orchestrator","due":"next month","tag":"infra","emoji":"🏢"},
+        {"text":"NES Indicator · fill Q&A Pack 30Q (หลิวบอกไม่รีบ)","due":"when ready","tag":"projects","emoji":"📍"},
+        {"text":"Norms Book · Real swap หลัง 25 EP accurate transcribe เสร็จ","due":"after ATS","tag":"book","emoji":"🔄"},
+        {"text":"AI Vocab (125 fields) → ป้อน Twin v0.3 chart-reading","due":"after Book","tag":"projects","emoji":"📒"},
+        {"text":"Wyckoff Norms · 3D / cinematic visual exploration","due":"low priority","tag":"web","emoji":"📈"},
+        {"text":"Tickmill / FocusTrade sponsor pipeline","due":"รอ brief","tag":"sponsor","emoji":"💼"},
+        {"text":"NPC Book + Website (login-gated · members-only)","due":"Q3","tag":"web","emoji":"🔒"},
     ],
 }
 
@@ -572,14 +602,14 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 <link rel="manifest" href="manifest.json">
 <style>
 :root{{
-  /* Brand CI · Wyckoff Norms ─────────────────────────────── */
-  --bg:#0A0A0B;--base:#101011;--surface:#161618;--raised:#1C1C1F;--overlay:#252528;
-  --amber:#C07840;--amber-2:#E0944A;--amber-soft:#8B5E36;
-  --amber-glow:rgba(192,120,64,.4);
+  /* Brand CI · Wyckoff Norms ─ Brand Primary Orange #f27e53 + Black #0D0D0D */
+  --bg:#0D0D0D;--base:#121214;--surface:#18181B;--raised:#1E1E22;--overlay:#27272C;
+  --amber:#f27e53;--amber-2:#ff9670;--amber-soft:#c45e3a;
+  --amber-glow:rgba(242,126,83,.4);
   --slate:#5A5F6E;--slate-light:#7C8294;
   --text:#F0EDE8;--t2:#A8A49E;--muted:#615D58;
   --border:rgba(240,237,232,.06);
-  --border-glow:rgba(192,120,64,.25);
+  --border-glow:rgba(242,126,83,.25);
   /* Status indicators only (small dots/badges · not card backgrounds) */
   --green:#3BCC8B;--green-glow:rgba(59,204,139,.4);
   --red:#E15461;--red-glow:rgba(225,84,97,.4);
@@ -598,8 +628,23 @@ html,body{{height:100%;background:var(--bg);color:var(--text);
   scrollbar-width:none;-ms-overflow-style:none;
   -webkit-text-size-adjust:100%;text-size-adjust:100%}}
 html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{{width:0;height:0;display:none}}
-body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent 55%),
+body{{background:radial-gradient(ellipse at top,rgba(242,126,83,.04),transparent 55%),
                 var(--bg);min-height:100vh}}
+
+/* ── PULL-TO-REFRESH ──────────────────────────────────────────── */
+.ptr{{position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  height:60px;pointer-events:none;
+  background:linear-gradient(180deg,rgba(10,10,11,.95) 0%,rgba(10,10,11,0) 100%);
+  transform:translateY(-100%);transition:transform .2s cubic-bezier(.2,.8,.2,1);
+  font-size:12px;font-weight:700;letter-spacing:.05em;color:var(--amber-2)}}
+.ptr.pulling{{transition:none}}
+.ptr.refreshing{{transform:translateY(0)!important}}
+.ptr-arrow{{display:inline-block;font-size:18px;
+  transition:transform .2s ease;will-change:transform}}
+.ptr.ready .ptr-arrow{{transform:rotate(180deg)}}
+.ptr.refreshing .ptr-arrow{{animation:ptr-spin .8s linear infinite}}
+@keyframes ptr-spin{{from{{transform:rotate(0)}}to{{transform:rotate(360deg)}}}}
 
 /* ── TOPBAR ────────────────────────────────────────────────────── */
 .topbar{{position:sticky;top:0;z-index:50;
@@ -635,7 +680,7 @@ body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent
 
 /* ── RE-TRANSCRIBE MISSION ────────────────────────────────────── */
 .mission-box{{position:relative;border-radius:var(--r);overflow:hidden;
-  background:linear-gradient(135deg,#181208 0%,#101011 100%);
+  background:linear-gradient(135deg,#1A0F08 0%,#121214 100%);
   border:1px solid var(--border-glow);
   padding:20px 22px;margin-bottom:18px;
   box-shadow:0 0 30px var(--amber-glow),inset 0 1px 0 rgba(255,255,255,.03)}}
@@ -755,8 +800,8 @@ body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent
 .card-sub{{font-size:10px;color:var(--t2);font-weight:500}}
 .card-tier{{font-size:9px;font-weight:800;letter-spacing:.08em;padding:2px 6px;
   border-radius:4px;background:var(--surface);color:var(--t2);flex-shrink:0;margin-left:auto}}
-.card-tier.p1{{background:rgba(192,120,64,.2);color:var(--amber-2)}}
-.card-tier.p2{{background:rgba(192,120,64,.12);color:var(--amber)}}
+.card-tier.p1{{background:rgba(242,126,83,.2);color:var(--amber-2)}}
+.card-tier.p2{{background:rgba(242,126,83,.12);color:var(--amber)}}
 .card-tier.p3{{background:rgba(168,164,158,.12);color:var(--t2)}}
 .card-tier.done{{background:rgba(59,204,139,.15);color:var(--green)}}
 .card-tier.blocked{{background:rgba(225,84,97,.15);color:var(--red)}}
@@ -815,7 +860,7 @@ body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent
 .pipe-total{{font-size:13px;color:var(--t2);font-feature-settings:"tnum"}}
 .pipe-pct{{margin-left:auto;font-size:10px;font-weight:800;padding:2px 6px;border-radius:4px}}
 .pipe-pct.done{{background:rgba(0,245,147,.12);color:var(--green)}}
-.pipe-pct.active{{background:rgba(192,120,64,.12);color:var(--amber-2)}}
+.pipe-pct.active{{background:rgba(242,126,83,.12);color:var(--amber-2)}}
 .pipe-pct.zero{{background:var(--surface);color:var(--muted)}}
 .pipe-done-group{{margin-top:12px;background:var(--surface);border:1px solid var(--border);
   border-radius:var(--r-sm);overflow:hidden}}
@@ -859,7 +904,7 @@ body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent
   width:28px;height:24px;font-size:12px;cursor:pointer;color:var(--t2);
   display:flex;align-items:center;justify-content:center;flex-shrink:0;
   transition:all .15s;padding:0;line-height:1}}
-.cl-bell:hover{{border-color:var(--amber-2);color:var(--amber-2);background:rgba(192,120,64,.08)}}
+.cl-bell:hover{{border-color:var(--amber-2);color:var(--amber-2);background:rgba(242,126,83,.08)}}
 .cl-bell:active{{transform:scale(.92)}}
 .cl-bell.sent{{border-color:var(--green);color:var(--green);background:rgba(59,204,139,.12)}}
 .cl-bell.error{{border-color:var(--red);color:var(--red);background:rgba(225,84,97,.12)}}
@@ -906,7 +951,7 @@ body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent
 .mini-s{{font-size:10px;color:var(--muted);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
 .mini-badge{{font-size:9px;font-weight:800;padding:3px 6px;border-radius:4px;letter-spacing:.04em;flex-shrink:0;white-space:nowrap}}
 .mini-badge.clean{{background:rgba(59,204,139,.12);color:var(--green)}}
-.mini-badge.dirty{{background:rgba(192,120,64,.15);color:var(--amber-2)}}
+.mini-badge.dirty{{background:rgba(242,126,83,.15);color:var(--amber-2)}}
 .mini-badge.warn{{background:rgba(225,84,97,.12);color:var(--red)}}
 
 /* ── VAULT / MEMORY STATS ─────────────────────────────────────── */
@@ -939,9 +984,9 @@ body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent
   opacity:.55;min-width:62px}}
 .nb .ic{{font-size:22px;line-height:1;transition:transform .2s}}
 .nb:hover{{opacity:.85}}
-.nb.on{{background:linear-gradient(135deg,rgba(192,120,64,.28),rgba(192,120,64,.12));
+.nb.on{{background:linear-gradient(135deg,rgba(242,126,83,.28),rgba(242,126,83,.12));
   color:var(--amber-2);opacity:1;
-  box-shadow:inset 0 0 0 1px rgba(192,120,64,.35),0 4px 12px rgba(192,120,64,.2)}}
+  box-shadow:inset 0 0 0 1px rgba(242,126,83,.35),0 4px 12px rgba(242,126,83,.2)}}
 .nb.on .ic{{transform:scale(1.05)}}
 @media (max-width:520px){{
   .nb{{padding:9px 14px;min-width:54px;font-size:10px}}
@@ -957,8 +1002,8 @@ body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent
   color:var(--t2);font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;
   transition:all .15s;flex-shrink:0}}
 .read-tab:hover{{border-color:var(--border-glow)}}
-.read-tab.on{{background:linear-gradient(135deg,rgba(192,120,64,.2),rgba(192,120,64,.08));
-  border-color:rgba(192,120,64,.4);color:var(--amber-2)}}
+.read-tab.on{{background:linear-gradient(135deg,rgba(242,126,83,.2),rgba(242,126,83,.08));
+  border-color:rgba(242,126,83,.4);color:var(--amber-2)}}
 .read-tab-ic{{font-size:14px}}
 .read-tab-count{{font-size:9px;opacity:.7;font-weight:600}}
 
@@ -987,11 +1032,11 @@ body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent
 .read-title{{font-size:13px;font-weight:700;line-height:1.3}}
 .read-meta{{font-size:10px;color:var(--muted);margin-top:2px;font-feature-settings:"tnum"}}
 .read-tier{{font-size:9px;font-weight:800;padding:3px 7px;border-radius:4px;letter-spacing:.06em;flex-shrink:0}}
-.read-tier.p1{{background:rgba(192,120,64,.22);color:var(--amber-2)}}
-.read-tier.p2{{background:rgba(192,120,64,.12);color:var(--amber)}}
+.read-tier.p1{{background:rgba(242,126,83,.22);color:var(--amber-2)}}
+.read-tier.p2{{background:rgba(242,126,83,.12);color:var(--amber)}}
 .read-tier.p3{{background:rgba(168,164,158,.1);color:var(--t2)}}
 .read-tier.new{{background:rgba(59,204,139,.15);color:var(--green)}}
-.read-tier.book{{background:rgba(192,120,64,.18);color:var(--amber-2)}}
+.read-tier.book{{background:rgba(242,126,83,.18);color:var(--amber-2)}}
 .read-tier.web{{background:rgba(124,140,148,.15);color:var(--slate-light)}}
 .read-chevron{{color:var(--muted);transition:transform .25s;font-size:14px;flex-shrink:0}}
 .read-card.open .read-chevron{{transform:rotate(90deg);color:var(--amber-2)}}
@@ -1013,7 +1058,7 @@ body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent
   white-space:pre-wrap;word-break:break-word;overflow-x:auto}}
 .read-content pre code{{background:none;padding:0;color:var(--text);word-break:normal}}
 .read-content blockquote{{border-left:3px solid var(--amber);padding:6px 12px;margin:8px 0;
-  background:rgba(192,120,64,.05);color:var(--t2);font-style:italic}}
+  background:rgba(242,126,83,.05);color:var(--t2);font-style:italic}}
 /* Tables · constrained · scroll inside */
 .read-content table{{width:100%;border-collapse:collapse;margin:8px 0;font-size:11px;
   table-layout:fixed;word-break:break-word}}
@@ -1022,7 +1067,7 @@ body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent
 .read-content th{{background:var(--surface);color:var(--amber-2);font-weight:700;font-size:10px}}
 .read-content td{{font-size:11px}}
 .read-content a{{color:var(--amber-2);text-decoration:none;border-bottom:1px dotted var(--amber)}}
-.read-content .wlink{{color:var(--amber-2);background:rgba(192,120,64,.08);padding:0 4px;border-radius:3px;font-size:.94em}}
+.read-content .wlink{{color:var(--amber-2);background:rgba(242,126,83,.08);padding:0 4px;border-radius:3px;font-size:.94em}}
 .read-content hr{{border:none;border-top:1px solid var(--border);margin:14px 0}}
 .read-content strong{{color:var(--text)}}
 .read-content img{{max-width:100%;height:auto}}
@@ -1047,6 +1092,11 @@ body{{background:radial-gradient(ellipse at top,rgba(192,120,64,.04),transparent
 </style>
 </head>
 <body>
+
+<div class="ptr" id="ptr">
+  <span class="ptr-arrow">↓</span>
+  <span class="ptr-label">ดึงเพื่อ refresh</span>
+</div>
 
 <div class="topbar">
   <div class="topbar-row">
@@ -1662,6 +1712,57 @@ function onReturn(){{
 }}
 document.addEventListener('visibilitychange', () => {{ if (!document.hidden) onReturn(); }});
 window.addEventListener('focus', onReturn);
+
+// ─── PULL-TO-REFRESH (mobile · drag down on top of page) ────
+(() => {{
+  const ptr = document.getElementById('ptr');
+  const label = ptr.querySelector('.ptr-label');
+  const THRESHOLD = 80;     // px to trigger refresh
+  const MAX = 140;          // px max pull distance
+  const DAMP = 0.55;        // resistance factor
+  let startY = 0, pulling = false, distance = 0;
+
+  function onStart(e){{
+    if (window.scrollY > 0) return;
+    startY = e.touches[0].clientY;
+    pulling = true;
+    ptr.classList.add('pulling');
+  }}
+  function onMove(e){{
+    if (!pulling) return;
+    const dy = (e.touches[0].clientY - startY) * DAMP;
+    if (dy <= 0){{ pulling = false; ptr.style.transform = ''; return; }}
+    distance = Math.min(dy, MAX);
+    e.preventDefault();
+    ptr.style.transform = `translateY(${{distance - 60}}px)`;
+    if (distance >= THRESHOLD){{
+      ptr.classList.add('ready');
+      label.textContent = 'ปล่อยเพื่อ refresh';
+    }} else {{
+      ptr.classList.remove('ready');
+      label.textContent = 'ดึงเพื่อ refresh';
+    }}
+  }}
+  function onEnd(){{
+    if (!pulling) return;
+    pulling = false;
+    ptr.classList.remove('pulling');
+    if (distance >= THRESHOLD){{
+      ptr.classList.add('refreshing');
+      label.textContent = 'กำลังโหลด...';
+      ptr.style.transform = '';
+      setTimeout(() => location.reload(), 250);
+    }} else {{
+      ptr.style.transform = '';
+      ptr.classList.remove('ready');
+    }}
+    distance = 0;
+  }}
+  document.addEventListener('touchstart', onStart, {{passive: true}});
+  document.addEventListener('touchmove', onMove, {{passive: false}});
+  document.addEventListener('touchend', onEnd, {{passive: true}});
+  document.addEventListener('touchcancel', onEnd, {{passive: true}});
+}})();
 
 // ─── INIT ───────────────────────────────────────────────────
 renderPhases();
