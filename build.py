@@ -117,11 +117,20 @@ MUST_READ_FILES = [
     {"id":"audit",         "cat":"audit",   "icon":"🔍", "title":"NPC Master Audit",              "path": VAULT/"05-Projects/Norms-Book/NPC-Master-Audit-2026-05-19.md",          "tier":"P3"},
     {"id":"evidence",      "cat":"audit",   "icon":"📑", "title":"Evidence Pack",                 "path": VAULT/"05-Projects/Norms-Book/Evidence-Pack-2026-05-19.md",             "tier":"P3"},
     {"id":"lexicon",       "cat":"audit",   "icon":"📚", "title":"Canonical Lexicon",             "path": VAULT/"05-Projects/Norms-Book/Canonical-Lexicon-2026-05-19.md",         "tier":"P3"},
+
+    # ── NPC Gen2 Lesson Notes (EP 5-9 · 2026-05-21) ────────────
+    {"id":"npc-g2-index",  "cat":"lessons", "icon":"📚", "title":"NPC Gen2 EP 5-9 · INDEX",       "path": KV/"npc_gen2_lessons_ep5-9/INDEX.md",                                   "tier":"P1"},
+    {"id":"npc-g2-ep05",   "cat":"lessons", "icon":"🎙️", "title":"EP 5 · Markets Discount as Trap · Quad Dance", "path": KV/"npc_gen2_lessons_ep5-9/EP-05.md",                  "tier":"P2"},
+    {"id":"npc-g2-ep06",   "cat":"lessons", "icon":"🎙️", "title":"EP 6 · Top Down · Multiple TF · Flow",        "path": KV/"npc_gen2_lessons_ep5-9/EP-06.md",                  "tier":"P2"},
+    {"id":"npc-g2-ep07",   "cat":"lessons", "icon":"🎙️", "title":"EP 7 · POI = Liquidity · นอก Flow ไม่เทรด",   "path": KV/"npc_gen2_lessons_ep5-9/EP-07.md",                  "tier":"P2"},
+    {"id":"npc-g2-ep08",   "cat":"lessons", "icon":"🎙️", "title":"EP 8 · Flip (SRF) · ครึ่งแท่ง 50% · Mother Bar","path": KV/"npc_gen2_lessons_ep5-9/EP-08.md",                  "tier":"P2"},
+    {"id":"npc-g2-ep09",   "cat":"lessons", "icon":"🎙️", "title":"EP 9 · TP 1,000 · Fibo 1.618 · Part-1 Recap",  "path": KV/"npc_gen2_lessons_ep5-9/EP-09.md",                  "tier":"P2"},
 ]
 
 CATEGORIES = [
     {"id":"working", "icon":"🏠", "label":"งานปัจจุบัน"},
     {"id":"book",    "icon":"📚", "label":"หนังสือ NPC"},
+    {"id":"lessons", "icon":"🎙️", "label":"NPC Gen2 EP 5-9"},
     {"id":"web",     "icon":"🌐", "label":"เว็บไซต์"},
     {"id":"audit",   "icon":"🔍", "label":"Audit"},
 ]
