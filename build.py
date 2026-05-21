@@ -128,6 +128,7 @@ MUST_READ_FILES = [
 
     # ── Norms Book Compliance Report (2026-05-21) ──────────────
     {"id":"compliance-2026-05-21", "cat":"book", "icon":"🔍", "title":"Compliance Report · Ch 6/12/13/14", "path": KV/"Norms-Book/atoms/chapters/_COMPLIANCE-REPORT-2026-05-21.md", "tier":"P1"},
+    {"id":"summary-deck-2026-05-21", "cat":"book", "icon":"📖", "title":"Chapter Summary Deck · 18 chapters (mobile spot-check)", "path": KV/"Norms-Book/atoms/chapters/_SUMMARY-DECK-2026-05-21.md", "tier":"P1"},
 ]
 
 CATEGORIES = [
