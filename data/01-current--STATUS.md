@@ -51,7 +51,7 @@ date: 2026-05-23
 | งาน | สถานะ | ถัดไป |
 |-----|------|------|
 | **WWMI** — YouTube show × Atomic Trader | 🟢 pre-pilot · EP1 target 2026-07-19 | v0.1 Episode Structure + EP1 Timeline + **Production Workflow v0.1** drafted · ⬜ Atomic input merge target 2026-06-01 · ⬜ Branding (Pro/Claude Design help) · ⬜ Multi-platform extension plan · `[[Episode-Structure-v0.1]]` `[[EP1-Timeline]]` `[[EP1-PRODUCTION-WORKFLOW-v0.1]]` |
-| **Multi-Platform Expansion** | 🟢 audit shipped · waiting decisions | ★ master deliverable + 30-day map + 20-Y/N decisions: `[[05-Projects/Multi-Platform/PLATFORM-EXPANSION-AUDIT-2026-05-21]]` · approvals → `[[PENDING]]` |
+| **Multi-Platform Expansion** | 🟢 **Plan A locked 2026-05-27 · Week 1 starting** | ✅ Podcast-first (IG companion · YT hold รอ WWMI EP1) · A4 mascot defer Week 3 · A5 music = confirm Epidemic · E2 criterion = podcast follows≥60/IG≥180/saves≥5/DM≥3 · Week 1: Spotify+Epidemic+cover art brief+EP1 script · `[[PLAN-A-vs-B-OVERNIGHT-2026-05-22]]` · `[[PLATFORM-EXPANSION-AUDIT-2026-05-21]]` |
 
 ---
 

@@ -21,8 +21,7 @@ tags: [inbox, approvals, status]
 | Aging | Item | Effort | Where | Why |
 |------|------|------|------|------|
 | 🟠 ~3d | **FDA grant** (Privacy → Full Disk Access · `/bin/bash` พอ · python inherit · +Terminal.app optional) | ⚡ | System Settings | ATS auto-recovery · ATS = 80% โปรเจค depend · verify 2026-05-27: plist+keep_running เรียก python ผ่าน bash → grant /bin/bash พอ (Homebrew python3 = คำแนะนำเก่า ผิด) · `[[feedback-launchd-tcc]]` |
-| 🟠 ~2d | **Multi-Platform: podcast-first vs YT-first** → 1-line Y/N read | ⚡ | `[[PLAN-A-vs-B-OVERNIGHT-2026-05-22]]` | strategic direction · blocks 30-day map + branding + WWMI · Norms pick = Plan A · overnight pack เสร็จ · อ่าน 5 นาที ตัดสิน 1 บรรทัด |
-| 🟠 ~2d | **Multi-Platform 3 Y/N** (Mascot · Music · Week 4 criterion) | ⏱️ | `[[BRIEFING-3-DECISIONS-2026-05-21]]` · cross-ref `[[PLAN-A-vs-B-OVERNIGHT-2026-05-22]]` (A4 defer · A5 must Y · E2 numbers ปรับ) | block 30-day map execute · 17/20 default Y · เหลือ 3 · ขึ้นกับ Plan A vs B decision |
+| 🟢 today | **Multi-Platform A5 · Epidemic Sound ฿500/mo subscribe** (เงิน · เหลือ decision เดียวจาก 3 Y/N · Plan A resolve อีก 2: A4 mascot defer Week 3 · E2 = podcast follows≥60/IG≥180/saves≥5/DM≥3) → Y/N | ⚡ | `[[PLAN-A-vs-B-OVERNIGHT-2026-05-22]]` §A.5 | block Week 3 EP1 launch (intro/outro music) · ✅ Plan A · Podcast-first locked 2026-05-27 |
 
 ---
 

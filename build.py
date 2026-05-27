@@ -166,8 +166,12 @@ body{background:var(--bg);color:var(--txt);font:16px/1.6 -apple-system,BlinkMacS
      max-width:760px;margin:0 auto;padding-bottom:calc(var(--nav) + env(safe-area-inset-bottom) + 10px);}
 header{padding:18px 16px 12px;position:sticky;top:0;background:rgba(13,13,13,.93);
        backdrop-filter:blur(10px);z-index:10;border-bottom:1px solid var(--line);}
+.hrow{display:flex;align-items:center;justify-content:space-between;gap:10px;}
 h1{font-size:18px;font-weight:700;}h1 .dot{color:var(--orange);}
-.built{font-size:12px;color:var(--dim);margin-top:2px;}
+.refresh{background:var(--card);border:1px solid var(--line);color:var(--orange);font-size:18px;
+         width:40px;height:40px;border-radius:11px;cursor:pointer;flex:none;}
+.refresh:active{background:#2a2018;}
+.built{font-size:12px;color:var(--dim);margin-top:4px;}
 #q{width:100%;margin-top:12px;padding:11px 14px;border-radius:12px;border:1px solid var(--line);
    background:var(--card);color:var(--txt);font-size:15px;}#q::placeholder{color:#666;}
 main{padding:14px 14px 0;}
@@ -234,7 +238,10 @@ nav button.active{color:var(--orange);}
 .loading{color:var(--dim);padding:20px 0;}
 </style></head><body>
 <header>
-  <h1>Norms <span class="dot">●</span> <span id="htitle">Mission Control</span></h1>
+  <div class="hrow">
+    <h1>Norms <span class="dot">●</span> <span id="htitle">Mission Control</span></h1>
+    <button class="refresh" onclick="location.reload()" aria-label="refresh">🔄</button>
+  </div>
   <div class="built" id="built"></div>
   <input id="q" type="search" placeholder="🔍 ค้นหาชื่อบท/ไฟล์…" autocomplete="off" style="display:none">
 </header>
@@ -328,7 +335,7 @@ $("#q").addEventListener("input",e=>{
   document.querySelectorAll("#read .sec-h").forEach(h=>h.classList.toggle("hide",!!q));
 });
 
-$("#built").textContent="อัปเดต "+D.built+" · pull เพื่อ refresh";
+$("#built").textContent="อัปเดต "+D.built+" · แตะ 🔄 เพื่อดึงข้อมูลล่าสุด";
 homeView(); readView();
 </script>
 </body></html>"""
