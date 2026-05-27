@@ -174,7 +174,9 @@ def build():
         "sections": collect_sections(),
         "archive": collect_files(ARCHIVE),
     }
-    html = TEMPLATE.replace("__DATA__", json.dumps(payload, ensure_ascii=False))
+    # escape </ → <\/ กัน markdown ที่มี </script> ทำหน้าพัง (folder-driven = รับไฟล์อะไรก็ได้)
+    data = json.dumps(payload, ensure_ascii=False).replace("</", "<\\/")
+    html = TEMPLATE.replace("__DATA__", data)
     OUT.write_text(html, encoding="utf-8")
     n = sum(len(s["files"]) for s in payload["sections"])
     print(f"[✓] built · {len(payload['sections'])} sections · {n} active files · "
