@@ -17,6 +17,19 @@ date: 2026-05-23
 
 ## 🌙 Latest drops
 
+> **2026-05-27 — 🔄 ATOM-FIRST PIVOT (หลิว lock · supersedes book-first)**:
+> · 🎯 **Decision:** atom DB = product เดียว · book/class/website/subscription = "views" (slice ของ atom) · tier + track เป็นคุณสมบัติของ **atom** ไม่ใช่ product
+> · 📄 **แนวทางที่ถูกต้อง** เขียนเป็น single source: `Knowledge/Norms-Book/atoms/_CONTENT-MODEL.md` — ทุก session/agent อ่านก่อนทำ atom/chapter/class
+> · ⏸️ **QUARANTINE (ห้ามลบ · ห้าม polish):** Demo Ch1–20 + legacy gen1 chapters + tier-at-product model = reference เท่านั้น · จะ **re-project** บน atom ที่ verify บน ATS accurate (ไม่ rebuild)
+> · 💡 **tier derive จาก `level` ที่มีอยู่** (intro=free · intermediate=member · advanced=inner) → ไม่ต้อง bulk-edit 1,342 atoms · override เฉพาะตัวที่ต้อง
+> · 🥇 **Liquidity Track = track แรก (priority · มี demand จริง)** · product ladder ใหม่: free → member(subscription ใหม่) → track เดี่ยว → NPC cohort ฿50k (flagship คงเดิม)
+> · ✅ **Pricing lock:** a la carte premium +25% (track sum ฿62,500 vs NPC ฿50k) · boundary intro=free · free tier Liquidity = แค่ "เงินอยู่ตรงไหน"
+> · 🟧 **Liquidity "เงินอยู่ตรงไหน" priority insert DONE (full pipeline)** — transcribe FB Live 2 ไฟล์ (คู่ขนาน ATS · ไม่มี Metal issue) → atomize 20 `atom-LIQ` (namespace แยก `tracks/liquidity-money/`) → merge complete set 18 ข้อ (5 ACT · `MERGE-MAP.md`)
+> · ✅ **2026-05-27 review เสร็จ:** paywall LOCK = **free จบ item 6** (ACT 1-2 · ACT 3 BSL/SSL ขึ้นไป = paid) · ASR verified หลิวเฉลยเอง+แก้ 8 ไฟล์ (รีลา→ลีลา · เทนไลน์→Trendline · มิสเซ็นที่→Miss entry ฯลฯ → `[[liew-abbreviation-convention]]`) · date WAIVED (FB ลบไลฟ์ · ใช้ number+open-loop)
+> · ✅ **Free lesson v1 draft เสร็จ (05-27):** `FREE-LESSON-money-location-v1.md` · hook + ACT1-2 (6 beats) + paywall CTA · quote verbatim verified · Compliance ผ่าน (เพิ่ม risk warning · ตัด "90%" · soften "ยังไงก็ต้องโดน")
+> · ✅ **Free lesson v2 (05-27):** Norms ตัดสิน per autonomy → **open-learner-led** ("learning-in-public": narration ส้ม=คนเพิ่งเก็ต · quote หลิว=authority verbatim) แทน teacher v1 · เหตุผล: ตรง `[[open-learner-voice]]` ★★★ + แก้ logic (ส้ม=learner สอนไม่ได้ แต่ยกคำสอนต้นทางได้) · softened "ยังไงก็ต้องโดน" (compliance flag หลุดใน v1) · `FREE-LESSON-money-location-v2.md`
+> · ⏳ **next:** หลิว sign-off voice (เทียบ v1 teacher vs v2 open-learner) → unblock: chart 3 จุด `/scn-img` (Chart CI) + CTA funnel + member tier (รอ subscription pricing) → publish free tier
+
 > **2026-05-26 18:30 — กลับจาก away · Tickmill pack ปิดงาน + pipeline review**:
 > · ✅ **Tickmill 2026 Q2-3 pack จบ** — หลิวยืนยัน "งานจบแล้ว" · เคลียร์ 8 รายการออกจาก `[[PENDING]]` (Pre-Live · Asset 1 v12 · Asset 2/3/5 · Asset 4 Live · 2026-05-22 pack) · BAD STATE Session 43 = ปิด
 > · 🟢 **ATS** รันต่อเนื่องระหว่าง away · **90/424 EP** (0 fail · Metal cascade ไม่กลับ) · ETA ~10 วัน
@@ -51,7 +64,7 @@ date: 2026-05-23
 | งาน | สถานะ | ถัดไป |
 |-----|------|------|
 | **WWMI** — YouTube show × Atomic Trader | 🟢 pre-pilot · EP1 target 2026-07-19 | v0.1 Episode Structure + EP1 Timeline + **Production Workflow v0.1** drafted · ⬜ Atomic input merge target 2026-06-01 · ⬜ Branding (Pro/Claude Design help) · ⬜ Multi-platform extension plan · `[[Episode-Structure-v0.1]]` `[[EP1-Timeline]]` `[[EP1-PRODUCTION-WORKFLOW-v0.1]]` |
-| **Multi-Platform Expansion** | 🟢 **Plan A locked 2026-05-27 · Week 1 starting** | ✅ Podcast-first (IG companion · YT hold รอ WWMI EP1) · A4 mascot defer Week 3 · A5 music = confirm Epidemic · E2 criterion = podcast follows≥60/IG≥180/saves≥5/DM≥3 · Week 1: Spotify+Epidemic+cover art brief+EP1 script · `[[PLAN-A-vs-B-OVERNIGHT-2026-05-22]]` · `[[PLATFORM-EXPANSION-AUDIT-2026-05-21]]` |
+| **Multi-Platform Expansion** | 🟢 **Plan A · EP1 พร้อมอัด (รอ music)** | ✅ Podcast-first (IG companion · YT hold รอ WWMI) · **EP1 script approved** · mic Shure MV7+ · account ครบ (Spotify/Apple/IG) · E2 criterion = follows≥60/IG≥180/saves≥5/DM≥3 · ⏸️ cover HOLD (รอหลิวแก้ scn-img skill) · ⚠️ music ทีมยุ่ง-รอคุย · ▶️ อัดที่ MacBook Pro · handoff `[[PODCAST-PRODUCTION-HANDOFF]]` · `[[PLAN-A-vs-B-OVERNIGHT-2026-05-22]]` |
 
 ---
 
@@ -59,7 +72,7 @@ date: 2026-05-23
 
 | งาน | สถานะ | ถัดไป |
 |-----|------|------|
-| **Norms Book + Website** | 🟢 V1 Demo done · awaiting verify | 18 chapters + Ch19 (Wyckoff 5-Step) + **Ch20 (EP9≡Wyckoff synthesis · module candidate #1 · 2026-05-27 · 603 บรรทัด · 31 atoms)** · backup Vault ครบ · 🎤 13/25 EP accurate done · Real swap หลัง ATS · approvals → `[[PENDING]]` · `[[atoms/chapters/_OVERNIGHT-PROGRESS]]` |
+| **Norms Book + Website** | ⏸️ Demo QUARANTINE · 🔄 atom-first | **แนวใหม่:** book = view หนึ่งของ atom DB · Demo Ch1–20 = scaffold/reference เท่านั้น (ห้าม polish) · จะ re-project บน atom ที่ verify ATS accurate · single source = `[[atoms/_CONTENT-MODEL]]` · `[[atoms/chapters/_OVERNIGHT-PROGRESS]]` |
 | **NPC Book + Website** (login-gated) | 🟢 designing | PDF 3 books + Tier 1 + course videos + members-only · Login · Notion/MasterClass feel · `[[NPC-Website-Inspiration-2026-05-20]]` · Connect: Mega `/shop` → NPC signup |
 | **Socialnorms Mega-Website** (public showroom · Apple-feel) | 🟢 Stage 1 grid live · waiting Top 5 | Grid 36 mood-board `Norms-Master/grid-36-mega.html` · approvals → `[[PENDING]]` |
 | **NPC Course** (existing product · 50k ฿ / 90d) | 🟢 active | Marketing surface (public funnel) ยังไม่สร้าง · website tier upsell · `project_npc_course_strategy` |
@@ -70,7 +83,7 @@ date: 2026-05-23
 
 | งาน | สถานะ | ถัดไป |
 |-----|------|------|
-| **Eightcap** | 🟢 monthly active | May ✅ ปิด · 🔥 Traders Football Cup 2026-07-05 brief received · 3 prompt packs ready: `Sponsors/Eightcap/TradersFootballCup-2026-07-05/` · base images gen → `[[PENDING]]` ⏸️ section |
+| **Eightcap** | 🟢 monthly active | May ✅ ปิด · 🔥 Traders Football Cup 2026-07-05 brief received · 3 prompt packs ready: `Sponsors/Eightcap/TradersFootballCup-2026-07-05/` · base images gen → `[[PENDING]]` ⏸️ section · 🆕 **Norm 3-view reference pack** (3 prompts + PDF handoff · CG/Mario-Movie · `Norm-3View-Handoff/`) ready 2026-05-27 → gen+ส่ง `[[PENDING]]` |
 | **Tickmill / FocusTrade** | 🟡 pipeline | รอ brief |
 
 ---
@@ -93,6 +106,7 @@ date: 2026-05-23
 | **Hero V1** (Claude Project) | ✅ deployed · เบลใช้ | `liewsk129` claude.ai · fallback |
 | **Hero V2** (brief→deliverable pipeline) | ✅ deployed · awaiting handoff | Watcher live (launchd) · symlink Drive `Hero-Bell/` ↔ `v2/` · 4 outputs ใน 3-5s · venv `~/Library/Application Support/HeroV2/` (TCC fix) · share Drive + guide → `[[PENDING]]` |
 | **Bell Web App V1** | ✅ shipped | https://socialnormss.github.io/bell-app/ · fallback |
+| **Bell Hub** (คู่มือ Hero · 3 หน้า) | 🟢 built · หลิว approve "ใช้ได้" · รอ deploy | `Bell/hub/index.html` · สอนเบลใช้ Hero **chat** (workflow จริง: Hero Project chat + เติม knowledge file) · ตัด V2/tool ออก · decide URL → `[[PENDING]]` |
 
 → Norms ไม่แตะ Bell-Hero ยกเว้นหลิวสั่งโดยตรง · `[[feedback-max-only-socialnorms]]`
 

@@ -35,6 +35,7 @@ SECTION_META = {
     "current":    {"icon": "🔨", "label": "งานกำลังทำ — ติดตาม/ตรวจ"},
     "unfinished": {"icon": "⏳", "label": "งานค้าง — ยังไม่เสร็จ"},
     "chapters":   {"icon": "📖", "label": "บทหนังสือ (จาก atoms) — อ่าน/แก้คำ"},
+    "teaching-prep": {"icon": "🧑‍🏫", "label": "เตรียมสอน — เฉพาะกิจ ระหว่างรอเนื้อหาหลัก"},
 }
 
 def rel_time(ts):
@@ -76,7 +77,13 @@ def collect_files(folder, section_id):
         (DATA / f"{slug}.md").write_text(content, encoding="utf-8")
         title = title_of(content, f.stem)
         m = re.match(r"Chapter-0*(\d+)", f.stem)
-        card = f"บท {int(m.group(1))} · {title}" if m else title
+        m_ep = re.match(r"EP-0*(\d+)", f.stem)
+        if m:
+            card = f"บท {int(m.group(1))} · {title}"
+        elif m_ep:
+            card = f"EP {int(m_ep.group(1))} · " + re.sub(r"^.*?EP\s*\d+\s*·\s*", "", title)
+        else:
+            card = title
         latest = max(latest, st.st_mtime)
         files.append({"slug": slug, "title": card,
                       "lines": content.count("\n") + 1, "mtime_ago": rel_time(st.st_mtime)})

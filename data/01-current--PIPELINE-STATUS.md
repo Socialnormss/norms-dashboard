@@ -43,6 +43,8 @@
 | Facebook Live | 227 | 0 | — | 0 | 226 |
 | **Queue total** | — | — | — | **62 (Tier 0)** | **362 (Tier 1)** |
 
+> 🟧 **Priority insert 2026-05-27:** FB Live `เงินอยู่ตรงไหน.mp4` + `สอนหาLIQUIDITY - เงินอยู่ตรงไหน.mp4` — transcribe คู่ขนาน ATS หลัก (ไม่มี Metal contention) นอกคิวปกติ · feeds Liquidity track free lesson · → atom-LIQ-NNN (namespace แยก) · DONE marker + merge plan ที่ `Norms-Book/atoms/tracks/liquidity-money/_MANIFEST.md` · ดู `[[project-liquidity-money-insert]]`
+
 **Excluded (ไม่ทำเลย · หลิว-confirmed 2026-05-21):**
 - Pre-EP Gen1 (4 ไฟล์ · Pre1-1, Pre1-2, Pre2-1, Pre2-2 — Screen Recording ก่อน course เริ่ม · ไม่มีเนื้อหา)
 - Pattern: `EXCLUDE_PATTERNS` ใน `accurate_queue.py` · ครอบ gen2 ด้วยถ้ามี Pre
