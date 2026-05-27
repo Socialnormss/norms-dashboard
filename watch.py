@@ -8,8 +8,8 @@ import time, subprocess, os, hashlib
 from pathlib import Path
 
 ROOT    = Path(__file__).parent
-TRANS   = Path.home() / "Documents/Norms-Corp/Social-Norms/03-Knowledge/transcripts"
-DRAFTS  = Path.home() / "Documents/Norms-Corp/Social-Norms/02-Content/content_pipeline/drafts"
+ACTIVE  = Path.home() / "Documents/Norms-Corp/DASHBOARD/active"
+ARCHIVE = Path.home() / "Documents/Norms-Corp/DASHBOARD/archive"
 BUILD   = ROOT / "build.py"
 INDEX   = ROOT / "index.html"
 INTERVAL = 900  # วินาที (15 นาที · ลด git noise · pull-to-refresh ทดแทน manual)
@@ -18,13 +18,18 @@ def run(cmd, **kw):
     return subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, **kw)
 
 def fingerprint():
-    """Hash ของทุก file ที่ monitor — ถ้าเปลี่ยนต้อง rebuild"""
+    """Hash ของ .md ใน DASHBOARD/active+archive (resolve symlink → จับ edit ไฟล์จริง)
+    ไฟล์ใหม่/แก้เนื้อหา → rebuild ทันที · ATS counts รีเฟรชจาก scheduled 15 นาที"""
     h = hashlib.md5()
-    for folder in [TRANS, DRAFTS]:
+    for folder in [ACTIVE, ARCHIVE]:
         if folder.exists():
-            for f in sorted(folder.rglob("*.txt")) + sorted(folder.rglob("*.json")):
-                h.update(f.name.encode())
-                h.update(str(f.stat().st_mtime).encode())
+            for f in sorted(folder.rglob("*.md")):
+                try:
+                    real = f.resolve()
+                    h.update(f.name.encode())
+                    h.update(str(real.stat().st_mtime).encode())
+                except OSError:
+                    pass  # symlink ตาย — ข้าม
     return h.hexdigest()
 
 def rebuild():
@@ -53,7 +58,7 @@ def stamp():
 
 def main():
     print(f"[Watcher] started — rebuild every {INTERVAL//60} min or on file change")
-    print(f"[Watcher] monitoring: {TRANS}, {DRAFTS}")
+    print(f"[Watcher] monitoring: {ACTIVE}")
 
     last_fp   = ""
     last_push = 0
