@@ -1,162 +1,122 @@
 <!DOCTYPE html>
-<html lang="th">
-<head>
+<html lang="th"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0D0D0D">
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<title>Norms Mission Control</title>
+<link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Norms READ</title>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <style>
-  :root{ --bg:#0D0D0D; --card:#161616; --card2:#1e1e1e; --line:#2a2a2a;
-         --orange:#f27e53; --txt:#ededed; --dim:#9a9a9a; --green:#3ecf8e; }
-  *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
-  body{background:var(--bg); color:var(--txt); font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-       padding:env(safe-area-inset-top) 0 40px; max-width:760px; margin:0 auto;}
-  header{padding:18px 16px 12px; position:sticky; top:0; background:rgba(13,13,13,.92);
-         backdrop-filter:blur(10px); z-index:10; border-bottom:1px solid var(--line);}
-  h1{font-size:18px; font-weight:700; letter-spacing:.3px;}
-  h1 .dot{color:var(--orange);}
-  .built{font-size:12px; color:var(--dim); margin-top:2px;}
-  #q{width:100%; margin-top:12px; padding:11px 14px; border-radius:12px; border:1px solid var(--line);
-     background:var(--card); color:var(--txt); font-size:15px;}
-  #q::placeholder{color:#666;}
-  main{padding:14px 14px 0;}
-
-  /* ATS hero */
-  .ats{background:linear-gradient(180deg,#1a1410,#161616); border:1px solid #3a2b20;
-       border-radius:16px; padding:16px; margin-bottom:18px;}
-  .ats .top{display:flex; justify-content:space-between; align-items:baseline;}
-  .ats .pct{font-size:34px; font-weight:800; color:var(--orange); line-height:1;}
-  .ats .meta{font-size:12px; color:var(--dim); text-align:right;}
-  .bar{height:9px; background:#000; border-radius:6px; overflow:hidden; margin:12px 0 4px;}
-  .bar > i{display:block; height:100%; background:linear-gradient(90deg,var(--orange),#ffb088);}
-  .ats .cur{font-size:13px; color:var(--txt); margin-top:8px;}
-  .ats .cur b{color:var(--orange);}
-  .src{display:grid; grid-template-columns:auto 1fr auto; gap:8px; align-items:center;
-       margin-top:10px; font-size:13px;}
-  .src .lbl{color:var(--dim);} .src .n{color:var(--txt); font-variant-numeric:tabular-nums;}
-  .src .bar{height:6px; margin:0;}
-
-  /* sections + cards */
-  .sec-h{font-size:13px; font-weight:700; color:var(--dim); text-transform:uppercase;
-         letter-spacing:1px; margin:22px 4px 10px;}
-  details.card{background:var(--card); border:1px solid var(--line); border-radius:14px;
-               margin-bottom:10px; overflow:hidden;}
-  details.card[open]{border-color:#3a2b20;}
-  summary{padding:14px 16px; cursor:pointer; list-style:none; display:flex;
-          justify-content:space-between; align-items:center; gap:10px;}
-  summary::-webkit-details-marker{display:none;}
-  summary .t{font-weight:600; font-size:15px; flex:1;}
-  summary .m{font-size:11px; color:var(--dim); white-space:nowrap;}
-  summary::after{content:"›"; color:var(--orange); font-size:20px; transition:transform .2s;}
-  details[open] summary::after{transform:rotate(90deg);}
-  .body{padding:0 16px 18px; border-top:1px solid var(--line); margin-top:2px;}
-  .body.md{font-size:14.5px; color:#dcdcdc; overflow-wrap:anywhere;}
-  .md h1,.md h2,.md h3{color:var(--txt); margin:16px 0 6px; line-height:1.3;}
-  .md h1{font-size:19px;} .md h2{font-size:17px;} .md h3{font-size:15px; color:var(--orange);}
-  .md p{margin:8px 0;} .md ul,.md ol{margin:8px 0 8px 20px;} .md li{margin:3px 0;}
-  .md code{background:#000; padding:1px 6px; border-radius:5px; font-size:13px; color:#ffb088;}
-  .md pre{background:#000; padding:12px; border-radius:10px; overflow-x:auto; margin:10px 0;}
-  .md pre code{padding:0;}
-  .md a{color:var(--orange);}
-  .md blockquote{border-left:3px solid var(--orange); padding-left:12px; color:var(--dim); margin:10px 0;}
-  .md hr{border:none; border-top:1px solid var(--line); margin:16px 0;}
-  .md table{border-collapse:collapse; width:100%; margin:10px 0; font-size:13px; display:block; overflow-x:auto;}
-  .md th,.md td{border:1px solid var(--line); padding:6px 9px; text-align:left;}
-  .md th{background:#000; color:var(--orange);}
-  .arch summary .t{color:var(--dim);}
-  .empty{color:var(--dim); font-size:13px; padding:8px 4px;}
-  .hide{display:none !important;}
-  footer{text-align:center; color:#555; font-size:11px; margin-top:30px;}
-</style>
-</head>
-<body>
+:root{--bg:#0D0D0D;--card:#161616;--line:#2a2a2a;--orange:#f27e53;--txt:#ededed;--dim:#9a9a9a;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{background:var(--bg);color:var(--txt);font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+     max-width:760px;margin:0 auto;padding:env(safe-area-inset-top) 0 40px;}
+header{padding:18px 16px 12px;position:sticky;top:0;background:rgba(13,13,13,.93);
+       backdrop-filter:blur(10px);z-index:10;border-bottom:1px solid var(--line);}
+h1{font-size:18px;font-weight:700;}h1 .dot{color:var(--orange);}
+.built{font-size:12px;color:var(--dim);margin-top:2px;}
+#q{width:100%;margin-top:12px;padding:11px 14px;border-radius:12px;border:1px solid var(--line);
+   background:var(--card);color:var(--txt);font-size:15px;}#q::placeholder{color:#666;}
+main{padding:14px 14px 0;}
+/* ATS strip */
+.ats{display:flex;align-items:center;gap:10px;background:#1a1410;border:1px solid #3a2b20;
+     border-radius:12px;padding:10px 14px;margin-bottom:18px;font-size:13px;}
+.ats .pct{font-size:20px;font-weight:800;color:var(--orange);}
+.ats .bar{flex:1;height:7px;background:#000;border-radius:5px;overflow:hidden;}
+.ats .bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--orange),#ffb088);}
+.ats .meta{color:var(--dim);white-space:nowrap;}
+.ats .cur{font-size:11px;color:var(--dim);margin-top:3px;}
+.sec-h{font-size:13px;font-weight:700;color:var(--dim);text-transform:uppercase;
+       letter-spacing:1px;margin:22px 4px 10px;}
+.card{display:flex;justify-content:space-between;align-items:center;gap:10px;
+      background:var(--card);border:1px solid var(--line);border-radius:13px;
+      padding:15px 16px;margin-bottom:9px;cursor:pointer;}
+.card:active{border-color:var(--orange);}
+.card .t{font-weight:600;font-size:15px;flex:1;}
+.card .m{font-size:11px;color:var(--dim);white-space:nowrap;}
+.card::after{content:"›";color:var(--orange);font-size:22px;}
+.hide{display:none!important;}
+footer{text-align:center;color:#555;font-size:11px;margin-top:30px;}
+/* reader overlay */
+#reader{position:fixed;inset:0;background:var(--bg);z-index:50;display:none;flex-direction:column;
+        max-width:760px;margin:0 auto;}
+#reader.on{display:flex;}
+.rbar{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);
+      position:sticky;top:0;background:rgba(13,13,13,.96);backdrop-filter:blur(10px);}
+.rbar .back{color:var(--orange);font-size:16px;font-weight:600;background:none;border:none;cursor:pointer;}
+.rbar .rt{font-size:14px;font-weight:600;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.rbody{overflow-y:auto;padding:18px 18px 80px;-webkit-overflow-scrolling:touch;}
+.md{font-size:16px;line-height:1.75;color:#e6e6e6;overflow-wrap:anywhere;}
+.md h1,.md h2,.md h3{color:var(--txt);margin:18px 0 8px;line-height:1.3;}
+.md h1{font-size:22px;}.md h2{font-size:19px;}.md h3{font-size:16px;color:var(--orange);}
+.md p{margin:10px 0;}.md ul,.md ol{margin:10px 0 10px 22px;}.md li{margin:4px 0;}
+.md code{background:#000;padding:1px 6px;border-radius:5px;font-size:14px;color:#ffb088;}
+.md pre{background:#000;padding:12px;border-radius:10px;overflow-x:auto;}.md pre code{padding:0;}
+.md a{color:var(--orange);}.md blockquote{border-left:3px solid var(--orange);padding-left:12px;color:var(--dim);margin:10px 0;}
+.md hr{border:none;border-top:1px solid var(--line);margin:18px 0;}
+.md table{border-collapse:collapse;width:100%;margin:12px 0;font-size:14px;display:block;overflow-x:auto;}
+.md th,.md td{border:1px solid var(--line);padding:7px 10px;}.md th{background:#000;color:var(--orange);}
+.loading{color:var(--dim);padding:20px 0;}
+</style></head><body>
 <header>
-  <h1>Norms <span class="dot">●</span> Mission Control</h1>
+  <h1>Norms <span class="dot">●</span> READ</h1>
   <div class="built" id="built"></div>
-  <input id="q" type="search" placeholder="🔍 ค้นหา…" autocomplete="off">
+  <input id="q" type="search" placeholder="🔍 ค้นหาชื่อบท/ไฟล์…" autocomplete="off">
 </header>
 <main id="app"></main>
 <footer id="foot"></footer>
 
+<div id="reader">
+  <div class="rbar"><button class="back" onclick="closeReader()">‹ กลับ</button><span class="rt" id="rt"></span></div>
+  <div class="rbody"><div class="md" id="rbody"></div></div>
+</div>
+
 <script>
-const D = {"built": "27 May 26 · 09:08", "ats": {"sources": [{"key": "npc_gen1", "label": "NPC Gen1", "total": 168, "icon": "📘", "done": 168, "pct": 100}, {"key": "npc_gen2", "label": "NPC Gen2", "total": 145, "icon": "📙", "done": 107, "pct": 74}, {"key": "nmspc", "label": "NMSPC 2026", "total": 62, "icon": "📕", "done": 34, "pct": 55}, {"key": "fblive", "label": "Facebook Live", "total": 234, "icon": "📺", "done": 0, "pct": 0}], "total_done": 309, "total_target": 609, "total_remaining": 300, "overall_pct": 51, "workers": 1, "days": 8, "eta": "2026-06-04", "current": "npc_gen2 / Plan 1.7.2025"}, "sections": [{"id": "01-ats", "icon": "🟢", "label": "ATS Pipeline + งานต่อจาก ATS", "files": [{"name": "PIPELINE-STATUS.md", "title": "Knowledge Pipeline — Master Status", "content": "# Knowledge Pipeline — Master Status\n\nอัปเดต: 2026-05-19 | อ่านไฟล์นี้แทนการ scan folders\n\n---\n\n## ⚠️ Model Strategy Change (2026-05-19)\n\nกำลัง **re-transcribe ทุก source ด้วย accurate model** (whisper-large-v3-mlx)\n- Reason: turbo (whisper-large-v3-turbo) ที่ใช้ทำของเก่า — risk \"หมู→ไก่\" concept error · foundation Tier 2 ฿50K ต้องแข็ง\n- Strategy: side-by-side · turbo เก็บที่ `transcripts/` · accurate ใหม่ที่ `transcripts_accurate/`\n- Priority: NPC Gen1 → Gen2 → NMSPC → FBLive\n- Cost: ~100 ชม Mac background · $0 (local MLX)\n- Command: `cd ~/Documents/Norms-Corp/Knowledge/pipeline && python3 transcribe.py --accurate --output-dir ~/Documents/Norms-Corp/Knowledge/transcripts_accurate <folder>`\n- Flags: `--accurate` · `--fast` · `--output-dir <path>` · `--limit N` (test mode)\n\n---\n\n## Video Sources (External Drive: /Volumes/SocialNorms/)\n\n### Turbo (legacy · เก็บไว้เป็น baseline diff)\n\n| Source | Videos บน Drive | Transcribed (turbo) | ThinkAloud | Golden |\n|--------|----------------|---------------------|------------|--------|\n| NPC Gen1 | 172 | ✅ 167/172 | 0 | 0/50 |\n| NPC Gen2 | 145 | ✅ 145/145 | 0 | 0 |\n| NMSPC 2026 | ~60 | ✅ 30 done | 0 | 0 |\n| Facebook Live | 234 | 🟡 58/234 | 0 | 0 |\n| NPC Gen3 | มีใน drive | ❌ 0 | 0 | 0 |\n\n### Accurate (re-transcribe ใหม่ · `transcripts_accurate/`)\n\n**Update 2026-05-24 00:55:** Counts re-verified from filesystem · Tier 0 พลิกดีขึ้นมาก\n**⚠️ Pipeline crash (00:00-00:43):** launchd queue เข้า Metal-reentrancy state · 178 files ❌ ต่อเนื่อง · Norms ทำ stop+diagnose+fix (2026-05-24)\n\n**Priority logic:** Tier 0 (core ทุก source) → Tier 1 (supplementary) · ตาม `CORE_PATTERNS` ใน `accurate_queue.py`\n\n| Source | Total | Done (txt) | Core done | Core pending | Supp pending |\n|--------|------:|-----:|----------:|-------------:|-------------:|\n| NPC Gen1 | 172 | 143 | **54/54 ✅** | **0** | 25 |\n| NPC Gen2 | 145 | 27 | 26/61 | **35** | 83 |\n| NMSPC 2026 | 62 | 7 | 3/30 | **27** | 28 |\n| Facebook Live | 227 | 0 | — | 0 | 226 |\n| **Queue total** | — | — | — | **62 (Tier 0)** | **362 (Tier 1)** |\n\n**Excluded (ไม่ทำเลย · หลิว-confirmed 2026-05-21):**\n- Pre-EP Gen1 (4 ไฟล์ · Pre1-1, Pre1-2, Pre2-1, Pre2-2 — Screen Recording ก่อน course เริ่ม · ไม่มีเนื้อหา)\n- Pattern: `EXCLUDE_PATTERNS` ใน `accurate_queue.py` · ครอบ gen2 ด้วยถ้ามี Pre\n\n**⚠️ Lesson learned:** เดิม `build_queue()` ใช้ alphabetical sort → DATE-only/BT/CPI (supp) มาก่อน EP* (core) → เผา 89 ชม. กับ supplementary\n**แก้แล้ว 2026-05-21:** `CORE_PATTERNS` per source + 2-tier queue · core ทุก source ก่อน supp ทุก source\n\n**Auto-recovery (2026-05-21):** `com.socialnorms.transcribe` launchd ฟื้นแล้ว · KeepAlive=true · ThrottleInterval=300s\n- Wrapper: `~/Library/Application Support/Norms/run_accurate_queue.sh` (TCC-safe path)\n- Lock: `pgrep -f accurate_queue.py` กัน double-run\n- Log: `~/Library/Logs/norms-transcribe.log`\n- **⚠️ ต้อง grant FDA** ที่ System Settings → Privacy & Security → Full Disk Access: `/bin/bash` + `/usr/bin/python3`\n\n**Auto-recovery (2026-05-21):** `com.socialnorms.transcribe` launchd ฟื้นแล้ว · KeepAlive=true · ThrottleInterval=300s\n- Wrapper: `~/Library/Application Support/Norms/run_accurate_queue.sh` (TCC-safe path)\n- Lock: `pgrep -f accurate_queue.py` กัน double-run\n- Log: `~/Library/Logs/norms-transcribe.log`\n- **⚠️ ต้อง grant FDA** ที่ System Settings → Privacy & Security → Full Disk Access: `/bin/bash` + `/usr/bin/python3`\n\n> อัปเดต column นี้ทุกครั้งที่รัน transcribe หรือ ThinkAloud\n\n---\n\n## Transcript Indices (auto · heuristic · turbo-based · 2026-05-19)\n\n| Source | Index file | Total | Score 5 | Score 4 |\n|--------|-----------|-------|---------|---------|\n| NPC Gen1 (hand-curated) | `transcripts/NPC-TRANSCRIPT-INDEX.md` | ~110 EP + Live | manual | manual |\n| NPC Gen2 | `transcripts/NPC-GEN2-INDEX.md` | 145 | 21 | 34 |\n| NMSPC main | `transcripts/NMSPC-INDEX.md` | 30 | 1 | 14 |\n| NMSPC misc | `transcripts/NMSPC-MISC-INDEX.md` | 12 | 2 | 2 |\n| NMSPC plan | `transcripts/NMSPC-PLAN-INDEX.md` | 20 | 3 | 7 |\n| Facebook Live | `transcripts/FBLIVE-INDEX.md` | 222 | 23 | 28 |\n\n**Heuristic:** Score by tech term density in first 5k chars (Wyckoff/SMC/NES variants/Thai equivalents). ⚠️ Approximate — Phase 1 reading จะ refine.\n**Tool:** `python3 /tmp/transcript_indexer.py <input_dir> <output_md> [title]` · ใช้ regenerate ได้ทุกเมื่อ\n\n---\n\n## Norms Book — Progress\n\n| เล่ม | Source | Extracts | Chapters | Output |\n|------|--------|----------|---------|--------|\n| NPC Gen1 — เล่ม 1 \"อ่านตลาดให้ขาด\" | Gen1 Core EP | 167/168 ✅ | 22/22 ✅ | ⏳ Stage 4 PDF |\n| NPC Gen1 — เล่ม 2 \"ตลาดบอกอะไร\" | Gen1 Live | 167/168 ✅ | 18/18 ✅ | ⏳ Stage 4 PDF |\n| NPC Gen1 — เล่ม 3 \"Trader ที่ใช่\" | Gen1 Extra | 167/168 ✅ | 18/18 ✅ | ⏳ Stage 4 PDF |\n| NPC Gen2 | Gen2 | 37/145 🟡 | 0 | ❌ |\n| NMSPC | NMSPC 2026 | 0 | 0 | ❌ รอ ThinkAloud |\n| Facebook Live | Facebook Live | 0 | 0 | ❌ รอ transcript |\n\n**Stage 4 PDF command:**\n```bash\ncd ~/Documents/Norms-Corp/Knowledge/pipeline\npython3 stage4_pdf.py --book 1   # A5, no margins, BG ON\npython3 stage4_pdf.py --book 2\npython3 stage4_pdf.py --book 3\n```\n\n---\n\n## AI Empire — Dependency Chain\n\n```\n[BLOCKED] หลิวกรอก Vocabulary (125 fields)\n    └→ ThinkAloud Agent ทำงานได้\n        └→ Logic Notes (target: 50 golden)\n            └→ Digital Twin training\n                └→ The Guardian\n                    └→ Task Manager\n```\n\n**Vocabulary file:** `vocabulary/Vocabulary-Input.md` ← หลิวต้องกรอก\n\n---\n\n## Commands\n\n```bash\ncd ~/Documents/Norms-Corp/Knowledge/pipeline\n\n# Transcribe (external drive ต้อง mount ก่อน)\npython3 transcribe.py npc_gen2\npython3 transcribe.py facebook_live\n\n# Book pipeline\npython3 book_pipeline.py status      # เช็คสถานะ\npython3 book_pipeline.py stage3      # เขียนบทที่เหลือ\n\n# Gen2 extract\npython3 book_pipeline_gen2.py [EP]\n\n# Dashboard\npython3 dashboard.py                 # → http://localhost:8888\n```\n\n---\n\n## File Locations\n\n```\nKnowledge/\n├── PIPELINE-STATUS.md        ← ไฟล์นี้ (อ่านก่อนเสมอ)\n├── pipeline/                 ← scripts ทั้งหมด\n│   ├── transcribe.py\n│   ├── book_pipeline.py\n│   ├── book_pipeline_gen2.py\n│   ├── stage4_pdf.py\n│   └── thinkaloud_agent_prompt.md\n├── vocabulary/               ← vocabulary + resolver\n│   ├── _MASTER_VOCABULARY.json\n│   ├── white_era_override.json\n│   └── vocabulary_resolver.py\n├── transcripts/              ← raw .txt files\n│   ├── npc_gen1/   ✅\n│   ├── npc_gen2/   ✅\n│   ├── nmspc2026/  ✅\n│   └── facebook_live/ 🟡\n├── logic_notes/              ← ThinkAloud output\n│   ├── Beginner/\n│   ├── Intermediate/\n│   └── Advanced/\n└── Norms-Book/               ← หนังสือทั้งหมด\n    ├── npc_gen1/   ← 3 เล่ม (Stage 3 ✅, Stage 4 ⏳)\n    ├── npc_gen2/   ← กำลังทำ\n    ├── nmspc/      ← รอ\n    └── facebook_live/ ← รอ\n```\n\n> ⚠️ ห้าม scan `transcripts/npc_gen1/` หรือ `Norms-Book/npc_gen1/master_index.json` โดยตรง\n> อ่าน `NPC-TRANSCRIPT-INDEX.md` หรือ `Norms-Book/npc_gen1/stage1_report.md` แทน\n", "lines": 176, "mtime_ago": "3d ago"}]}, {"id": "02-norm-book-web", "icon": "📚", "label": "Norm Book + Website", "files": [{"name": "Norm-Book-Progress.md", "title": "🏁 Norms Book v1 Demo Overnight Assembly — COMPLETE", "content": "---\novernight_run: 2026-05-21\ntotal_chapters: 18 (Ch 1 V4 + Ch 2-18 V1)\nstatus: 🏁 COMPLETE\nfinished: 2026-05-21 ~02:00\ntotal_lines: 11601\n---\n\n# 🏁 Norms Book v1 Demo Overnight Assembly — COMPLETE\n\n> 17 chapters spawned + 1 reference (Ch 1 V4) · ทั้งหมด PASS · backup Vault ครบทุกตัว\n\n## Final Output (18 chapters · 11,601 lines)\n\n| Ch | Module | Title | Lines | Atoms | Status |\n|----|--------|-------|-------|-------|--------|\n| 1 | A | High-Low เริ่มต้น (V4) | 591 | 8 | ✅ |\n| 2 | B | Liquidity 3 ประเภท | 643 | 5 | ✅ |\n| 3 | C | Entry Mastery | 617 | 5 | ✅ |\n| 4 | G | MSE Mastery | 729 | 7 | ✅ |\n| 5 | H | NES = Wyckoff Subset | 632 | 5 | ✅ |\n| 6 | I | Volume Mastery | 751 | 10 | ✅ |\n| 7 | J | Volume × Session Confluence | 647 | 6 | ✅ |\n| 8 | K | Wyckoff Phase A Mastery | 813 | 14 | ✅ (longest) |\n| 9 | L | Composite Operator (เสือ-กบ-ส้ม) | 554 | 8 | ✅ |\n| 10 | M | Phase B + Distribution Mirror ★★★ | 721 | 10 | ✅ (pillar) |\n| 11 | D | Paradox: ตลาดเอาคืน | 495 | 4 | ✅ |\n| 12 | N | Play ≠ Win (Manifesto) | 708 | 8 | ✅ |\n| 13 | T | Chart Tool Pedagogy | 599 | 6 | ✅ |\n| 14 | S | Question Authority | 510 | 7 | ✅ |\n| 15 | O | Belief Engine | 639 | 8 | ✅ |\n| 16 | P | 4-Layer Sabotage | 716 | 8 | ✅ |\n| 17 | Q | Sandbox Reframe | 571 | 5 | ✅ |\n| 18 | R | NPC Live Execution | 665 | 8 | ✅ (closing) |\n\n**Files location:**\n- Source: `Norms-Corp/Knowledge/Norms-Book/atoms/chapters/`\n- Backup: `Vault/Social Norms/05-Projects/Norms-Book/`\n\n## Risk Flags (สำหรับ Compliance Review ก่อน publish)\n\n1. **Ch 6 Volume** — \"Killzone\" mention 1 ครั้งใน international section (framed as ICT vocabulary ที่ NPC ไม่ใช้ · contrast usage)\n2. **Ch 12 Play≠Win** — ICT/CRT density สูง (atom-00100 case · Wyckoff cert paradox $999) → Norms Compliance review\n3. **Ch 13 Chart Tool** — atom-00156 Wide Box section มี ICT/FVG/BRP/OB density สูง (manifesto-contrast clause)\n4. **Ch 14 Question Authority** — Michael Huddleston ICT founder ถูก named · BRP empirical critique central · OK ตาม atom voice\n5. **Research citations ส่วนใหญ่ marked \"paraphrase\"** — Wyckoff/Hamilton/Dow/Rhea/Edwards & Magee · Murphy/Granville/Williams/Coulling — ถ้า publish ต้อง verify verbatim quote กับ primary source\n\n## Quality Pattern (V4 proven across 17 chapters)\n\nทุก chapter มี:\n- ✅ Frontmatter (chapter · title · atoms_used · version · date)\n- ✅ Pull quote opener\n- ✅ Hook scenario (XAUUSD/Gold หรือ relatable case)\n- ✅ Objectives 5 bullets\n- ✅ 4-6 core narrative sections จาก atoms · voice หลิว · verbatim quotes ฝัง 6-15\n- ✅ ASCII diagrams 2-3 รูป + Magnific prompts CI compliant\n- ✅ กฎ 5 ข้อ\n- ✅ ความเข้าใจผิด 3-4 ข้อ\n- ✅ 📚 เนื้อหาเสริมตามมาตรฐานสากล\n- ✅ 📖 Research — classical citations\n- ✅ 📋 สรุป + กฎทอง (italic)\n- ✅ ✏️ แบบทดสอบ 3 ภาค + มุมมองหลิว\n- ✅ Cross-link [[atom-NNNNN]] ครบทุก atom\n- ✅ NPC purity (no killzone/FVG/NMSPC ใน NEW sections)\n\n## Next Steps (หลิวตัดสิน)\n\n1. **Spot-check** — เปิด 2-3 chapter random ใน Vault · feel voice + structure\n2. **Compliance pass** — รัน Risk Flags ผ่าน Compliance check\n3. **Demo PDF** — convert markdown → PDF (ใช้ existing Stage 4 pipeline ที่มี)\n4. **Cover/binding** — Brand CI · Pro/Claude Design ช่วยทำ visual\n5. **Real swap** — เมื่อ 25 EP accurate transcribe เสร็จ · regenerate select chapters\n\n## Compliance Notes\n\n- 3 agents สุดท้าย (Ch 15 · 16 · 18) ชน session limit ของ Anthropic plan ที่ ~02:00 · เขียนไฟล์ Norms-Corp เสร็จก่อน แต่ Vault backup ไม่สำเร็จ\n- Norms (main) backup 3 ไฟล์ที่ขาดให้เอง (cp command) — Vault ครบ 18/18\n\n🏁 **All 17 chapters PASS · ready for หลิว review on 2026-05-22**\n", "lines": 80, "mtime_ago": "6d ago"}]}, {"id": "03-reports", "icon": "📄", "label": "Reports / สถานะงาน", "files": [{"name": "PENDING.md", "title": "PENDING — สิ่งที่หลิวต้อง approve / decide / test", "content": "---\ntype: index\nstatus: active\ndate: 2026-05-22\ntags: [inbox, approvals, status]\n---\n\n# PENDING — สิ่งที่หลิวต้อง approve / decide / test\n\n> Single inbox · Norms maintain (append เมื่อ ship · remove เมื่อหลิว action) · หลิวเช็คตอนเช้า/start session\n>\n> **Priority:** 🔥 P0 (block ≥3 things) · ⚡ P1 (block 1-2) · ◽ P2 (single · nice-to-have)\n> **Aging:** 🟢 < 1d · 🟡 1-3d · 🟠 3-7d · 🔴 > 7d\n> **Effort:** ⚡ < 5min · ⏱️ 5-15min · ⏰ 15-30min · 🕰️ > 30min\n> **Decay:** item > 30d → Norms ถาม \"ยังจะรอไหม\" → ถ้าไม่ = sunset (ย้ายไป STATUS Paused/Sunset)\n\n---\n\n## 🔥 P0 — blocking ≥3 things\n\n| Aging | Item | Effort | Where | Why |\n|------|------|------|------|------|\n| 🟠 ~3d | **FDA grant** (Privacy → Full Disk Access · `/bin/bash` พอ · python inherit · +Terminal.app optional) | ⚡ | System Settings | ATS auto-recovery · ATS = 80% โปรเจค depend · verify 2026-05-27: plist+keep_running เรียก python ผ่าน bash → grant /bin/bash พอ (Homebrew python3 = คำแนะนำเก่า ผิด) · `[[feedback-launchd-tcc]]` |\n| 🟠 ~2d | **Twin v0.1 test 1 prompt** (`/twin`) → ปิด D2 100% | ⚡ | terminal | unblock Multi-Platform leverage (70+ posts) · `[[Digital-Twin-Program]]` |\n| 🟠 ~2d | **Multi-Platform: podcast-first vs YT-first** → 1-line Y/N read | ⚡ | `[[PLAN-A-vs-B-OVERNIGHT-2026-05-22]]` | strategic direction · blocks 30-day map + branding + WWMI · Norms pick = Plan A · overnight pack เสร็จ · อ่าน 5 นาที ตัดสิน 1 บรรทัด |\n| 🟠 ~2d | **Multi-Platform 3 Y/N** (Mascot · Music · Week 4 criterion) | ⏱️ | `[[BRIEFING-3-DECISIONS-2026-05-21]]` · cross-ref `[[PLAN-A-vs-B-OVERNIGHT-2026-05-22]]` (A4 defer · A5 must Y · E2 numbers ปรับ) | block 30-day map execute · 17/20 default Y · เหลือ 3 · ขึ้นกับ Plan A vs B decision |\n\n---\n\n## ⚡ P1 — blocking 1-2\n\n| Aging | Item | Effort | Where | Why |\n|------|------|------|------|------|\n| 🟠 ~2d | **Norms-Master v2 audit approve** → fresh session draft v2 | ⏱️ | `Norms-Master/PROFILE-v2-AUDIT-2026-05-21.md` | block v2 draft · 7 gaps · 3 conflicts · 7 patterns · **prework พร้อมแล้ว** (`PROFILE-v2-PREWORK-2026-05-22.md` — 17/17 decode + TOC + 5 Q's with defaults + 2 sample sections · approve = ลุย draft 100 นาที) |\n| 🟠 ~2d | **Bell-Hero V2: share Drive + ส่ง guide เบล** | ⏱️ | Drive `Hero-Bell/` · `BELL-HANDOFF.md` | เบลยังใช้ V2 ไม่ได้ · V1 fallback ยังเปิดอยู่ |\n| 🟠 ~3d | **Mega-Website: approve Recommended 5** (Norms pick = `V1·3D20·H2`+`V2·3D0·H1`+`V3·3D80·H1`+`V2·3D20·H2`+`V4·3D0·H3` · 100% asset-ready · 1-wk ramp) → Y/N | ⚡ < 5min | `[[MEGA-TOP5-RECOMMENDATION-OVERNIGHT-2026-05-22]]` (Norms-Master/) | block Stage 2 dev · overnight pack เสร็จ · Conservative + Bold alternatives ในไฟล์ |\n| 🟡 ~1d | **4 critical book decisions** (Ch 16 ดวงดี · Ch 12 Wyckoff Institute $999 + รุ่นพี่ · Ch 5 reveal timing · voice convention global) — full recs + line refs | ⏰ | `[[V1-SPOT-CHECK-OVERNIGHT-2026-05-22]]` (§2) | block Stage 4 PDF · post-sign Norms apply edits ~3 ชม. |\n| 🟢 today | **WWMI EP1 v0.2 review + ส่ง 3 Atomic messages** | ⏰ | `[[EP1-PRODUCTION-WORKFLOW-v0.2-OVERNIGHT-2026-05-22]]` §3 | hard deadline 2026-05-31 Atomic ตอบ · หลุด = EP1 release ดัน 2026-08-02 · 3 messages copy-paste พร้อมส่ง LINE (channel ownership · recording setup · ICT chart pick) |\n| 🟢 today | **NPC funnel v0.1 proposal review (3 decisions inside)** | ⏰ | `[[FUNNEL-V0.1-PROPOSAL-OVERNIGHT-2026-05-22]]` (03-Courses/NPC) · mirror `Knowledge/NPC-FUNNEL-V0.1-PROPOSAL-OVERNIGHT-2026-05-22.md` | block 30-day execute path · 3 Y/N: Lead Magnet (Ch 1 PDF default) · Paid Mix (Meta Retarget default) · App Friction (Form-first default) · proposal-only ไม่แตะ course code |\n| 🟢 today | **Eightcap TFC base images** (gen-in-one-sitting) | 🕰️ ~2.0–2.5 ชม. | `[[STORYBOARD-OVERNIGHT-2026-05-22]]` (`02-Content/Eightcap/2026/07-July-TradersFootballCup/`) | storyboard pre-staged · 5 frames · 15 base images · order + risk + copy พร้อม · open Magnific แล้ว paste Input Blocks · CCTV V5 reuse → D-7 → WANTED → Coupon → GOT YOU (S2 last) |\n| ⏸️ corpus | **Longtoon 2 video gap** — vault case study อ้าง 2AAxQhv7644 + nnD1w2hlAdk แต่ NotebookLM มีแค่ \"การเรียน AI คอร์สฟรี\" 1 ตัว | ⚡ ~2 min | NotebookLM \"สอนใช้งาน Ai สร้างระบบทำงาน\" notebook · add 2 YouTube URL | unblock proper Longtoon-anchor synthesis · Norms ทำ corpus build รอ 2 ตัวนี้เพิ่ม |\n| 🟢 today | **Rotate Discord bot token** (security · ปัจจุบัน token leak ใน chat session) | ⚡ ~2 min | Developer Portal → Reset Token · update `Norms-Corp/Discord-Bot/config/.env` → `launchctl unload+load com.norms.discord-bot.plist` | token ปัจจุบันใช้งานได้ · แต่ rotate ดีกว่า · Norms-Corp/Discord-Bot/docs/STEP-1 มี link · post-rotate test `/post_now` |\n\n---\n\n## ◽ P2 — single / nice-to-have\n\n| Aging | Item | Effort | Where | Why |\n|------|------|------|------|------|\n| 🟡 ~1d | **Norms Book V1 spot-check** + Stage 4 PDF | 🕰️ | `Norms-Book/atoms/chapters/` (18 ch) | demo book ส่ง · verify ก่อน Compliance |\n| 🟢 today | **Norms Book Ch19 review** — Wyckoff 5-Step Approach (proof: atom→chapter) | ⏱️ ~10 min | `Norms-Book/atoms/chapters/Chapter-19-V1-Wyckoff-5-Step-Approach.md` | assembled จาก 8 atom Gen1 v9 (00571/00591-00597) · review voice+accuracy → ดี = scale อีก 2 module พร้อมอยู่ (3 Laws Canonical · \"Wyckoff=ตัวจบ\" opener) · placement ในเล่มรอ editor (แนะนำ foundation ต้นเล่ม) |\n| 🟢 today | **Norms Book Ch20 review** — EP9 ≡ Wyckoff synthesis (module candidate #1 assembled · 2026-05-27) | ⏱️ ~15 min | `Norms-Book/atoms/chapters/Chapter-20-V1-EP9-Wyckoff-Synthesis.md` (backup Vault `05-Projects/Norms-Book/`) | 603 บรรทัด · 31 atoms · 45 quotes · 9 extensions ครบ · QC PASS (voice/mapping/NPC purity). ✅ ASR clean done (ไวคอฟ สม่ำเสมอ · garble แก้ · คง slang/voice). **2 decisions รอหลิว:** (1) **Research fact-check** — Evans 1950s + Pruden 2007 quotes = best-guess paraphrase ต้อง verify ก่อน publish (2) **content verify** — \"EP9=Wyckoff ที่ไม่มี PS\" vs \"Pos6=PS\" tension · agent resolve ว่า PS ซ่อนเพราะดึงกรอบออกมา → ตรงกับ mental model หลิวไหม |\n| 🟡 ~1d | **Compliance Ch 6/12/13/14** final sign + **9 READY pre-flight done** | ⏰ | Ch 6/12/13/14 = `_COMPLIANCE-Ch*.md` PASS/PASS-MINOR · Ch 1/2/4/7/8/9/11/17/18 = `Norms-Book/COMPLIANCE-PREFLIGHT-9-READY-2026-05-22.md` (8 PASS + 1 PASS-MINOR · zero FAIL · 9 บท green-light Stage 4 ทันที) | post-edit verify Ch 6/12/13/14 · 9 READY pack PDF-ready ตอนนี้ |\n| 🟡 ~1d | **PNG Cutout test** (Clay vs CG comparison) — *defer until Magnific CG presets exist* | ⏰ | `Brand/Assets/Workflow/CUTOUT-TEST-BRIEF.md` + `MAGNIFIC-CG-SETUP.md` | validate `[[feedback-png-cutout-consideration]]` · blocked: ต้องมี CG presets ก่อน (Session 32 trace: เป็น nice-to-have ไม่ใช่ critical path) |\n| 🟢 today | **(Optional) Disable Dataview plugin** | ⚡ ~30 sec | Settings → Community plugins → toggle off | Norms revert Dataview blocks · plugin ไม่จำเป็นอีก · keep ไว้เผื่ออนาคตก็ได้ |\n| 🟢 today | **Atomize v4 ready-to-fire (post-ATS)** — approve to spawn 4 agents เมื่อ ATS wave จบ | ⚡ Y/N | `[[ATOMIZE-V4-PLAN-OVERNIGHT-2026-05-22]]` | pre-staged plan · 12 EPs · IDs 00367-00686 · ~240 atoms · pre-flight checks §2 · fire command §7 · waiting on ATS completion + หลิว approve |\n| 🟢 today | **Brand asset audit review** (top 10 gaps · 4-6 Magnific presets to add) | ⏰ | `[[BRAND-ASSET-AUDIT-OVERNIGHT-2026-05-22]]` (00-Brand) · mirror `Brand/Assets/AUDIT-OVERNIGHT-2026-05-22.md` | top blocker = Logo folder ว่าง · top quick-win = `@norm-mascot-clay-cutout` preset · 30-day fill plan §8 พร้อม approve |\n| 🟢 today | **Discord bot v0.2 — drag 12 channels เข้า category + ลบ test channel + test commands** | ⏱️ ~10 min | Discord UI · right-click channel → Move Channel · IDs ใน `Norms-Corp/Discord-Bot/config/groups.json` | bot running 24/7 · ไม่ block · แต่ category = clean structure · 6 BA + 6 HW channels ลอย root · old `🍖-before-after` (id 1507301250281111562) ลบทิ้ง · test `/my_thread` `/my_hw` `/hw_status` |\n| 🟢 today | **Discord bot — rename HW threads** (60 threads · default \"HW N · (rename ได้)\") | ⏰ ~30 min | Forum `📒-hw` × 6 groups | นักเรียนเห็นชื่อ HW จริงตามที่หลิวสอน · current default = placeholder · ไม่บังคับ urgent (default ยังใช้ได้) |\n| 🟢 today | **Claude-Trading Onboarding Form** setup ใน Google Forms (paste จาก draft + ใส่ LINE OpenChat URL) | ⏰ ~20-30 min | `Norms-Corp/Claude-Trading-Class/Google-Form-Onboarding.md` | FB ประกาศแล้ว · มีคนสนใจเยอะ · ต้อง funnel เข้า LINE OpenChat ก่อน Discord · form เบามาก collect data + 5 ข้อกฎกลุ่ม |\n\n---\n\n## ⏸️ Waiting on หลิว data input (not aging · หลิวบอกไม่รีบ)\n\n| Item | Where | Note |\n|------|------|------|\n| **NES Q&A fill 30 questions** (19 P0) | `05-Projects/NES-Indicator/Q&A-INTERVIEW-PACK-v0.1.md` | block v0.3 code · หลิวบอกจะให้ data เอง · **priority ranking ready** → `NES-SPEC-CROSSREF-OVERNIGHT-2026-05-22.md` (overnight 2026-05-22) · ตอบ Q-12/26/07/13/25 ก่อน = unlock 20 claims |\n| **AI Vocab 125 fields** | `Vocabulary-Input.md` | block Twin v0.3 chart-reading · queued หลัง Norms Book |\n| **TalokCafe transcript** | `data/jokes.json` | low-priority experimental |\n\n---\n\n## How to use\n\n- **หลิว:** เปิดไฟล์นี้ตอนเช้า/start session · 🔥 P0 ก่อน · บอก Norms \"เคลียร์ X\" → Norms verify + remove\n- **Norms:** ทุกครั้ง ship → append ใน priority tier (re-assess priority ตาม block count) · เช้าทุกวันเลื่อน aging · เมื่อหลิว action → remove\n- **Decay:** item > 30d → Norms ถาม \"ยังจะรอไหม\" · sunset = ย้ายไป STATUS Paused/Sunset + log\n\n→ ดู `[[feedback-pending-inbox-discipline]]` · `[[STATUS]]` · `[[INDEX]]`\n", "lines": 81, "mtime_ago": "1m ago"}, {"name": "STATUS.md", "title": "Status — Max-Only Operating Model", "content": "---\ntype: index\nstatus: active\ndate: 2026-05-23\n---\n\n# Status — Max-Only Operating Model\n\n> Norms (Max) = sole owner Socialnorms · เบล + Pro = Bell-Hero only · ATS background 24/7\n> Single source: STATUS = active project state · PIPELINE-STATUS = pipeline state · WORKLOG per project = milestone history\n>\n> **🛎️ สิ่งที่หลิวต้อง approve/decide/test → `[[PENDING]]`** (single approval inbox · ไม่อยู่ใน STATUS แล้ว)\n\nอัปเดต: 2026-05-26 | จบเดือน: 2026-05-31 | 🎯 **Focus mode: transcript เท่านั้น** (ห้าม multitask จนหลิวสั่ง)\n\n---\n\n## 🌙 Latest drops\n\n> **2026-05-26 18:30 — กลับจาก away · Tickmill pack ปิดงาน + pipeline review**:\n> · ✅ **Tickmill 2026 Q2-3 pack จบ** — หลิวยืนยัน \"งานจบแล้ว\" · เคลียร์ 8 รายการออกจาก `[[PENDING]]` (Pre-Live · Asset 1 v12 · Asset 2/3/5 · Asset 4 Live · 2026-05-22 pack) · BAD STATE Session 43 = ปิด\n> · 🟢 **ATS** รันต่อเนื่องระหว่าง away · **90/424 EP** (0 fail · Metal cascade ไม่กลับ) · ETA ~10 วัน\n> · ✅ **Atomize loop เก่าปิด** — `atomize_loop.sh` จบเอง 16:01 (+40 → 560 atoms) · ไม่มี scheduled job เหลือ (launchd/cron/at ว่างหมด)\n> · 🎉 **Atomize Gen1 core COMPLETE (v10 · supervised 7 batches · manual)** — +742 atoms session นี้ · EP1–19 (Noon+Night) + Extra Ep3/5/6 + Secret Norms 0/1/2 + Prop firm 1/2 + Psychology 2 ครบ · **560 → 1,342 atoms**\n> · 🎯 **prop-firm category ACTIVATED** (slot ว่างสุดท้าย · 43 atoms · The5%ers spec + \"$5000→$248 reframe\" + survival-first)\n> · 💎 highlights: Wyckoff 5-Step Approach (Gen1 first full) · EP9≡Wyckoff synthesis · **Carry origin** (\"ไอ้ม่วง\" ตั้งชื่อสด + \"กอดคอ\" etymology) · Wyckoff Trendline X+A=B · JAC vs SOS · Mis-Entity\n> · ⚠️ **ID collision แก้แล้ว** — session ttys002 (Max terminal #2 ทำ Gen2/NMSPC · ไม่ใช่ Pro) ชน ID 00800-839 · **ไม่ data loss** (agents หลบกัน) · revise เป็น **instance-based namespace** (Gen1=01000+ · Gen2=02000+ · NMSPC=03000+) เขียนใน INDEX frontmatter + `[[project-atom-id-namespace]]`\n> · 💡 **7 module candidates** พร้อม assemble (INDEX v10): Carry Origin · EP9≡Wyckoff · JAC-vs-SOS · REFADE/REDIST · Money-Mgmt Masterclass · POI Killer/Focus · Wyckoff Trendline\n> · ⏳ next: assemble module แรก (book chapter prototype) · dashboard deploy (รอ approve push) · WWMI EP1 (deadline 31/5)\n\n> **2026-05-24 10:00 — Norms Book atomize + scheduled loop (หลิว away จนถึง 26 18:00)**:\n> · 🟢 **Atomize v4 batch (supervised):** +40 atoms (00367-00406) · gen1 EP2-1 Night + EP2-2 Noon · **406 total** · INDEX updated lightweight (category sections + dashboard push รอ full review)\n> · 🟢 **Scheduled atomize loop LAUNCHED** — `pipeline/atomize_loop.sh` · armed รอจันทร์ 25 พ.ค. 21:05 → ทุก 6 ชม → **hard-stop 26 พ.ค. 18:00** (~4 รอบ) · scoped allowedTools (ไม่ bypassPermissions) · ntfy แต่ละรอบ\n> · ⚠️ **Lesson:** autonomous loop ห้าม self-grant bypassPermissions (classifier block ถูก) · ใช้ scoped allowedTools · user authorize task ≠ authorize ปิด permission ทั้งหมด · ดู `[[scheduled-atomize]]`\n> · ATS transcript รันต่อปกติ (Gen2 EP.2-2 · 7/424)\n\n> **2026-05-24 01:30 — ATS recovery + autonomous 2-day run (หลิว away)**:\n> · 🔴 **Metal cascade fixed** — launchd queue ติด `MTLCompilerService Reentrancy avoided` · 178 files ❌ ต่อเนื่อง (00:00-00:43) · stop+diagnose+fix · Metal recovered after ~5min idle\n> · 🆕 **Cascade detection** — `accurate_queue.py` ตรวจ Metal-error 2-streak → cool 90s · 3-streak → 5min · 4-streak → exit 2 (respawn) · exit code มี 0/2/3 ชัดเจน\n> · 🆕 **TCC workaround** — launchd ไม่ผ่าน FDA แล้ว (ไม่รู้ว่าเลิกเมื่อไหร่) · ใช้ `keep_running.sh` + nohup จาก terminal-context แทน · respawn loop เอง\n> · 🟢 **Queue active** — Gen2 EP.15-3 (2:57hr) กำลังถอด · ntfy heartbeat ทุก 10 success\n> · ⚠️ **Realistic 48hr coverage:** Tier 0 = 62 files · 147hr audio · จะได้ ~30-40 files (~50-65% Tier 0) · ไม่ทันครบ\n> · Files: `Knowledge/pipeline/{accurate_queue.py, keep_running.sh}` · log `~/Library/Logs/norms-transcribe.log`\n> · ดู `Knowledge/PIPELINE-STATUS.md` for counts\n\n\n---\n\n## 🎯 Tier 0 — Core Missions\n\n| งาน | สถานะ | ถัดไป |\n|-----|------|------|\n| **WWMI** — YouTube show × Atomic Trader | 🟢 pre-pilot · EP1 target 2026-07-19 | v0.1 Episode Structure + EP1 Timeline + **Production Workflow v0.1** drafted · ⬜ Atomic input merge target 2026-06-01 · ⬜ Branding (Pro/Claude Design help) · ⬜ Multi-platform extension plan · `[[Episode-Structure-v0.1]]` `[[EP1-Timeline]]` `[[EP1-PRODUCTION-WORKFLOW-v0.1]]` |\n| **Multi-Platform Expansion** | 🟢 audit shipped · waiting decisions | ★ master deliverable + 30-day map + 20-Y/N decisions: `[[05-Projects/Multi-Platform/PLATFORM-EXPANSION-AUDIT-2026-05-21]]` · approvals → `[[PENDING]]` |\n\n---\n\n## 🥇 Content Engines (รอง · ป้อน Tier 0)\n\n| งาน | สถานะ | ถัดไป |\n|-----|------|------|\n| **Norms Book + Website** | 🟢 V1 Demo done · awaiting verify | 18 chapters + Ch19 (Wyckoff 5-Step) + **Ch20 (EP9≡Wyckoff synthesis · module candidate #1 · 2026-05-27 · 603 บรรทัด · 31 atoms)** · backup Vault ครบ · 🎤 13/25 EP accurate done · Real swap หลัง ATS · approvals → `[[PENDING]]` · `[[atoms/chapters/_OVERNIGHT-PROGRESS]]` |\n| **NPC Book + Website** (login-gated) | 🟢 designing | PDF 3 books + Tier 1 + course videos + members-only · Login · Notion/MasterClass feel · `[[NPC-Website-Inspiration-2026-05-20]]` · Connect: Mega `/shop` → NPC signup |\n| **Socialnorms Mega-Website** (public showroom · Apple-feel) | 🟢 Stage 1 grid live · waiting Top 5 | Grid 36 mood-board `Norms-Master/grid-36-mega.html` · approvals → `[[PENDING]]` |\n| **NPC Course** (existing product · 50k ฿ / 90d) | 🟢 active | Marketing surface (public funnel) ยังไม่สร้าง · website tier upsell · `project_npc_course_strategy` |\n\n---\n\n## 🥈 Monetization\n\n| งาน | สถานะ | ถัดไป |\n|-----|------|------|\n| **Eightcap** | 🟢 monthly active | May ✅ ปิด · 🔥 Traders Football Cup 2026-07-05 brief received · 3 prompt packs ready: `Sponsors/Eightcap/TradersFootballCup-2026-07-05/` · base images gen → `[[PENDING]]` ⏸️ section |\n| **Tickmill / FocusTrade** | 🟡 pipeline | รอ brief |\n\n---\n\n## 🛠️ Sub-active (Norms produces · serves Tier 0 indirectly)\n\n| งาน | สถานะ | ถัดไป |\n|-----|------|------|\n| **Digital Twin v0.1** (scale mechanism for Multi-Platform) | 🟢 Max deployed · awaiting smoke test | **Max: 3 formats live** (`/twin` slash · `liew-twin` subagent · `~/Twin/CLAUDE.md` standalone) · Max QA 5/5 PASS (`test-results-max-2026-05-21.md`) · Pro deploy เมื่อใกล้หมด Max plan · test → `[[PENDING]]` |\n| **Norms-Master \"ปั้มนอม\"** (meta) | 🟢 Phase 1 done · v2 audit awaiting approve | ★★★★ Moat Distribution Rule locked · PROFILE-v1 + v2 audit (7 gaps · 3 conflicts · 7 patterns) · approval → `[[PENDING]]` |\n| **Wyckoff Norms** | 🟡 live · idle | wyckoff.html live · 3D / cinematic CREATIVE-BRIEF.md · low priority |\n| **NES Indicator (Pine Script)** | ⏸️ paused · awaiting หลิว data input | v0.2 fail (Norms เดา POI) · Q&A Pack (30Q) + POI Spec + memory rule พร้อมแล้ว · **หลิวบอก:** ไม่รีบ · จะเอา data ให้เอง · **NEXT:** รอหลิว fill Q&A → code v0.3 |\n\n---\n\n## 👥 Bell-Hero (hands-off · เบล + Pro)\n\n| งาน | สถานะ | ถัดไป |\n|-----|------|------|\n| **Hero V1** (Claude Project) | ✅ deployed · เบลใช้ | `liewsk129` claude.ai · fallback |\n| **Hero V2** (brief→deliverable pipeline) | ✅ deployed · awaiting handoff | Watcher live (launchd) · symlink Drive `Hero-Bell/` ↔ `v2/` · 4 outputs ใน 3-5s · venv `~/Library/Application Support/HeroV2/` (TCC fix) · share Drive + guide → `[[PENDING]]` |\n| **Bell Web App V1** | ✅ shipped | https://socialnormss.github.io/bell-app/ · fallback |\n\n→ Norms ไม่แตะ Bell-Hero ยกเว้นหลิวสั่งโดยตรง · `[[feedback-max-only-socialnorms]]`\n\n---\n\n## 🎓 Training only (ไม่ใช่ business)\n\n| งาน | สถานะ | ถัดไป |\n|-----|------|------|\n| **Dog Feeder v4.2 (Mocha)** | ✅ shipped + deployed | `d7f733e` push origin/main 2026-05-21 · SW v8.3-cozy live verified · ไม่ proactive iterate ต่อ · รอ feedback หลิว |\n\n---\n\n## 🔧 Background\n\n| งาน | สถานะ | ถัดไป |\n|-----|------|------|\n| **Accurate Transcribe (ATS)** | 🟢 running 24/7 · 81/594 EP | `accurate_queue.py` PID 52789 · ~6 วัน ETA · log `/tmp/accurate_queue.log` · blocks: Real Book swap + Twin v0.2+ (80% โปรเจคไม่ block) |\n| **Pipeline tasks** | → `[[PIPELINE-STATUS]]` | transcription · book stages · extracts · Gen2 |\n\n---\n\n## ⏸️ Paused / Queue / Sunset\n\n| งาน | สถานะ | หมายเหตุ |\n|-----|------|---------|\n| **AnotherAi v1.1** | ⏸️ archived 2026-05-20 | ROI ไม่คุ้ม · scope แคบ 30% · pivot ไป Norms-Master · revival criteria + KB moved out 2026-05-21 → `Norms-Corp/KB/` · `AnotherAi/ARCHIVED.md` |\n| **AI Vocab (125 fields)** | ⏸️ queued | รอ Norms Book Website จบ · ป้อน Twin v0.3 chart-reading · `Vocabulary-Input.md` |\n| **NPC Chapter Enrichment** | ⏸️ paused | Demo Book V1 ครอบคลุมแล้ว · revisit หลัง Real swap |\n| **TalokCafe** | ⏸️ v0.2 paused | low-priority experimental · รอหลิว append transcript ลง `data/jokes.json` |\n| **Showroom Website** | merged → Mega-Website | ดู Mega-Website row |\n\n→ Done tasks: `[[CHANGELOG]]`\n\n---\n\n## Links\n\n[[PIPELINE-STATUS]] · [[NPC-Book]] · [[Digital-Twin-Program]] · [[Vocabulary-Input]] · [[Wyckoff-Rephase]] · [[Eightcap-INDEX]] · [[Wyckoff-INDEX]] · [[MASTER_PLAN]] · [[INDEX]]\n", "lines": 135, "mtime_ago": "7h ago"}]}], "archive": []};
+const D = {"built": "27 May 26 · 09:20", "ats": {"sources": [{"key": "npc_gen1", "label": "Gen1", "total": 168, "icon": "📘", "done": 168, "pct": 100}, {"key": "npc_gen2", "label": "Gen2", "total": 145, "icon": "📙", "done": 108, "pct": 74}, {"key": "nmspc", "label": "NMSPC", "total": 62, "icon": "📕", "done": 34, "pct": 55}, {"key": "fblive", "label": "FB Live", "total": 234, "icon": "📺", "done": 0, "pct": 0}], "done": 310, "target": 609, "remaining": 299, "pct": 51, "workers": 1, "days": 7, "eta": "2026-06-03", "current": "npc_gen2 / Plan 12.6.2025"}, "sections": [{"id": "01-current", "icon": "🔨", "label": "งานกำลังทำ — ติดตาม/ตรวจ", "files": [{"slug": "01-current--Norm-Book-Progress", "title": "🏁 Norms Book v1 Demo Overnight Assembly — COMPLETE", "lines": 80, "mtime_ago": "6d ago"}, {"slug": "01-current--PIPELINE-STATUS", "title": "Knowledge Pipeline — Master Status", "lines": 176, "mtime_ago": "3d ago"}, {"slug": "01-current--STATUS", "title": "Status — Max-Only Operating Model", "lines": 135, "mtime_ago": "3s ago"}]}, {"id": "02-unfinished", "icon": "⏳", "label": "งานค้าง — ยังไม่เสร็จ", "files": [{"slug": "02-unfinished--Compliance-Ch6-12-13-14", "title": "🔍 Norms Book v1 Demo · Compliance Report", "lines": 89, "mtime_ago": "5d ago"}, {"slug": "02-unfinished--PENDING", "title": "PENDING — สิ่งที่หลิวต้อง approve / decide / test", "lines": 80, "mtime_ago": "1m ago"}]}, {"id": "03-chapters", "icon": "📖", "label": "บทหนังสือ (จาก atoms) — อ่าน/แก้คำ", "files": [{"slug": "03-chapters--Chapter-01", "title": "บท 1 · บทที่ 1 — High-Low เริ่มต้น", "lines": 592, "mtime_ago": "6d ago"}, {"slug": "03-chapters--Chapter-02", "title": "บท 2 · บทที่ 2 — Liquidity 3 ประเภท", "lines": 644, "mtime_ago": "6d ago"}, {"slug": "03-chapters--Chapter-03", "title": "บท 3 · บทที่ 3 — Entry Mastery (8-Position + F1/F2)", "lines": 618, "mtime_ago": "6d ago"}, {"slug": "03-chapters--Chapter-04", "title": "บท 4 · บทที่ 4 — MSE Mastery", "lines": 730, "mtime_ago": "6d ago"}, {"slug": "03-chapters--Chapter-05", "title": "บท 5 · บทที่ 5 — NES = Wyckoff Subset", "lines": 633, "mtime_ago": "6d ago"}, {"slug": "03-chapters--Chapter-06", "title": "บท 6 · บทที่ 6 — Volume Mastery", "lines": 754, "mtime_ago": "5d ago"}, {"slug": "03-chapters--Chapter-07", "title": "บท 7 · บทที่ 7 — Volume × Session Confluence", "lines": 648, "mtime_ago": "6d ago"}, {"slug": "03-chapters--Chapter-08", "title": "บท 8 · บทที่ 8 — Wyckoff Phase A Mastery", "lines": 814, "mtime_ago": "6d ago"}, {"slug": "03-chapters--Chapter-09", "title": "บท 9 · บทที่ 9 — Composite Operator (เสือ-กบ-ส้ม)", "lines": 555, "mtime_ago": "6d ago"}, {"slug": "03-chapters--Chapter-10", "title": "บท 10 · บทที่ 10 — Wyckoff Phase B + Distribution Mirror", "lines": 722, "mtime_ago": "6d ago"}, {"slug": "03-chapters--Chapter-11", "title": "บท 11 · บทที่ 11 — Paradox: ตลาดเอาคืน (Closing Synthesis)", "lines": 496, "mtime_ago": "6d ago"}, {"slug": "03-chapters--Chapter-12", "title": "บท 12 · บทที่ 12 — Play ≠ Win (Manifesto)", "lines": 709, "mtime_ago": "6d ago"}, {"slug": "03-chapters--Chapter-13", "title": "บท 13 · บทที่ 13 — Chart Tool Pedagogy", "lines": 600, "mtime_ago": "5d ago"}, {"slug": "03-chapters--Chapter-14", "title": "บท 14 · บทที่ 14 — Question Authority (Critical Thinking)", "lines": 513, "mtime_ago": "5d ago"}, {"slug": "03-chapters--Chapter-15", "title": "บท 15 · บทที่ 15 — Belief Engine (Psychology Foundation)", "lines": 640, "mtime_ago": "6d ago"}, {"slug": "03-chapters--Chapter-16", "title": "บท 16 · บทที่ 16 — 4-Layer Subconscious Sabotage", "lines": 717, "mtime_ago": "6d ago"}, {"slug": "03-chapters--Chapter-17", "title": "บท 17 · บทที่ 17 — Sandbox Reframe (Newbie Onboarding)", "lines": 572, "mtime_ago": "6d ago"}, {"slug": "03-chapters--Chapter-18", "title": "บท 18 · บทที่ 18 — NPC Live Execution (Applied Closing)", "lines": 666, "mtime_ago": "6d ago"}, {"slug": "03-chapters--Chapter-19", "title": "บท 19 · บทที่ 19 — Wyckoff 5-Step Approach: ปูพื้นก่อนวางผัง", "lines": 226, "mtime_ago": "12h ago"}, {"slug": "03-chapters--Chapter-20", "title": "บท 20 · บทที่ 20 — EP9 ≡ Wyckoff · เฉลยความลับจักรวาล", "lines": 604, "mtime_ago": "39m ago"}]}], "archive": []};
 const $ = (s,el=document)=>el.querySelector(s);
-marked.setOptions({gfm:true, breaks:true});
+marked.setOptions({gfm:true,breaks:true});
 
-function mdParse(t){ try{return marked.parse(t);}catch(e){return "<pre>"+t.replace(/</g,"&lt;")+"</pre>";} }
-
-function atsHero(a){
-  const src = a.sources.map(s=>`
-    <div class="src">
-      <span class="lbl">${s.icon} ${s.label}</span>
-      <span class="bar"><i style="width:${s.pct}%"></i></span>
-      <span class="n">${s.done}/${s.total} · ${s.pct}%</span>
-    </div>`).join("");
+function atsStrip(a){
   return `<div class="ats">
-    <div class="top">
-      <div><div class="pct">${a.overall_pct}%</div>
-        <div class="meta" style="text-align:left">${a.total_done}/${a.total_target} EP · เหลือ ${a.total_remaining}</div></div>
-      <div class="meta">${a.workers} workers · ${a.days}d<br>ETA ${a.eta}</div>
+    <span class="pct">${a.pct}%</span>
+    <div style="flex:1">
+      <div class="bar"><i style="width:${a.pct}%"></i></div>
+      ${a.current?`<div class="cur">▶️ ${a.current}</div>`:""}
     </div>
-    <div class="bar"><i style="width:${a.overall_pct}%"></i></div>
-    ${a.current?`<div class="cur">▶️ กำลังถอด: <b>${a.current}</b></div>`:""}
-    ${src}
+    <span class="meta">${a.done}/${a.target} EP<br>ETA ${a.eta}</span>
   </div>`;
 }
-
-function card(f, arch){
-  return `<details class="card${arch?' arch':''}">
-    <summary><span class="t">${f.title}</span><span class="m">${f.lines} บรรทัด · ${f.mtime_ago}</span></summary>
-    <div class="body md" data-raw="${encodeURIComponent(f.content)}"></div>
-  </details>`;
+function cardHTML(f){
+  return `<div class="card" data-slug="${f.slug}" data-t="${f.title.toLowerCase()}" onclick="openReader('${f.slug}','${f.title.replace(/'/g,"\\'")}')">
+    <span class="t">${f.title}</span><span class="m">${f.lines} บรรทัด · ${f.mtime_ago}</span></div>`;
 }
-
 function render(){
-  let h = atsHero(D.ats);
-  D.sections.forEach(s=>{
-    h += `<div class="sec-h">${s.icon} ${s.label}</div>`;
-    h += s.files.map(f=>card(f,false)).join("");
-  });
-  if(D.archive.length){
-    h += `<div class="sec-h">🗄️ Archive (เก่า)</div>`;
-    h += D.archive.map(f=>card(f,true)).join("");
-  }
-  $("#app").innerHTML = h;
-  $("#built").textContent = "อัปเดต " + D.built + " · pull เพื่อ refresh";
-  const n = D.sections.reduce((a,s)=>a+s.files.length,0);
-  $("#foot").textContent = `${n} active · ${D.archive.length} archive · folder-driven`;
-
-  // lazy-render markdown on first open
-  document.querySelectorAll("details.card").forEach(d=>{
-    d.addEventListener("toggle",()=>{
-      const b = $(".body", d);
-      if(d.open && !b.dataset.done){
-        b.innerHTML = mdParse(decodeURIComponent(b.dataset.raw));
-        b.dataset.done = "1";
-      }
-    });
-  });
+  let h = atsStrip(D.ats);
+  D.sections.forEach(s=>{ h+=`<div class="sec-h">${s.icon} ${s.label}</div>`+s.files.map(cardHTML).join(""); });
+  if(D.archive.length){ h+=`<div class="sec-h">🗄️ Archive</div>`+D.archive.map(cardHTML).join(""); }
+  $("#app").innerHTML=h;
+  $("#built").textContent="อัปเดต "+D.built+" · pull เพื่อ refresh";
+  const n=D.sections.reduce((a,s)=>a+s.files.length,0);
+  $("#foot").textContent=`${n} ไฟล์ · ${D.archive.length} archive · folder-driven`;
 }
-
-// search filter (title + content)
-$("#q").addEventListener("input", e=>{
-  const q = e.target.value.toLowerCase().trim();
-  document.querySelectorAll("details.card").forEach(d=>{
-    const t = $(".t",d).textContent.toLowerCase();
-    const raw = decodeURIComponent($(".body",d).dataset.raw).toLowerCase();
-    const hit = !q || t.includes(q) || raw.includes(q);
-    d.classList.toggle("hide", !hit);
-    if(q && hit && !$(".body",d).dataset.done){
-      const b=$(".body",d); b.innerHTML=mdParse(decodeURIComponent(b.dataset.raw)); b.dataset.done="1"; d.open=true;
-    }
-  });
-  document.querySelectorAll(".sec-h").forEach(h=>h.classList.toggle("hide", !!q));
+async function openReader(slug,title){
+  $("#rt").textContent=title;
+  $("#rbody").innerHTML='<div class="loading">กำลังโหลด…</div>';
+  $("#reader").classList.add("on");
+  $(".rbody").scrollTop=0;
+  history.pushState({reader:1},"");
+  try{
+    const r=await fetch("data/"+slug+".md",{cache:"no-store"});
+    $("#rbody").innerHTML=marked.parse(await r.text());
+  }catch(e){ $("#rbody").innerHTML='<div class="loading">โหลดไม่ได้ — เปิดผ่าน URL เว็บ (ไม่ใช่ไฟล์)</div>'; }
+}
+function closeReader(){ $("#reader").classList.remove("on"); }
+window.addEventListener("popstate",()=>{ if($("#reader").classList.contains("on")) closeReader(); });
+$("#q").addEventListener("input",e=>{
+  const q=e.target.value.toLowerCase().trim();
+  document.querySelectorAll(".card").forEach(c=>c.classList.toggle("hide",q&&!c.dataset.t.includes(q)));
+  document.querySelectorAll(".sec-h").forEach(h=>h.classList.toggle("hide",!!q));
 });
-
 render();
 </script>
-</body>
-</html>
+</body></html>
