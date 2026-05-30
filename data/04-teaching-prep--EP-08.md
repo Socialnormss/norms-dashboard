@@ -58,7 +58,7 @@ tags: [npc, gen2, ep-08]
 **Confluence Stack (ที่หลิวสร้างให้ดู):**
 - 50% ของ 4H + 50% ของ 1H + Fibo 50% ของ 15M + BSL 15M (Buy-side Liquidity) ทับซ้อนในจุดเดียว
 - เมื่อข้อมูลหลาย TF ชี้จุดเดียวกัน = "จุดรวมยุทธศาสตร์" — เป็นจุดเทรดที่น่าสนใจ
-- ภาพยังไม่ชัด 100% (เพราะมี Fibo BSL ที่ยังไม่ถูก clear) → ถ้าอยู่ใน LTF อยากเล่นเร็ว → เปลี่ยน POI นั้นเป็น **Pure Lick (PYLICK)** — มันจะต้องโดน clear ก่อน
+- ภาพยังไม่ชัด 100% (เพราะมี Fibo BSL ที่ยังไม่ถูก clear) → ถ้าอยู่ใน LTF อยากเล่นเร็ว → เปลี่ยน POI นั้นเป็น **Pure Lick (POI LIQ)** — มันจะต้องโดน clear ก่อน
 - หลังโดน clear → ราคา "สไลด์" ขึ้นมา → สร้าง "ฟอร์มสุดท้าย" (Final Setup) ที่คนรอเทรด
 - ค่อยยิง Fibo 1.618 ของ swing ใหม่ → รอราคามาแตะ 50% ของ swing นั้น ค่อยเล่น
 
@@ -419,7 +419,7 @@ tags: [npc, gen2, ep-08]
 | **HTF / MTF / LTF** | High / Middle / Low Time Frame (เช่น 1H / 15M / 5M) |
 | **Mother Bar** | แท่งใหญ่เต็มเนื้อตัน ๆ ที่ "เปิด" ทิศ — เคยเรียก "แท่งเปิด" |
 | **Lick / Liquidity** | จุดที่มี order รออยู่ — ราคาวิ่งไปกินก่อนกลับตัว |
-| **PYLICK / POI Lick** | POI ที่อยู่ติด Flow — เทียบเท่ากับ Liquidity → ราคามักเคลียร์ |
+| **POI LIQ / POI Lick** | POI ที่อยู่ติด Flow — เทียบเท่ากับ Liquidity → ราคามักเคลียร์ |
 | **BSL / SSL** | Buy-side / Sell-side Liquidity — เหนือ High = BSL, ใต้ Low = SSL |
 | **Equal High / Equal Low** | จุด High/Low ที่ราคาเท่ากัน 2+ จุด → จุด Liquidity ชัด |
 | **BOS** | Break of Structure — เบรก high/low เดิม |

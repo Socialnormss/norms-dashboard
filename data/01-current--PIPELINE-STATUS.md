@@ -49,6 +49,11 @@
 - Pre-EP Gen1 (4 ไฟล์ · Pre1-1, Pre1-2, Pre2-1, Pre2-2 — Screen Recording ก่อน course เริ่ม · ไม่มีเนื้อหา)
 - Pattern: `EXCLUDE_PATTERNS` ใน `accurate_queue.py` · ครอบ gen2 ด้วยถ้ามี Pre
 
+**Known SKIP (defer · ไม่เร่ง · หลิว-confirmed 2026-05-28):**
+- `npc_gen2/Plan 1.8.2025.mp4` (267 MB · Tier 1 supplementary · `.SKIP` marker = ffmpeg timeout 2026-05-24 Metal cascade)
+- ผลกระทบ: Gen2 = 144/145 (99%) · ไม่กระทบ Norms Book (ใช้ `Gen2 EP.*` Tier 0)
+- Retry: ลบ `.SKIP` + split ไฟล์ครึ่งทาง ตอนคิวว่าง · ปล่อยไว้ตอนนี้
+
 **⚠️ Lesson learned:** เดิม `build_queue()` ใช้ alphabetical sort → DATE-only/BT/CPI (supp) มาก่อน EP* (core) → เผา 89 ชม. กับ supplementary
 **แก้แล้ว 2026-05-21:** `CORE_PATTERNS` per source + 2-tier queue · core ทุก source ก่อน supp ทุก source
 

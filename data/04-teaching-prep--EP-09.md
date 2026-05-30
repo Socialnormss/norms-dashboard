@@ -374,7 +374,7 @@ tags: [npc, gen2, ep-09]
 | **Flip / SRF (Support-Resistance Flip)** | จุดที่ Support เปลี่ยนเป็น Resistance (หรือกลับกัน) |
 | **Flow (Order Flow)** | ทิศทาง momentum หลักของราคา |
 | **Liquidity** | เงิน/คำสั่ง pending ที่รออยู่ — Smart Money มากินเสมอ |
-| **PY Lick (PY Liquidity)** | คำเฉพาะของหลิว — Liquidity ใน Previous swing |
+| **POI LIQ (PY Liquidity)** | คำเฉพาะของหลิว — Liquidity ใน Previous swing |
 | **BSL / SSL** | Buy-Side Liquidity / Sell-Side Liquidity (generic SMC) |
 | **Equal High / Equal Low** | High หรือ Low ที่ใกล้เคียงกัน 2 ครั้ง — สร้าง Liquidity |
 | **BOS (Break of Structure)** | ราคาทะลุ High/Low เดิม — confirm trend |

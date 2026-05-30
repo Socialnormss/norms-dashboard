@@ -379,7 +379,7 @@ tags: [npc, gen2, ep-14]
 | **3F (Focus)** | Focus — Bake-Retail ตัวล่าง ใน Step 3 = ตัวที่หลิวเข้าเทรดจริง |
 | **A1 (Actual Zone / Visible Zone)** | Zone ที่ "เห็นโจทย์" — มี POI / Flip / Demand-Supply ชัด |
 | **A2 (Invisible Zone)** | Zone ที่ "ไม่เห็นโจทย์" — All-Time High, ต้องใช้ Fibo / Round Number ช่วย |
-| **PY Lick (Previous Swing Liquidity)** | Liquidity ใน Previous Swing — คำเฉพาะของหลิว |
+| **POI LIQ (Previous Swing Liquidity)** | Liquidity ใน Previous Swing — คำเฉพาะของหลิว |
 | **Eagle High / Equal High** | High ที่ใกล้เคียงกัน 2-3 ครั้ง — สร้าง Liquidity (Buy-side) |
 | **No-Break Setup** | Setup ที่หลิวชอบ — ราคาไม่ Break High → กลายเป็น Lick → Sweep แล้ว Reverse |
 | **Conviction-building** | การสร้างความเชื่อมั่นในออเดอร์ — "หลอกตัวเอง" แบบมีเหตุมีผล |

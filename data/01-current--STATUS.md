@@ -15,7 +15,71 @@ date: 2026-05-23
 
 ---
 
-## 🌙 Latest drops
+<!-- STATUS.md hygiene · Norms enforce
+  · Latest drops cap = 5 (newest on top) · drop ที่ 6+ → [[STATUS-ARCHIVE]]
+  · Active projects = 1 line/project · last touch
+  · Current focus = 1-3 lines (above drops · single source งานวันนี้)
+-->
+
+## 🎯 Current focus
+NMSPC book: **Ch1-9 DRAFT ครบทั้งเล่ม ✅** (Ch1 v3 template + Ch2-9 batch-spawn 29 พ.ค.) → **2 gates ก่อน Stage 4 PDF: (1) หลิวอ่าน/voice approve · (2) /compliance บท critique หนัก (Ch4/Ch6/Ch9)** → `[[PENDING]]` · เหลือ Appendix A1 (MM worksheet · EP5 MM band ที่ carve ออกจาก Ch5) + A2 (glossary) + image pass (28+ markers ฝังใน body แล้ว · prompt files ยังไม่สร้าง) · Liquidity Free Lesson v2 publish gate · Infra cleanup (Phase 4-9)
+
+## 🌙 Latest drops (cap 5 · older → [[STATUS-ARCHIVE]])
+
+> **2026-05-31 — 🧬 GEN2 ATOMIZE W1+W2 · ✅ +257 atoms (1564→1821 · INDEX v13)**:
+> · ✅ **8 EP atomized (2 waves × 4 parallel):** W1 = EP.1-2/2-1/2-2/3-1 (+132) · W2 = EP.3-2/4-1/4-2/5-1 (+125) — ไม่ชน FB Live (GPU)
+> · 💎 **3 PILLAR ใหม่:** atom-02062 Norm Theory 3-Step (ตลาดให้ข้อมูล→ตอบรับ→จัดการ) · atom-02202 "ดูเทรนด์ รอสะสม แล้วเทรด" 6-word North Star · atom-02350 "ตลาดสะท้อนทุกอย่าง=กับดักใหญ่สุด"
+> · 🔧 **ปลดล็อก ATS:** แก้ bug Studio-migration (`python3`→`sys.executable`) · FB Live transcribe เดินต่อ background · [[studio-python-env-subprocess]]
+> · ⚠️ **บทเรียน:** atomize agents แตะ INDEX ชนกัน (race) → W2 aggregator ต้อง reconcile (60 atoms ผิด cat + 65 หาย) · patch skill: "ห้าม Edit/Write INDEX เด็ดขาด"
+> · 🔜 **next Gen2:** EP.5-2/6-1/6-2/7-1… (เหลือ ~47 EP · next_free.gen2=02400) · INDEX deploy (dashboard build+push) รอหลิว OK
+
+> **2026-05-30 — ⚽ EIGHTCAP "What's Inside" · ✅ COMPLETE — OVERLAY v8 + COVER Standoff LOCKED (ผ่านรอบเดียวทั้งคู่)**:
+> · ✅ **ปิดงาน:** overlay (ครอบ chart รายวัน) + cover Standoff (ปกเปิด · keeper ข่ม/นอมเล็ก dwarfed/center เว้น title) · assets ใน `Sponsors/Eightcap/TradersFootballCup-2026-07-05/assets/`
+> · 💰 **รวม ~11 gens** (vs Liquidity ~100) — หลักการ craft ที่กลั่น ([[whats-inside-playbook]]) ทำให้ทั้ง overlay + cover ผ่านรอบเดียว · หลิวชม "เก่งมาก"
+> · 🎓 **บทเรียน lock:** Norms พลาด lock ก่อน approve (v7) → แก้ · rule "ห้าม lock จน approve ภาพจริง" + craft 4 ข้อ PROVEN เข้า playbook+LESSONS · cover prompts patch v2 กัน clay/กล่องดำ ซ้ำ
+> · 🔜 **next = Liquidity Day 2** (static/album/video) — เปลี่ยน project · แนะ /compact ก่อน (Eightcap ปิดสมบูรณ์ = checkpoint)
+
+> **2026-05-29 — 🎨 LIQUIDITY COVER · Liquidity Man villain concept (5 แบบ · รอเลือกหลัง /clear)**:
+> · 🔄 **pivot:** Day 1 album → What's Inside (เล่ากราฟ = หลิวทำเอง · Norms ทำ overlay+ปก) → **ทิ้ง detective** (= ของ Tickmill) เพราะงานนี้ = product Social Norms เอง · **overlay พักไว้** (คุยไม่จบ · ยาก) → โฟกัส **ปกก่อน**
+> · 💡 **concept หลัก:** liquidity = ตัวร้าย **"Liquidity Man"** (กักเงิน) + **invisible hand** · **Norm = ฮีโร่สู้** · style **Mario cartoon** · โทน **ดำเป็นหลัก** + ส้ม · 2:1 ไม่แบ่ง · Norm ขวา
+> · ✅ **5 concepts + prompt paste-ready เซฟแล้ว:** `…/liquidity-preview-2026-06/COVER-CONCEPTS-villain-2026-05-29.md` (Invisible Hand / Money Hauler / Boss Fight / Follow-to-Lair / Reveal-Hidden)
+> · 📝 **memory ใหม่:** [[mascot-emotional-expression]] ★★★ (prompt ต้องสั่งสีหน้า/อารมณ์ตามสถานการณ์) + บทเรียนกัน prompt แบน (cinematic depth · ห้าม die-cut recipe)
+> · ✅ **UPDATE 2026-05-29 บ่าย:** เลือก **#1 Invisible Hand · Norm solo** → **cover APPROVED** (`COVER-FINAL-invisible-hand-2026-05-29.md` = 3-zone layout TEMPLATE: villain ซ้าย/center ว่าง/Norm ขวาเล็ก · text หลิวใส่เอง) · villain canon เคาะแล้ว: **Liq Man + invisible hand (=Dark Norm ซ่อนร่าง · reveal ตอนจบ PDF) พอ · Vader ไม่ใช้** (เก็บทำ poster meme Norm family) · master ref locked `refs/villain-liqman-hand-MASTER-ref.png`
+> · ✅ **Overlay = v4 "Dungeon Hall"** paste-ready (`OVERLAY-CONCEPTS-2026-05-29.md`): 1:1 · เสาโรมัน+หีบสมบัติ+พื้นหินดันเจี้ยน · villain ซ้ายบน/Norm ขวาล่างตั้งการ์ด/center ดำโล่งไว้กราฟ · ห้าม describe villain (ref @img1 พอ) · **overlay ทำครั้งเดียวใช้ตลอด** → รอ gen
+> · 🗂️ **token cleanup:** สร้าง `_INDEX.md` (ประตูเดียวทั้งแคมเปญ · อ่านตัวนี้ห้าม scan) + archive 5 ไฟล์ v1 → `_archive/`
+> · ⏳ **next:** gen overlay Dungeon Hall → จูน → apply 7 วันที่เหลือด้วย cover template · บท Day 1 album/video ยังต้อง rework (prompt detective เก่า)
+>
+> **2026-05-30 — 🎨 LIQUIDITY FREE-LESSON PDF · รื้อภาพทั้งเล่ม → villain "Liquidity Dungeon" world (prompts LOCKED · รอหลิวยิง Magnific)**:
+> · 🔥 **fire-list 12 prompts paste-ready** (ไฟล์เดียว): `…/liquidity-preview-2026-06/MAGNIFIC-PROMPTS-NEW-VISUALS-v2-villain.md` (v4) — 6 NEW + 6 REBOOT (รื้อ illustration เก่า) · **เก็บกราฟจริง 2 รูป** (`chart-02-bsl-supply-trap` · `closer-chart3-bsl-ssl-discovery`)
+> · 🌍 **WORLD lock:** "Liquidity Dungeon" = อารยธรรมโบราณล้ำยุค (เสาโรมัน/หีบสมบัติ/automaton รูน) · **modern trading reimagine เป็นของโบราณ** (จอ crash=ผนังศิลาแตก · EA bot=automaton · กราฟ=glyph สลัก · แท่งเทียน=เสาหิน) → กลืนฉาก ไม่ลอย
+> · ⚠️ **rule สำคัญ (lock ใน [[norms-villain-canon]]):** ห้าม "match exactly/do not alter" กับ villain ref (=แปะกรอบสี่เหลี่ยม) → ใช้ "freshly RE-DRAWN and integrated, NOT a pasted cutout, NO rectangle border" · Settings: Nano Banana 2 · Style 75 · Struct 55 · Fixed ON · HDR 70 · Fractality min · ref-by-order (1 style · 2 @character · 3 villain)
+> · ✅ **UPDATE 30/5 เย็น (ก่อนย้าย Mac Studio):** prompt pack 12 ตัวยกระดับตาม doctrine ล่าสุด — (1) villain → **named-ref `@liq-villain`** (กัน block) (2) **LOCK identity sentence** กัน Norm หลุด face-swap → **ยิงรอบเดียว ไม่ composite · PS แค่ใส่ text** (3) 🔴 **REAL-ONLY** ([[real-default-not-cg]]): แก้ clay risk — ตัด "3D cartoon" → "film-grade Illumination/Mario-Movie" + anti-clay sentence ครบ 13 จุด · doctrine sync → `WHATS-INSIDE-PLAYBOOK` + memory · **committed+pushed origin/main** ✅
+> · 🧪 **next:** หลิวยิง `cover-hidden-money.png` (4:5 · prompt REAL+named+LOCK พร้อมใน `MAGNIFIC-PROMPTS-NEW-VISUALS-v2-villain.md`) ตัวเดียวก่อน → เช็ค (1) ไม่ติด clay (2) Norm ไม่หลุด (3) villain ไม่แปะกรอบ + ดันเจี้ยน+trading-blend → โอเคค่อยรัวที่เหลือ → drop `visuals/` → Norms rebuild PDF (`build_pdf.py`) + overlay text + จูน pagination/ธีมดำ
+
+> **2026-05-29 — 📕 NMSPC BOOK · Ch2-9 BATCH-SPAWN เสร็จ (หลิวสั่ง "batch-spawn") — draft ครบทั้งเล่ม**:
+> · ✅ **8 บทเสร็จ** (`NMSPC-Ch{2..9}-DRAFT-v3.md`) · spawn 2 waves: Wave 1 = Ch2-8 (7 agents parallel · แต่ละบทอ่าน Ch1 v3 gold standard + atom band ของตัวเอง) · Wave 2 = Ch9 synthesis (อ่าน Ch1-8 จริง + EP6 manifesto atoms)
+> · 🧭 **ทุกบทตาม v3 standard:** professional-warm · narrative-woven citations (ไม่มี raw atom-tag ใน body) · verbatim quotes (vulgar→reported-speech) · transition bridges · Quiz 7 · บรรณานุกรม atom table · image Place-markers ฝัง inline (13-24/บท · prompt files ยังไม่สร้าง)
+> · 🔒 **anti-dup honored:** manifesto "Dow ครอบทุกอย่าง" + belief test = บ้านหลัก Ch9 · Ch1/3/8 อ้างสั้นๆ ไม่เล่าซ้ำ · EP6 ยุบกระจาย Ch3(4เข็มทิศ/Zoom Out)/Ch9(manifesto) ตาม outline · Ch5 carve MM band → A1
+> · 🚦 **2 GATES → `[[PENDING]]`:** (1) หลิวอ่าน/voice approve · (2) /compliance บท critique หนัก = Ch4 (TDA "เครื่องผลิต SL") · Ch6 (SMC marketing cycle) · Ch9 (belief test "ICT ไม่จ่ายตังค์") — agent ทุกตัว flag ไว้ + frame ที่วิธีคิดไม่โจมตีบุคคล
+> · ⚠️ **uncertainty Ch4:** step 3 ของ Set up 5 = atom 03093 บอก "Demand/Supply Zone" (agent ตาม atom) แต่ outline label = "Fibo Time-zone" — หลิว reconcile
+> · ⏳ next: หลิวอ่าน → /compliance → Stage 4 PDF · + Appendix A1 (MM worksheet) / A2 (glossary) ยังไม่ draft
+
+> **2026-05-29 — 📕 NMSPC BOOK · outline 9 บท LOCK (หลิว sign-off) + Ch1 v3 template (professional standard)**:
+> · 🔒 **โครงหนังสือ signed** (`chapters/NMSPC-BOOK-OUTLINE.md` v2 · outline-v2-signed-structure): **9 บท** = Ch1 done + Ch2-8 content + **Ch9 synthesis ปิดเล่ม** · +**Appendix A1** (Money Mgmt / Norm Port worksheet) + **A2** (glossary)
+> · 🧭 **decisions:** EP6 ยุบ (insight กระจาย Ch1/Ch3/Ch9) · scope = **"เล่ม 1 · ราก+โครงสร้าง"** + tease Wyckoff เล่ม 2 · MM ดันไป appendix
+> · 📦 **source พร้อม:** NMSPC EP1-9 atomize แล้ว **222 atoms** (atom-03000–03239)
+> · ✅ **Ch1 v3** (`NMSPC-Ch1-DRAFT-v3.md` ~4,550 words) — โทน **มืออาชีพ ทางการ น่าเชื่อถือ** → หลิว lock = **template/standard** ของ NMSPC ต่อจากนี้ · v2 aggressive variant **เก็บไว้ ไม่ลบ**
+> · ✏️ การแก้ v3: ลดก้าวร้าว/ตัดคำหยาบ-เยาะเย้ยคอร์สอื่น (วิจารณ์วิธีคิด ไม่โจมตีคน) · อ้างทอ = เรื่องเล่า · transition bridge ทุกภาค · quote หยาบ atom-03020 → reported-speech (หลิว approve) · research +2 verified (Rhea 1932 · etymology "trend") · 28 Place-markers + Quiz 7+7 ครบ
+> · 🚦 **gate สุดท้ายก่อน batch-spawn = หลิวอ่าน Ch1 v3 (template) + approve** → spawn Ch2-9 ตาม outline (แนะ /compact ก่อน · context หนัก) · ภาพ Ch1 "ค่อนข้างโอเคแล้ว"
+
+> **2026-05-29 — 🗓️ LIQUIDITY 8-DAY COUNTDOWN — ครบทั้งชุด (หลิวสั่ง "ลุยยาวๆ" · รอตรวจเช้า)**:
+> · 🎯 **คืออะไร:** campaign นับถอยหลัง 8 วัน (Day 1 = 29 พ.ค. → Day 8 = 5 มิ.ย. main post) เปิด **Preview Class 20 มิ.ย.** (Discord) · voice = ส้ม open-learner · CTA slow-build (1-5 awareness · 6-7 soft · 8 hard)
+> · ✅ **ครบ 24 ไฟล์** (Day 1-8 × static **4:5** / album **SQ** / video **9:16**) ใน `…/liquidity-preview-2026-06/daily-content/`
+> · ✅ **Day 1 แก้ตาม feedback หลิว:** quote verbatim ตรง atom (ลบท่อนที่ video เคยใส่คำหลิวไม่ได้พูด) + ratio 16:9→4:5 + safe-zone ทุก format (ศึกษา IG/Meta feed safe zone 2025-26)
+> · ✅ **Day 2-8 = 7 agents parallel** · แต่ละ agent อ่าน Day-1 gold template + atom จริง
+> · 🔍 **DEEP QC คืน 05-29 (หลิวสั่งใช้ token ระหว่างนอน)** — 4 agent ตรวจ adversarial (voice/arc/compliance/image) → fix fleet 8 agent → grep verify · เจอ+แก้: quote ซ้ำ Day2/3 · mascot self-glow · off-palette white · ฉาก Magnific ซ้ำข้ามวัน · open-loop Day3→4 broken · escalation Day6/7 · → **verbatim 100% ตรง atom · ไม่มี blocker เหลือ** · report: `[[QC-REPORT]]` · ตรวจรวม: `[[CAMPAIGN-INDEX]]`
+> · 🚧 **Day 8 (main post) รอหลิว:** เติม `[FORM LINK]`/`[ราคา]`/`[เลขบัญชี]`/`[ที่นั่ง]` (**G4**) + รัน /compliance (**G5**) → `[[PENDING]]`
+> · ⏳ next: ตรวจ voice เช้า (เปิด `[[CAMPAIGN-INDEX]]`) → fill Day 8 → /compliance → ตั้งโพสต์ Day 1
 
 > **2026-05-27 — 🔄 ATOM-FIRST PIVOT (หลิว lock · supersedes book-first)**:
 > · 🎯 **Decision:** atom DB = product เดียว · book/class/website/subscription = "views" (slice ของ atom) · tier + track เป็นคุณสมบัติของ **atom** ไม่ใช่ product
@@ -28,34 +92,30 @@ date: 2026-05-23
 > · ✅ **2026-05-27 review เสร็จ:** paywall LOCK = **free จบ item 6** (ACT 1-2 · ACT 3 BSL/SSL ขึ้นไป = paid) · ASR verified หลิวเฉลยเอง+แก้ 8 ไฟล์ (รีลา→ลีลา · เทนไลน์→Trendline · มิสเซ็นที่→Miss entry ฯลฯ → `[[liew-abbreviation-convention]]`) · date WAIVED (FB ลบไลฟ์ · ใช้ number+open-loop)
 > · ✅ **Free lesson v1 draft เสร็จ (05-27):** `FREE-LESSON-money-location-v1.md` · hook + ACT1-2 (6 beats) + paywall CTA · quote verbatim verified · Compliance ผ่าน (เพิ่ม risk warning · ตัด "90%" · soften "ยังไงก็ต้องโดน")
 > · ✅ **Free lesson v2 (05-27):** Norms ตัดสิน per autonomy → **open-learner-led** ("learning-in-public": narration ส้ม=คนเพิ่งเก็ต · quote หลิว=authority verbatim) แทน teacher v1 · เหตุผล: ตรง `[[open-learner-voice]]` ★★★ + แก้ logic (ส้ม=learner สอนไม่ได้ แต่ยกคำสอนต้นทางได้) · softened "ยังไงก็ต้องโดน" (compliance flag หลุดใน v1) · `FREE-LESSON-money-location-v2.md`
-> · ⏳ **next:** หลิว sign-off voice (เทียบ v1 teacher vs v2 open-learner) → unblock: chart 3 จุด `/scn-img` (Chart CI) + CTA funnel + member tier (รอ subscription pricing) → publish free tier
 
-> **2026-05-26 18:30 — กลับจาก away · Tickmill pack ปิดงาน + pipeline review**:
-> · ✅ **Tickmill 2026 Q2-3 pack จบ** — หลิวยืนยัน "งานจบแล้ว" · เคลียร์ 8 รายการออกจาก `[[PENDING]]` (Pre-Live · Asset 1 v12 · Asset 2/3/5 · Asset 4 Live · 2026-05-22 pack) · BAD STATE Session 43 = ปิด
-> · 🟢 **ATS** รันต่อเนื่องระหว่าง away · **90/424 EP** (0 fail · Metal cascade ไม่กลับ) · ETA ~10 วัน
-> · ✅ **Atomize loop เก่าปิด** — `atomize_loop.sh` จบเอง 16:01 (+40 → 560 atoms) · ไม่มี scheduled job เหลือ (launchd/cron/at ว่างหมด)
-> · 🎉 **Atomize Gen1 core COMPLETE (v10 · supervised 7 batches · manual)** — +742 atoms session นี้ · EP1–19 (Noon+Night) + Extra Ep3/5/6 + Secret Norms 0/1/2 + Prop firm 1/2 + Psychology 2 ครบ · **560 → 1,342 atoms**
-> · 🎯 **prop-firm category ACTIVATED** (slot ว่างสุดท้าย · 43 atoms · The5%ers spec + "$5000→$248 reframe" + survival-first)
-> · 💎 highlights: Wyckoff 5-Step Approach (Gen1 first full) · EP9≡Wyckoff synthesis · **Carry origin** ("ไอ้ม่วง" ตั้งชื่อสด + "กอดคอ" etymology) · Wyckoff Trendline X+A=B · JAC vs SOS · Mis-Entity
-> · ⚠️ **ID collision แก้แล้ว** — session ttys002 (Max terminal #2 ทำ Gen2/NMSPC · ไม่ใช่ Pro) ชน ID 00800-839 · **ไม่ data loss** (agents หลบกัน) · revise เป็น **instance-based namespace** (Gen1=01000+ · Gen2=02000+ · NMSPC=03000+) เขียนใน INDEX frontmatter + `[[project-atom-id-namespace]]`
-> · 💡 **7 module candidates** พร้อม assemble (INDEX v10): Carry Origin · EP9≡Wyckoff · JAC-vs-SOS · REFADE/REDIST · Money-Mgmt Masterclass · POI Killer/Focus · Wyckoff Trendline
-> · ⏳ next: assemble module แรก (book chapter prototype) · dashboard deploy (รอ approve push) · WWMI EP1 (deadline 31/5)
+> **2026-05-29 — 📕 NMSPC Ch1 v2 · 28 image specs REWRITE v5.1** ✅ (ออก quarantine · ฝั่งภาพจบ — หลิว "ค่อนข้างโอเคแล้ว") → detail: img# mapping locked + Vader villain canon + aspect 4:3 + per-work rules · iteration log ใน `NMSPC-Ch1-IMAGE-PROMPTS-v2.md` · memory `[[norms-villain-canon]]` `[[per-work-rules-not-universal]]` · pose/CI test = optional
 
-> **2026-05-24 10:00 — Norms Book atomize + scheduled loop (หลิว away จนถึง 26 18:00)**:
-> · 🟢 **Atomize v4 batch (supervised):** +40 atoms (00367-00406) · gen1 EP2-1 Night + EP2-2 Noon · **406 total** · INDEX updated lightweight (category sections + dashboard push รอ full review)
-> · 🟢 **Scheduled atomize loop LAUNCHED** — `pipeline/atomize_loop.sh` · armed รอจันทร์ 25 พ.ค. 21:05 → ทุก 6 ชม → **hard-stop 26 พ.ค. 18:00** (~4 รอบ) · scoped allowedTools (ไม่ bypassPermissions) · ntfy แต่ละรอบ
-> · ⚠️ **Lesson:** autonomous loop ห้าม self-grant bypassPermissions (classifier block ถูก) · ใช้ scoped allowedTools · user authorize task ≠ authorize ปิด permission ทั้งหมด · ดู `[[scheduled-atomize]]`
-> · ATS transcript รันต่อปกติ (Gen2 EP.2-2 · 7/424)
+> **2026-05-28 ~17:00 — 📕 NMSPC Ch1 v2 Image Prompts** ⚠️ SUPERSEDED → ดู drop 05-29 (28 scene gen · Magnific recipe · Image 1 test PASS · font sweep — ทั้งหมดถูก rewrite/ยกเลิกใน 11-point feedback วันเดียวกัน · detail ใน iteration log ของ `NMSPC-Ch1-IMAGE-PROMPTS-v2.md`)
 
-> **2026-05-24 01:30 — ATS recovery + autonomous 2-day run (หลิว away)**:
-> · 🔴 **Metal cascade fixed** — launchd queue ติด `MTLCompilerService Reentrancy avoided` · 178 files ❌ ต่อเนื่อง (00:00-00:43) · stop+diagnose+fix · Metal recovered after ~5min idle
-> · 🆕 **Cascade detection** — `accurate_queue.py` ตรวจ Metal-error 2-streak → cool 90s · 3-streak → 5min · 4-streak → exit 2 (respawn) · exit code มี 0/2/3 ชัดเจน
-> · 🆕 **TCC workaround** — launchd ไม่ผ่าน FDA แล้ว (ไม่รู้ว่าเลิกเมื่อไหร่) · ใช้ `keep_running.sh` + nohup จาก terminal-context แทน · respawn loop เอง
-> · 🟢 **Queue active** — Gen2 EP.15-3 (2:57hr) กำลังถอด · ntfy heartbeat ทุก 10 success
-> · ⚠️ **Realistic 48hr coverage:** Tier 0 = 62 files · 147hr audio · จะได้ ~30-40 files (~50-65% Tier 0) · ไม่ทันครบ
-> · Files: `Knowledge/pipeline/{accurate_queue.py, keep_running.sh}` · log `~/Library/Logs/norms-transcribe.log`
-> · ดู `Knowledge/PIPELINE-STATUS.md` for counts
+> **2026-05-28 14:00 — 🚀 NMSPC EP1-9 Atomize Pipeline LAUNCHED** (หลิวสั่งงานด่วน):
+> · 🎯 **Decision หลิว:** "ไม่เอา turbo · ใช้ ATS accurate · ทำ NMSPC EP1-9 ก่อน · งานด่วนวันนี้" → atom-first pivot first concrete book target
+> · ✅ **Pre-flight verified:** Accurate ATS NMSPC ครบ 29/29 files (EP1-26 G1+G2) · EP1-9 ทุกตัวพร้อม atomize
+> · 🚫 **Legacy turbo atoms 00820-00839** (NMSPC 1:48 จาก turbo) → SUPERSEDED · จะ note ใน frontmatter (ไม่ลบ)
+> · 🟢 **3 agents parallel running** · IDs reserved 03000-03239 (240 IDs · 9 EPs)
+>   - Agent A: EP1+EP2+EP3 → 03000-03079
+>   - Agent B: EP4+EP5+EP6 → 03080-03159
+>   - Agent C: EP7+EP8+EP9 → 03160-03239
+> · ASR cleanup spec embedded: PY→POI · Lick→LIQ · P.I.→POI · POI semantic (per หลิว clarify วันนี้)
+> · ETA ~1.5-2 ชม · target ~180-220 atoms total
+> · ⏳ next: Aggregator agent (INDEX rebuild) → _NMSPC-MODULE-MAP.md (9 chapter outline) → book assembly (next session)
 
+> **2026-05-28 — 🔤 ASR sweep PY→POI ทำเสร็จ** (95 instances · 16 files):
+> · ✅ PY Lick (48) → POI LIQ · PYLICK (6) → POI LIQ · PY Focus (41) → POI Focus · P.I.Focus → POI Focus
+> · ✅ atom-01394 verified pilot กับ accurate ATS (3/3 quote match · "PYF" cleaned to "POI Focus") · added `verified.accurate_ats: true`
+> · ⏸️ ยังเหลือรอหลิว clarify: PY ช่วยๆ (18 · EP-07 ส้ม=ตัวที่ 2) + PY H/L (27 · EP-13 อาจ Previous High/Low หรือ POI H/L) → PENDING.md flagged
+> · memory `[[liew-abbreviation-convention]]` updated · POI semantic (POI=ทุกคนเห็น · POI Focus=ถัดจาก POI · POI LIQ=POI ทำหน้าที่ liquidity)
+
+→ Older drops (05-28 Image Pack 8 ภาพ · 17:00 image-prompts superseded · +3 ก่อนหน้า) rotated → `[[STATUS-ARCHIVE]]`
 
 ---
 
