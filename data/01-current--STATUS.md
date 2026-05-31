@@ -26,12 +26,12 @@ NMSPC book: **Ch1-9 DRAFT ครบทั้งเล่ม ✅** (Ch1 v3 templa
 
 ## 🌙 Latest drops (cap 5 · older → [[STATUS-ARCHIVE]])
 
-> **2026-05-31 — 🧬 GEN2 ATOMIZE W1-W3 · +376 atoms on-disk (1564→1940) · INDEX v13 (W3 index ค้าง)**:
-> · ✅ **12 EP atomized (3 waves × 4):** W1 EP.1-2/2-1/2-2/3-1 (+132) · W2 EP.3-2/4-1/4-2/5-1 (+125) · W3 EP.5-2/6-1/6-2/7-1 (+119) — ไม่ชน FB Live (GPU)
-> · 💎 **PILLARs ใหม่:** 02062 Norm Theory 3-Step · 02202 "ดูเทรนด์ รอสะสม แล้วเทรด" · 02350 "ตลาดสะท้อนทุกอย่าง=กับดัก" · 02404/02407 Dow=Liquidity engine · 02535 3-Conditions · 02553 POI 3-types
-> · ⏸️ **W3 index ค้าง:** aggregator ชน session limit (reset ตี 3) → atoms 1940 บนดิสก์ครบ แต่ INDEX total ยัง 1821 · next_free.gen2 บั๊มเป็น 02600 กัน collision แล้ว · **RESUME:** `atoms/_RESUME-AGGREGATE-W3.md`
-> · 🔧 ปลดล็อก ATS (Studio `sys.executable` fix · FB Live เดินต่อ) · skill hardened "ห้ามแตะ INDEX" (W3 ไม่มี race แล้ว ✓) · dashboard deployed ถึง W2
-> · 🔜 **resume หลังตี 3:** รัน aggregator W3 → v14/1940 → deploy → ลุย EP.7-2/8-1/8-2/9-1 (เหลือ ~47 EP)
+> **2026-05-31 — 🧬 GEN2 ATOMIZE W1-W3 · ✅ +376 atoms (1564→1940 · INDEX v14 · deployed)**:
+> · ✅ **12 EP atomized (3 waves × 4):** W1 EP.1-2/2-1/2-2/3-1 (+132) · W2 EP.3-2/4-1/4-2/5-1 (+125) · W3 EP.5-2/6-1/6-2/7-1 (+119) — ไม่ชน FB Live (GPU) · Gen2 ไป 14/61 EP
+> · 💎 **7 PILLARs (เพิ่ม 5 วันนี้):** 02062 Norm Theory 3-Step · 02202 "ดูเทรนด์ รอสะสม แล้วเทรด" · 02350 "ตลาดสะท้อนทุกอย่าง=กับดัก" · 02404/02407 Dow=Liquidity engine · 02535 3-Conditions · 02553 POI 3-types
+> · 🔧 ปลดล็อก ATS (Studio `sys.executable` fix · FB Live เดินต่อ) · skill hardened "ห้ามแตะ INDEX" (W3 ไม่มี race ✓) · dashboard deployed ครบ W1-W3
+> · ⚙️ **W3 INDEX reconcile โดย main-loop** (aggregator subagent ชน session limit · main-loop ยังมี capacity → ทำเอง) · wave-3 atoms ลิสต์เต็มใน v14 Expansion section · verify on-disk==INDEX==1940 ✓
+> · 🔜 **next:** ลุย Gen2 EP.7-2/8-1/8-2/9-1 (เหลือ ~47 EP) เมื่อ session limit reset / หลิวสั่ง · FB Live transcribe ยังเดิน background (ATS 85%)
 
 > **2026-05-30 — ⚽ EIGHTCAP "What's Inside" · ✅ COMPLETE — OVERLAY v8 + COVER Standoff LOCKED (ผ่านรอบเดียวทั้งคู่)**:
 > · ✅ **ปิดงาน:** overlay (ครอบ chart รายวัน) + cover Standoff (ปกเปิด · keeper ข่ม/นอมเล็ก dwarfed/center เว้น title) · assets ใน `Sponsors/Eightcap/TradersFootballCup-2026-07-05/assets/`
