@@ -269,7 +269,7 @@ def build():
 TEMPLATE = r"""<!DOCTYPE html>
 <html lang="th"><head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0D0D0D">
 <link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>Norms Mission Control</title>
@@ -277,8 +277,10 @@ TEMPLATE = r"""<!DOCTYPE html>
 <style>
 :root{--bg:#0D0D0D;--card:#161616;--line:#2a2a2a;--orange:#f27e53;--txt:#ededed;--dim:#9a9a9a;--nav:64px;}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html{touch-action:manipulation;}
 body{background:var(--bg);color:var(--txt);font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-     max-width:760px;margin:0 auto;padding-bottom:calc(var(--nav) + env(safe-area-inset-bottom) + 10px);}
+     max-width:760px;margin:0 auto;padding-bottom:calc(var(--nav) + env(safe-area-inset-bottom) + 10px);
+     touch-action:manipulation;-webkit-text-size-adjust:100%;text-size-adjust:100%;}
 header{padding:18px 16px 12px;position:sticky;top:0;background:rgba(13,13,13,.93);
        backdrop-filter:blur(10px);z-index:10;border-bottom:1px solid var(--line);}
 .hrow{display:flex;align-items:center;justify-content:space-between;gap:10px;}
@@ -415,6 +417,10 @@ nav button.active{color:var(--orange);}
 <script>
 const D = __DATA__;
 const $ = (s,el=document)=>el.querySelector(s);
+/* กัน pinch-zoom (iOS Safari) + double-tap zoom */
+document.addEventListener("gesturestart",e=>e.preventDefault());
+document.addEventListener("gesturechange",e=>e.preventDefault());
+let _lt=0;document.addEventListener("touchend",e=>{const n=Date.now();if(n-_lt<=350)e.preventDefault();_lt=n;},{passive:false});
 marked.setOptions({gfm:true,breaks:true});
 const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 
