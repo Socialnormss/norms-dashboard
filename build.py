@@ -27,6 +27,10 @@ ARCHIVE   = DASH / "archive"
 ROOT      = Path(__file__).parent
 DATA      = ROOT / "data"
 OUT       = ROOT / "index.html"
+VAULT     = HOME / "Documents/Obsidian Vault/Social Norms"
+STATUS_F  = VAULT / "STATUS.md"
+PENDING_F = VAULT / "PENDING.md"
+HANDOFF_F = NC / "SYNC/HANDOFF.md"
 
 TODAY = datetime.date.today()
 NOW   = datetime.datetime.now()
@@ -141,12 +145,116 @@ def collect_ats():
     return {"sources":sources,"done":done,"target":tgt,"remaining":rem,
             "pct":round(done/tgt*100) if tgt else 0,"workers":workers,"days":days,"eta":eta,"current":current}
 
+# ─── HQ (งาน · รออนุมัติ · แผนก · จาก STATUS/PENDING) ───────────────
+def _read(p):
+    try: return p.read_text(encoding="utf-8")
+    except Exception: return ""
+
+def _cells(line):
+    return [c.strip() for c in line.strip().strip("|").split("|")]
+
+def _is_sep(line):
+    return bool(re.match(r"^\s*\|?[\s:|-]+\|?\s*$", line)) and "-" in line
+
+def _strip(text):
+    text = re.sub(r"\[\[([^\]|]+)(?:\|[^\]]+)?\]\]", r"\1", text)
+    text = re.sub(r"`([^`]+)`", r"\1", text)
+    return text.replace("**", "").replace("__", "").strip()
+
+def _title(cell):
+    m = re.search(r"\*\*(.+?)\*\*", cell)
+    return _strip(m.group(1) if m else cell)
+
+def _aging_dot(a):
+    for e in ("🔴", "🟠", "🟡", "🟢"):
+        if e in a: return e
+    return "⚪"
+
+def parse_pending(text):
+    out = {"P0": [], "P1": [], "P2": []}
+    cur = None
+    for line in text.splitlines():
+        h = re.match(r"^##\s+.*?\bP([012])\b", line)
+        if h: cur = "P" + h.group(1); continue
+        if line.startswith("## "): cur = None; continue
+        if cur and line.lstrip().startswith("|") and not _is_sep(line):
+            c = _cells(line)
+            if len(c) < 2 or c[0].lower() in ("aging", "item"): continue
+            title = _title(c[1])
+            if not title: continue
+            out[cur].append({"dot": _aging_dot(c[0]), "aging": _strip(c[0]),
+                             "title": title, "effort": _strip(c[2]) if len(c) > 2 else ""})
+    return out
+
+_HQ_SECTIONS = ("Tier 0", "Content Engines", "Monetization", "Sub-active",
+                "Bell-Hero", "Background", "Training", "Paused")
+_ST_EMOJI = {"🟢": "active", "🟡": "idle", "🟠": "warn", "🔴": "block",
+             "⏸️": "paused", "✅": "done", "🔄": "active"}
+
+def parse_status_hq(text):
+    lines = text.splitlines()
+    focus = ""
+    for i, ln in enumerate(lines):
+        if ln.strip().startswith("## 🎯 Current focus"):
+            buf, j = [], i + 1
+            while j < len(lines) and not lines[j].startswith("##"):
+                if lines[j].strip(): buf.append(lines[j].strip())
+                j += 1
+            focus = _strip(" ".join(buf)); break
+    drops = []
+    for ln in lines:
+        m = re.match(r"^>\s*\*\*(\d{4}-\d{2}-\d{2})\s*[—-]+\s*(.+?)\*\*", ln)
+        if m: drops.append({"date": m.group(1)[5:], "what": _strip(m.group(2))})
+    departments, cur, rows = [], None, []
+    def flush():
+        nonlocal rows, cur
+        if cur and rows: departments.append({"label": cur, "rows": rows})
+        rows = []
+    for ln in lines:
+        if ln.startswith("## "):
+            flush(); cur = None
+            for key in _HQ_SECTIONS:
+                if key in ln: cur = _strip(ln[3:]); break
+            continue
+        if cur and ln.lstrip().startswith("|") and not _is_sep(ln):
+            c = _cells(ln)
+            if len(c) < 2 or c[0].lower() in ("งาน", "item"): continue
+            name = _title(c[0]); stat = c[1] if len(c) > 1 else ""
+            emoji = next((e for e in _ST_EMOJI if e in stat), "•")
+            rows.append({"name": name, "emoji": emoji,
+                         "state": _ST_EMOJI.get(emoji, "idle")})
+    flush()
+    return {"focus": focus, "drops": drops[:6], "departments": departments}
+
+def recent_commits(n=6):
+    try:
+        out = subprocess.run(["git", "-C", str(NC), "log", f"-{n}", "--pretty=%s"],
+                             capture_output=True, text=True, timeout=10)
+        return [l for l in out.stdout.splitlines() if l.strip()]
+    except Exception:
+        return []
+
+def collect_hq():
+    pending = parse_pending(_read(PENDING_F))
+    st = parse_status_hq(_read(STATUS_F))
+    active = [r for d in st["departments"] for r in d["rows"]
+              if r["state"] in ("active", "warn", "idle", "block")]
+    overdue = sum(1 for t in pending.values() for it in t
+                  if "🟠" in it["aging"] or "🔴" in it["aging"])
+    npend = sum(len(v) for v in pending.values())
+    return {"focus": st["focus"][:380], "pending": pending,
+            "departments": st["departments"], "drops": st["drops"],
+            "commits": recent_commits(),
+            "kpi": {"active": len(active), "pending": npend,
+                    "p0": len(pending["P0"]), "overdue": overdue}}
+
 # ─── BUILD ──────────────────────────────────────────────────────────
 def build():
     if DATA.exists(): shutil.rmtree(DATA)
     DATA.mkdir(parents=True)
     payload = {
         "built": NOW.strftime("%d %b %y · %H:%M"),
+        "hq": collect_hq(),
         "ats": collect_ats(),
         "sections": collect_sections(),
         "archive_files": collect_files(ARCHIVE, "archive")[0],
@@ -243,6 +351,40 @@ nav button.active{color:var(--orange);}
 .md table{border-collapse:collapse;width:100%;margin:12px 0;font-size:14px;display:block;overflow-x:auto;}
 .md th,.md td{border:1px solid var(--line);padding:7px 10px;}.md th{background:#000;color:var(--orange);}
 .loading{color:var(--dim);padding:20px 0;}
+
+/* HQ — งาน/รออนุมัติ/แผนก */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:11px 8px;text-align:center;}
+.kpi .n{font-size:24px;font-weight:800;line-height:1;}
+.kpi .l{font-size:10px;color:var(--dim);margin-top:4px;}
+.kpi.ok .n{color:var(--orange);}
+.kpi.warn .n{color:#ff5a5a;}
+.focus{background:linear-gradient(180deg,#1a1410,#161616);border:1px solid #3a2b20;border-radius:14px;
+       padding:13px 15px;margin-bottom:16px;font-size:13.5px;line-height:1.55;}
+.focus b{color:var(--orange);}
+.pend{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:6px 14px;margin-bottom:10px;}
+.pend.p0{border-color:#5a2222;}
+.pend .ph{font-size:12px;font-weight:700;padding:8px 0 6px;}
+.pend ul{list-style:none;}
+.pend li{display:flex;align-items:baseline;gap:8px;padding:8px 0;border-top:1px solid var(--line);font-size:13.5px;}
+.pend li:first-child{border-top:none;}
+.pend .pt{flex:1;}
+.pend .pe{font-size:10px;color:var(--dim);white-space:nowrap;flex:none;}
+.dep{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:6px 14px;margin-bottom:10px;}
+.dep .dh{font-size:12px;font-weight:700;color:var(--orange);padding:9px 0 6px;}
+.dep ul{list-style:none;}
+.dep li{display:flex;gap:8px;align-items:baseline;padding:6px 0;font-size:13.5px;border-top:1px solid var(--line);}
+.dep li:first-child{border-top:none;}
+.dep .dn{flex:1;}
+.dep li.s-paused .dn,.dep li.s-done .dn{color:var(--dim);}
+.dep li.s-warn .dn,.dep li.s-block .dn{color:#ffb347;}
+.done2{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:6px 14px;margin-bottom:10px;}
+.done2 li{list-style:none;padding:8px 0;border-top:1px solid var(--line);font-size:13px;}
+.done2 li:first-child{border-top:none;}
+.done2 .dd{color:var(--orange);margin-right:6px;font-variant-numeric:tabular-nums;}
+.gobtn{display:block;width:100%;text-align:center;background:#2a2018;border:1px solid #3a2b20;
+       color:var(--orange);border-radius:12px;padding:12px;font-size:14px;font-weight:600;
+       margin:4px 0 18px;cursor:pointer;}
 </style></head><body>
 <header>
   <div class="hrow">
@@ -255,11 +397,13 @@ nav button.active{color:var(--orange);}
 
 <main>
   <div class="view active" id="home"></div>
+  <div class="view" id="work"></div>
   <div class="view" id="read"></div>
 </main>
 
 <nav>
   <button id="nav-home" class="active" onclick="show('home')"><span class="ni">🏠</span>Home</button>
+  <button id="nav-work" onclick="show('work')"><span class="ni">📋</span>งาน</button>
   <button id="nav-read" onclick="show('read')"><span class="ni">📖</span>Read</button>
 </nav>
 
@@ -272,6 +416,40 @@ nav button.active{color:var(--orange);}
 const D = __DATA__;
 const $ = (s,el=document)=>el.querySelector(s);
 marked.setOptions({gfm:true,breaks:true});
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+
+/* ---------- HQ (งาน) ---------- */
+function kpiStrip(k){
+  return `<div class="kpis">
+    <div class="kpi ok"><div class="n">${k.active}</div><div class="l">📋 active</div></div>
+    <div class="kpi ${k.pending?'warn':''}"><div class="n">${k.pending}</div><div class="l">⏳ รออนุมัติ</div></div>
+    <div class="kpi"><div class="n">${k.p0}</div><div class="l">🔥 ด่วน</div></div>
+    <div class="kpi ${k.overdue?'warn':''}"><div class="n">${k.overdue}</div><div class="l">🟠 ค้างนาน</div></div></div>`;
+}
+function pendBlock(items,cls,head){
+  if(!items.length) return "";
+  const li=items.map(it=>`<li><span>${it.dot}</span><span class="pt">${esc(it.title)}</span>
+    <span class="pe">${esc(it.effort)}</span></li>`).join("");
+  return `<div class="pend ${cls}"><div class="ph">${head} <b>${items.length}</b></div><ul>${li}</ul></div>`;
+}
+function workView(){
+  const hq=D.hq;
+  let h=kpiStrip(hq.kpi);
+  if(hq.focus) h+=`<div class="focus"><b>🎯 โฟกัสตอนนี้:</b> ${esc(hq.focus)}</div>`;
+  h+=`<div class="sec-h">⏳ รออนุมัติ / ตัดสินใจ</div>`;
+  h+=pendBlock(hq.pending.P0,"p0","🔥 เร่งด่วน (P0)")
+   + pendBlock(hq.pending.P1,"p1","⚡ รออนุมัติ (P1)")
+   + pendBlock(hq.pending.P2,"p2","◽ Nice-to-have (P2)");
+  h+=`<div class="sec-h">🏗️ ใครทำอะไรกันอยู่ (แยกแผนก)</div>`;
+  hq.departments.forEach(d=>{
+    if(!d.rows.length) return;
+    const li=d.rows.map(r=>`<li class="s-${r.state}"><span>${r.emoji}</span><span class="dn">${esc(r.name)}</span></li>`).join("");
+    h+=`<div class="dep"><div class="dh">${esc(d.label)}</div><ul>${li}</ul></div>`;
+  });
+  h+=`<div class="sec-h">✅ ทำเสร็จล่าสุด</div><div class="done2"><ul>`;
+  h+=(hq.drops.map(dr=>`<li><span class="dd">${esc(dr.date)}</span>${esc(dr.what)}</li>`).join("")||"<li>—</li>")+`</ul></div>`;
+  $("#work").innerHTML=h;
+}
 
 /* ---------- HOME ---------- */
 function atsBig(a){
@@ -284,7 +462,14 @@ function atsBig(a){
     ${a.current?`<div class="cur">▶️ กำลังถอด: <b>${a.current}</b></div>`:""}${src}</div>`;
 }
 function homeView(){
-  let h=`<div class="sec-h">🟢 ATS Pipeline</div>`+atsBig(D.ats);
+  const hq=D.hq;
+  let h=kpiStrip(hq.kpi);
+  const urgent=hq.pending.P0.concat(hq.pending.P1.slice(0,2));
+  if(urgent.length){
+    h+=`<div class="sec-h">🔥 รออนุมัติ — ด่วนสุด</div>`+pendBlock(urgent,"p0","ต้องดูก่อน");
+    h+=`<div class="gobtn" onclick="show('work')">📋 ดูงานทั้งหมด · แผนก · ${hq.kpi.pending} รออนุมัติ →</div>`;
+  }
+  h+=`<div class="sec-h">🟢 ATS Pipeline</div>`+atsBig(D.ats);
   h+=`<div class="sec-h">📂 โซนงาน (แตะเพื่ออ่าน)</div>`;
   D.sections.forEach(s=>{
     h+=`<div class="zone" onclick="gotoRead('${s.id}')">
@@ -314,9 +499,10 @@ function readView(){
 function show(v){
   document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===v));
   $("#nav-home").classList.toggle("active",v==="home");
+  $("#nav-work").classList.toggle("active",v==="work");
   $("#nav-read").classList.toggle("active",v==="read");
   $("#q").style.display = v==="read" ? "block" : "none";
-  $("#htitle").textContent = v==="read" ? "READ" : "Mission Control";
+  $("#htitle").textContent = v==="read" ? "READ" : v==="work" ? "งาน" : "Mission Control";
   window.scrollTo(0,0);
 }
 function gotoRead(secId){
@@ -343,7 +529,7 @@ $("#q").addEventListener("input",e=>{
 });
 
 $("#built").textContent="อัปเดต "+D.built+" · แตะ 🔄 เพื่อดึงข้อมูลล่าสุด";
-homeView(); readView();
+homeView(); workView(); readView();
 </script>
 </body></html>"""
 
