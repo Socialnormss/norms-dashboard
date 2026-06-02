@@ -6,12 +6,12 @@ date: 2026-05-23
 
 # Status — Max-Only Operating Model
 
-> Norms (Max) = sole owner Socialnorms · เบล + Pro = Bell-Hero only · ATS background 24/7
+> Norms (Max) = sole owner Socialnorms · เบล + Pro = Bell-Hero only · ATS = accurate transcribe เกือบครบ (เหลือ 12 EP · queue เดินอยู่)
 > Single source: STATUS = active project state · PIPELINE-STATUS = pipeline state · WORKLOG per project = milestone history
 >
 > **🛎️ สิ่งที่หลิวต้อง approve/decide/test → `[[PENDING]]`** (single approval inbox · ไม่อยู่ใน STATUS แล้ว)
 
-อัปเดต: 2026-05-26 | จบเดือน: 2026-05-31 | 🎯 **Focus mode: transcript เท่านั้น** (ห้าม multitask จนหลิวสั่ง)
+อัปเดต: 2026-06-02 | จบเดือน: 2026-05-31 | 🎯 **Focus mode: transcript เท่านั้น** (ห้าม multitask จนหลิวสั่ง)
 
 ---
 
@@ -22,16 +22,28 @@ date: 2026-05-23
 -->
 
 ## 🎯 Current focus
-NMSPC book: **Ch1-9 DRAFT ครบทั้งเล่ม ✅** (Ch1 v3 template + Ch2-9 batch-spawn 29 พ.ค.) → **2 gates ก่อน Stage 4 PDF: (1) หลิวอ่าน/voice approve · (2) /compliance บท critique หนัก (Ch4/Ch6/Ch9)** → `[[PENDING]]` · เหลือ Appendix A1 (MM worksheet · EP5 MM band ที่ carve ออกจาก Ch5) + A2 (glossary) + image pass (28+ markers ฝังใน body แล้ว · prompt files ยังไม่สร้าง) · Liquidity Free Lesson v2 publish gate · Infra cleanup (Phase 4-9)
+NMSPC book: **Ch1-9 DRAFT ครบทั้งเล่ม ✅** (Ch1 v3 template + Ch2-9 batch-spawn 29 พ.ค.) → **2 gates ก่อน Stage 4 PDF: (1) หลิวอ่าน/voice approve · (2) /compliance บท critique หนัก (Ch4/Ch6/Ch9)** → `[[PENDING]]` · เหลือ Appendix A1 (MM worksheet · EP5 MM band ที่ carve ออกจาก Ch5) + A2 (glossary) + image pass (28+ markers ฝังใน body แล้ว · prompt files ยังไม่สร้าง) · Liquidity Mini-Class PDF (PAID · ไม่ฟรีแล้ว) publish gate · Infra cleanup (Phase 4-9)
 
 ## 🌙 Latest drops (cap 5 · older → [[STATUS-ARCHIVE]])
 
-> **2026-05-31 — 🧬 GEN2 ATOMIZE W1-W3 · ✅ +376 atoms (1564→1940 · INDEX v14 · deployed)**:
-> · ✅ **12 EP atomized (3 waves × 4):** W1 EP.1-2/2-1/2-2/3-1 (+132) · W2 EP.3-2/4-1/4-2/5-1 (+125) · W3 EP.5-2/6-1/6-2/7-1 (+119) — ไม่ชน FB Live (GPU) · Gen2 ไป 14/61 EP
-> · 💎 **7 PILLARs (เพิ่ม 5 วันนี้):** 02062 Norm Theory 3-Step · 02202 "ดูเทรนด์ รอสะสม แล้วเทรด" · 02350 "ตลาดสะท้อนทุกอย่าง=กับดัก" · 02404/02407 Dow=Liquidity engine · 02535 3-Conditions · 02553 POI 3-types
-> · 🔧 ปลดล็อก ATS (Studio `sys.executable` fix · FB Live เดินต่อ) · skill hardened "ห้ามแตะ INDEX" (W3 ไม่มี race ✓) · dashboard deployed ครบ W1-W3
-> · ⚙️ **W3 INDEX reconcile โดย main-loop** (aggregator subagent ชน session limit · main-loop ยังมี capacity → ทำเอง) · wave-3 atoms ลิสต์เต็มใน v14 Expansion section · verify on-disk==INDEX==1940 ✓
-> · 🔜 **next:** ลุย Gen2 EP.7-2/8-1/8-2/9-1 (เหลือ ~47 EP) เมื่อ session limit reset / หลิวสั่ง · FB Live transcribe ยังเดิน background (ATS 85%)
+> **2026-06-02 — 🎙️ ATS UNSTUCK · เจอ+แก้ bug ซ่อนตั้งแต่ พ.ค. · queue เดินจบ accurate 100%**:
+> · 🐛 **root cause:** `transcribe.py` glob ใช้นามสกุลพิมพ์เล็ก (`*.mp4`) แต่ Python glob = case-sensitive → ไฟล์ **`.MP4` (10) + `.mkv` (1) ล่องหน** วนเป็น pending ตลอด ไม่เคยถูกถอด → fix: กวาดทุกไฟล์กรองด้วย `suffix.lower()` ใน `{.mp4,.mov,.m4v,.mkv}`
+> · 📊 **"58 pending" = ตัวเลขหลอก** — `accurate_progress.py` นับ `turbo_eps - acc_eps` (stem คนละชุด → พอง) · งานจริงเหลือ **12** → fix: reuse `build_queue` truth (drive videos vs accurate .txt) = ตรง queue เป๊ะ
+> · ✅ **ATS = accurate 100% COMPLETE:** gen1 168 · gen2 144 · nmspc 62 · FB Live 221 (queue empty · 0 pending) · skip 6 = no-audio/silent (พิสูจน์ ffprobe/volumedetect: My_backtest x3 + first-video = ไม่มี audio stream · Plan 1.8.2025 = ไมค์มิ้วท์ -80dB) · `list_skip_markers` fix อ่าน .SKIP 2 โฟลเดอร์ → queue empty จริง
+> · 🧬 **+atomize Gen2 wave-5 (หลิวสั่งทำคู่):** EP.9-2 (02800-19) + EP.10-1 (02820-39) = **+40 atoms → total 2114** · INDEX v16 reconcile โดย main-loop (ไม่ spawn aggregator · เลี่ยง 130K-token limit) · 3 ★★★pillar ใหม่: 02807 TP1000=Fibo50+1.618 · 02818 POI=Liquidity/Flip · 02831 เทรนด์=ที่ซ่อน LQ · Gen2 ไป 20/61 EP
+> · 🔜 next: dashboard build+push (รอหลิว confirm) · atomize batch ถัดไป = Gen2 EP.10-2/11-1/11-2... (เหลือ ~41 EP)
+
+> **2026-06-01 — ⚔️ XAU H4 RESISTANCE DUEL (static · Star Wars) · 2-layer pipeline · รอหลิวยิง Magnific ชั้นคน**:
+> · 📊 **กราฟ 3D เรนเดอร์เอง = เป๊ะ 100% (หลิว approve)** `build/chart-3d.png` — detect 63 แท่งจริงจาก crop (PIL fixed-pitch) → วาดใหม่เป็นแท่ง 3D เรืองแสง · เพราะ Magnific วาดแท่งเป๊ะไม่ได้ (v3 B 4:3 เพี้ยน)
+> · ⚔️ `IMAGE-PROMPT.md` **v4** = 4 พรอมต์ Magnific (A/B × 4:5/4:3) ยิงแค่ **คน+ดาบ+ห้องพัง บนพื้นดำ** (negative กันวาดกราฟชน) · 📜 `CAPTION.md` v2 (เล่าหนัง+sweep+Osler 2000)
+> · 🔜 **next:** หลิวยิง A·4:5 เช็ค → ส่งกลับ **Norms composite กราฟเป็น bg** + จัด alignment → หลิวเติม LIQUIDITY/แนวต้าน → /compliance → ลง · 📁 `Brand/Output/xau-h4-resistance-duel/README.md`
+
+> **2026-05-31 — 🧬 GEN2 ATOMIZE W1-W4 · ✅ +510 atoms (1564→2074 · INDEX v15 · deployed)**:
+> · ✅ **16 EP atomized (4 waves × 4):** W1 EP.1-2/2-1/2-2/3-1 · W2 EP.3-2/4-1/4-2/5-1 · W3 EP.5-2/6-1/6-2/7-1 · W4 EP.7-2/8-1/8-2/9-1 — ไม่ชน FB Live (GPU) · **Gen2 ไป 18/61 EP**
+> · 💎 **10 PILLARs (เพิ่ม 8 วันนี้):** 02062 Norm Theory · 02202 North Star · 02350 ตลาดสะท้อน=กับดัก · 02404/02407 Dow=Liquidity · 02535 3-Conditions · 02553 POI 3-types · 02710 meta-pedagogy "สอน Wyckoff ผ่านแนวรับแนวต้าน" · 02753 "รอการสะสมเสมอ" · 02755 TP 1000 logic
+> · 🔧 ปลดล็อก ATS (Studio `sys.executable` fix) · skill hardened "ห้ามแตะ INDEX" (W3-W4 ไม่มี race ✓) · dashboard deployed ครบ W1-W4
+> · ⚙️ **W3 INDEX reconcile โดย main-loop** (aggregator ชน limit · ทำเอง) · W4 aggregator สำเร็จ (post-reset) · verify on-disk==INDEX==2074 ✓
+> · 🔜 **next:** ลุย Gen2 EP.9-2/10-1/10-2/11-2 (เหลือ ~43 EP) · FB Live transcribe ยังเดิน background (ATS 87%) · 📌 context สะสม → แนะ /compact
 
 > **2026-05-30 — ⚽ EIGHTCAP "What's Inside" · ✅ COMPLETE — OVERLAY v8 + COVER Standoff LOCKED (ผ่านรอบเดียวทั้งคู่)**:
 > · ✅ **ปิดงาน:** overlay (ครอบ chart รายวัน) + cover Standoff (ปกเปิด · keeper ข่ม/นอมเล็ก dwarfed/center เว้น title) · assets ใน `Sponsors/Eightcap/TradersFootballCup-2026-07-05/assets/`
@@ -49,7 +61,7 @@ NMSPC book: **Ch1-9 DRAFT ครบทั้งเล่ม ✅** (Ch1 v3 templa
 > · 🗂️ **token cleanup:** สร้าง `_INDEX.md` (ประตูเดียวทั้งแคมเปญ · อ่านตัวนี้ห้าม scan) + archive 5 ไฟล์ v1 → `_archive/`
 > · ⏳ **next:** gen overlay Dungeon Hall → จูน → apply 7 วันที่เหลือด้วย cover template · บท Day 1 album/video ยังต้อง rework (prompt detective เก่า)
 >
-> **2026-05-30 — 🎨 LIQUIDITY FREE-LESSON PDF · รื้อภาพทั้งเล่ม → villain "Liquidity Dungeon" world (prompts LOCKED · รอหลิวยิง Magnific)**:
+> **2026-05-30 — 🎨 LIQUIDITY MINI-CLASS PDF (PAID · เปลี่ยนชื่อจาก "Free-Lesson" 2/6) · รื้อภาพทั้งเล่ม → villain "Liquidity Dungeon" world (prompts LOCKED · รอหลิวยิง Magnific)**:
 > · 🔥 **fire-list 12 prompts paste-ready** (ไฟล์เดียว): `…/liquidity-preview-2026-06/MAGNIFIC-PROMPTS-NEW-VISUALS-v2-villain.md` (v4) — 6 NEW + 6 REBOOT (รื้อ illustration เก่า) · **เก็บกราฟจริง 2 รูป** (`chart-02-bsl-supply-trap` · `closer-chart3-bsl-ssl-discovery`)
 > · 🌍 **WORLD lock:** "Liquidity Dungeon" = อารยธรรมโบราณล้ำยุค (เสาโรมัน/หีบสมบัติ/automaton รูน) · **modern trading reimagine เป็นของโบราณ** (จอ crash=ผนังศิลาแตก · EA bot=automaton · กราฟ=glyph สลัก · แท่งเทียน=เสาหิน) → กลืนฉาก ไม่ลอย
 > · ⚠️ **rule สำคัญ (lock ใน [[norms-villain-canon]]):** ห้าม "match exactly/do not alter" กับ villain ref (=แปะกรอบสี่เหลี่ยม) → ใช้ "freshly RE-DRAWN and integrated, NOT a pasted cutout, NO rectangle border" · Settings: Nano Banana 2 · Style 75 · Struct 55 · Fixed ON · HDR 70 · Fractality min · ref-by-order (1 style · 2 @character · 3 villain)

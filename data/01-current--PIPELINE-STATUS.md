@@ -1,6 +1,7 @@
 # Knowledge Pipeline — Master Status
 
 อัปเดต: 2026-05-19 | อ่านไฟล์นี้แทนการ scan folders
+> ⚠️ **STALE** — ค้างตั้งแต่ 05-19 · live progress จริง (atomize waves) ดู `SYNC/MAX-LOG.md` · reconcile ตอน pipeline session ถัดไป (Norms System Map เฟส A · 2026-05-31)
 
 ---
 
