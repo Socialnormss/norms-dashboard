@@ -110,9 +110,9 @@ def collect_sections():
 def collect_ats():
     sources = [
         {"key":"npc_gen1","label":"Gen1","path":TRANS_ACC/"npc_gen1","total":168,"icon":"📘"},
-        {"key":"npc_gen2","label":"Gen2","path":TRANS_ACC/"npc_gen2","total":145,"icon":"📙"},
+        {"key":"npc_gen2","label":"Gen2","path":TRANS_ACC/"npc_gen2","total":144,"icon":"📙"},
         {"key":"nmspc","label":"NMSPC","path":TRANS_ACC/"nmspc2026","total":62,"icon":"📕"},
-        {"key":"fblive","label":"FB Live","path":TRANS_ACC/"facebook_live","total":234,"icon":"📺"},
+        {"key":"fblive","label":"FB Live","path":TRANS_ACC/"facebook_live","total":221,"icon":"📺"},
     ]
     tgt = sum(s["total"] for s in sources); done = 0
     for s in sources:
